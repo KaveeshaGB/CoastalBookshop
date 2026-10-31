@@ -14,22 +14,32 @@ $loggedIn = !empty($_SESSION['customer_id']);
     </head>
     <body>
         <header>
-            <img id="logo" src="images/logo.jpg" alt="logo image">
+            <img id="logo" src="images/logo.png" alt="logo image">
             <span id="heading">Coastal Bookshop</span>
             <nav class="main-nav">
                 <a href="home.php">Home</a>
-                <a href="fiction.php">Fiction</a>
-                <a href="novel.php">Novel</a>
-                <a href="short_story.php">Short Story</a>
                 <a href="order.php">Order</a>
             </nav>
             <nav class="sign-in main-nav">
                 <?php if ($loggedIn): ?>
-                    <span class="welcome">Hi, <?= e($_SESSION['customer_name']) ?></span>
-                    <a href="logout.php">Log-out</a>
+                    <span class="welcome">Welcome back, <strong><?= e($_SESSION['customer_name']) ?></strong>!</span>
                 <?php else: ?>
-                    <a href="register.php">Sign-in</a>
-                    <a href="#" id="open-login">Log-in</a>
+                    <a class="authentication-link" href="register.php">Sign-in</a>
+                    <a class="authentication-link" href="#" id="open-login">Log-in</a>
+                <?php endif; ?>
+
+                <a class="icon-link" href="cart.php" title="Cart"><img src="images/cart.jpg" alt="Cart"></a>
+
+                <?php if ($loggedIn): ?>
+                    <div class="profile-menu">
+                        <button type="button" class="icon-link" id="profile-btn" title="Profile">
+                            <img src="images/profile.jpg" alt="Profile">
+                        </button>
+                        <ul class="profile-dropdown" id="profile-dropdown">
+                            <li><a href="profile.php">Profile</a>
+                            <li><a href="logout.php">Log-out</a></li>
+                        </ul>
+                    </div>
                 <?php endif; ?>
             </nav>
         </header>
