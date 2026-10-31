@@ -1,6 +1,6 @@
 <?php
 // Shared setup: session + database connection + small helpers.
-session_start();
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 $pdo = new PDO(
     'mysql:host=localhost;dbname=coastal_bookshop;charset=utf8mb4',

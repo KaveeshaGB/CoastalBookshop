@@ -1,3 +1,16 @@
+const profileBtn = document.getElementById('profile-btn');
+const profileDropdown = document.getElementById('profile-dropdown');
+
+if (profileBtn && profileDropdown) {
+    profileBtn.addEventListener('click', function (event) {
+        event.stopPropagation();
+        profileDropdown.classList.toggle('open');
+    });
+
+    document.addEventListener('click', function () {
+        profileDropdown.classList.remove('open');
+    });
+}
 // ---------- Log-in pop-up ----------
 document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('login-modal');
