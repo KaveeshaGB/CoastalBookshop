@@ -40,10 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 password_hash($password, PASSWORD_DEFAULT),
             ]);
             if ($member) {
-                $pdo->prepare('INSERT INTO Member (CustomerID) VALUES (?)')->execute([$id]);
-                $pdo->commit();   
-                $success = true;
-            }   
+    $pdo->prepare('INSERT INTO Member (CustomerID) VALUES (?)')->execute([$id]);
+    }
+
+    $pdo->commit();
+    $success = true;   
         } catch (Exception $ex) {
             $pdo->rollBack();
             $errors[] = 'Could not create the account. Please try again.';
