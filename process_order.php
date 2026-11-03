@@ -12,8 +12,7 @@ function fail($msg) {
     header('Location: order.php');
     exit;
 }
-
-$bookId   = (int)($_POST['book_id'] ?? 0);
+$bookId   = trim($_POST['book_id'] ?? '');
 $qty      = (int)($_POST['quantity'] ?? 1);
 $delivery = $_POST['delivery_option'] ?? '';
 $pack     = $_POST['packaging_type'] ?? 'Standard';
@@ -40,10 +39,11 @@ if (!$book) fail('That book was not found.');
 try {
     $pdo->beginTransaction();
 
-    $pdo->prepare('INSERT INTO Orders (DeliveryOption, PackagingType, DeliveryAddress, DeliveryInstructions, CustomerID)
-                   VALUES (?,?,?,?,?)')
-        ->execute([$delivery, $pack, $address, $instr ?: null, $_SESSION['customer_id']]);
-    $orderId = (int)$pdo->lastInsertId();
+    $orderId = nextId($pdo, 'Orders', 'OrderID', 'D');
+
+    $pdo->prepare('INSERT INTO Orders (OrderID, DeliveryOption, PackagingType, DeliveryAddress, DeliveryInstructions, CustomerID)
+                   VALUES (?,?,?,?,?,?)')
+        ->execute([$orderId, $delivery, $pack, $address, $instr ?: null, $_SESSION['customer_id']]);
 
     $pdo->prepare('INSERT INTO Order_Books (OrderID, BookID, Quantity, UnitPrice) VALUES (?,?,?,?)')
         ->execute([$orderId, $book['BookID'], $qty, $book['Price']]);
@@ -71,6 +71,6 @@ try {
 }
 
 $total = $book['Price'] * $qty + DELIVERY_COSTS[$delivery];
-$_SESSION['order_success'] = 'Order #' . $orderId . ' placed! Total (including delivery): Rs.' . number_format($total, 2);
+$_SESSION['order_success'] = 'Order ' . $orderId . ' placed! Total (including delivery): Rs.' . number_format($total, 2);
 header('Location: order.php');
 exit;

@@ -2,7 +2,7 @@
 $pageTitle = 'Coastal Bookshop';
 require 'header.php';
 
-$categories = ['Fiction' => 'fiction.php', 'Novel' => 'novel.php', 'Short Story' => 'short_story.php'];
+$categories = ['Fiction' => 'fiction.php', 'Novel' => 'novel.php', 'Short Story' => 'short_story.php', 'Kids Story' => 'kids_story.php'];
 
 $newBooks = $pdo->query('SELECT * FROM Books ORDER BY DateAdded DESC, BookID DESC LIMIT 5')->fetchAll();
 
@@ -45,6 +45,6 @@ if ($newBooks) {
                 $statement->execute([$name]);
                 $books = $statement->fetchAll();
             ?>
-                <?php foreach ($books as $b) renderBook($b); ?>
+            <?php foreach ($books as $b) renderBook($b); ?>
             <?php endforeach; ?>
 <?php require 'footer.php'; ?>

@@ -37,6 +37,9 @@ $loggedIn = !empty($_SESSION['customer_id']);
                         </button>
                         <ul class="profile-dropdown" id="profile-dropdown">
                             <li><a href="profile.php">Profile</a>
+                            <?php if (!empty($_SESSION['is_admin'])): ?>
+                            <li><a href="admin_books.php">Manage Books</a></li>
+                            <?php endif; ?>
                             <li><a href="logout.php">Log-out</a></li>
                         </ul>
                     </div>
