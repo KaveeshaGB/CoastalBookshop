@@ -31,6 +31,11 @@ function renderBook(array $b) {
     echo '<img src="' . e($img) . '" alt="' . e($b['Title']) . '">';
     echo '<h4>' . e($b['Title']) . '</h4>';
     echo '<p>Rs.' . number_format($b['Price'], 2) . '</p>';
-    echo '<a class="order-link" href="order.php?book=' . (int)$b['BookID'] . '">Order Now</a>';
-    echo '</div>';
+    echo '<a class="order-link" href="order.php?book=' . urlencode($b['BookID']) . '">Order Now</a>';    echo '</div>';
+}
+
+function nextId(PDO $pdo, string $table, string $column, string $prefix) {
+    $sql  = "SELECT COALESCE(MAX(CAST(SUBSTRING($column, 2) AS UNSIGNED)), 0) FROM $table";
+    $next = (int)$pdo->query($sql)->fetchColumn() + 1;
+    return $prefix . str_pad($next, 3, '0', STR_PAD_LEFT);
 }

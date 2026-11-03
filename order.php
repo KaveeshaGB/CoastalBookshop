@@ -3,7 +3,7 @@ $pageTitle = 'Book Order';
 require 'header.php';
 
 $books = $pdo->query('SELECT BookID, Title, Price, Category FROM Books ORDER BY Title')->fetchAll();
-$selected = (int)($_GET['book'] ?? 0);
+$selected = $_GET['book'] ?? '';
 
 $flashOk  = $_SESSION['order_success'] ?? null;
 $flashErr = $_SESSION['order_error'] ?? null;
@@ -20,7 +20,7 @@ unset($_SESSION['order_success'], $_SESSION['order_error']);
             <script>
                 // Book data from the database, used by script.js to filter the book list
                 window.BOOKS = <?= json_encode($books) ?>;
-                window.SELECTED_BOOK = <?= $selected ?>;
+                window.SELECTED_BOOK = <?= json_encode($selected) ?>;
                 window.DELIVERY_COSTS = <?= json_encode(DELIVERY_COSTS) ?>;
             </script>
 
@@ -34,6 +34,7 @@ unset($_SESSION['order_success'], $_SESSION['order_error']);
                     <option value="Fiction">Fiction</option>
                     <option value="Novel">Novel</option>
                     <option value="Short Story">Short Story</option>
+                    <option value="Kids Story">Kids Story</option>
                 </select>
                 <br>
 

@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const opt = document.createElement('option');
                 opt.value = b.BookID;
                 opt.textContent = b.Title + ' - Rs.' + Number(b.Price).toFixed(2);
-                if (Number(b.BookID) === window.SELECTED_BOOK) opt.selected = true;
+                if (b.BookID === window.SELECTED_BOOK) opt.selected = true;
                 nameSel.appendChild(opt);
             });
             updateTotal();
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // If opened from an "Order Now" link, start on that book's category
-        const pre = window.BOOKS.find(b => Number(b.BookID) === window.SELECTED_BOOK);
+        const pre = window.BOOKS.find(b => b.BookID === window.SELECTED_BOOK);
         if (pre) typeSel.value = pre.Category;
 
         typeSel.addEventListener('change', fillBooks);

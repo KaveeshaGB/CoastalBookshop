@@ -32,18 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$errors) {
         $pdo->beginTransaction();
         try {
-            $ins = $pdo->prepare('INSERT INTO Customer (Name, Email, Phone, Address, PasswordHash) VALUES (?,?,?,?,?)');
+            $id  = nextId($pdo, 'Customer', 'CustomerID', 'C');
+            $ins = $pdo->prepare('INSERT INTO Customer (CustomerID, Name, Email, Phone, Address, PasswordHash) VALUES (?,?,?,?,?,?)');
             $ins->execute([
-                $old['name'], $old['email'],
+                $id, $old['name'], $old['email'],
                 $old['phone'] ?: null, $old['address'] ?: null,
                 password_hash($password, PASSWORD_DEFAULT),
             ]);
-            $id = (int)$pdo->lastInsertId();
             if ($member) {
                 $pdo->prepare('INSERT INTO Member (CustomerID) VALUES (?)')->execute([$id]);
-            }
-            $pdo->commit();
-            $success = true;
+                $pdo->commit();   
+                $success = true;
+            }   
         } catch (Exception $ex) {
             $pdo->rollBack();
             $errors[] = 'Could not create the account. Please try again.';

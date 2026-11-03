@@ -11,7 +11,7 @@ $stmt = $conn->prepare(
    FROM member m
    JOIN customer c ON c.CustomerID = m.CustomerID
    WHERE m.CustomerID = ?');
-$stmt->bind_param('i', $customerId);
+$stmt->bind_param('s', $customerId);
 $stmt->execute();
 $member = $stmt->get_result()->fetch_assoc();
 
@@ -32,7 +32,7 @@ $stmt = $conn->prepare(
    JOIN event e ON e.EventID = me.EventID
    WHERE me.CustomerID = ?
    ORDER BY e.EventDate DESC');
-$stmt->bind_param('i', $customerId);
+$stmt->bind_param('s', $customerId);
 $stmt->execute();
 $events = $stmt->get_result();
 
@@ -43,7 +43,7 @@ $stmt = $conn->prepare(
    JOIN books b ON b.BookID = ob.BookID
    WHERE o.CustomerID = ?
    ORDER BY o.OrderDate DESC');
-$stmt->bind_param('i', $customerId);
+$stmt->bind_param('s', $customerId);
 $stmt->execute();
 $books = $stmt->get_result();
 ?>

@@ -162,7 +162,7 @@ main{
         url('images/library.jpg');
     background-size: cover;
     background-position: center;
-    min-height: 500px;
+    min-height: 550px;
     display: flex;
     flex-direction:column;
     justify-content: space-between;
@@ -207,14 +207,15 @@ h2{
     padding-left:20px;
 }
 .books{
-    margin: 15px;
-    padding: 20px;
+    margin: 10px;
+    padding: 10px;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    width: 30%;
-    height: 300px;
+    width: calc(20% - 30px);
+    height: auto;
     vertical-align: top;
+    text-align: center;
 }
 
 .books img{
@@ -226,6 +227,7 @@ h2{
 
 .books h4 {
     margin: 0.5rem 0 0.2rem;
+    min-height:2.6rem;
 }
 
 .books p {
@@ -233,6 +235,7 @@ h2{
 }
 
 .order-link{
+    font-family:'Times New Roman', Times, serif;
     text-decoration:none;
     color:white;
     background-color:rgba(77, 16, 0, 0.876);
@@ -360,10 +363,10 @@ input:disabled{
 }
 
 .btn{
+    font-family:'Times New Roman', Times, serif;
     margin:10px 20px;
     padding:8px 18px;
     font-size:18px;
-    font-weight:bold;
     color:white;
     background-color:rgba(77, 16, 0, 0.876);
     border:none;
@@ -381,6 +384,7 @@ input:disabled{
     font-weight:bold;
     background-color:rgb(156, 196, 183);
     border:2px solid rgb(0, 0, 44);
+    width:fit-content;
 }
 
 .error{
