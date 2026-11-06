@@ -10,6 +10,7 @@ $loggedIn = !empty($_SESSION['customer_id']);
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?= e($pageTitle ?? 'Coastal Bookshop') ?></title>
         <link rel="stylesheet" href="home_style.css">
+        <link rel="stylesheet" href="club.css">
         <script src="script.js" defer></script>
     </head>
     <body>
@@ -19,6 +20,7 @@ $loggedIn = !empty($_SESSION['customer_id']);
             <nav class="main-nav">
                 <a href="home.php">Home</a>
                 <a href="order.php">Order</a>
+                <a href="bookclub.php">Book Club</a>
             </nav>
             <nav class="sign-in main-nav">
                 <?php if ($loggedIn): ?>

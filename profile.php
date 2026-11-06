@@ -26,12 +26,13 @@ include 'header.php';
   <p><strong>Address:</strong> <?= htmlspecialchars($member['Address']) ?></p>
   <p><strong>Member since:</strong> <?= htmlspecialchars($member['JoinDate']) ?></p>
   <?php
+  
 $stmt = $conn->prepare(
-  'SELECT e.EventName, e.EventDate
+  'SELECT e.EventID, e.EventName, e.EventDate, e.EndTime, e.Status, me.LeftAt
    FROM member_event me
    JOIN event e ON e.EventID = me.EventID
    WHERE me.CustomerID = ?
-   ORDER BY e.EventDate DESC');
+   ORDER BY COALESCE(e.StartTime, e.EventDate) DESC');
 $stmt->bind_param('s', $customerId);
 $stmt->execute();
 $events = $stmt->get_result();

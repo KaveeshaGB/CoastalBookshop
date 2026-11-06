@@ -8,9 +8,18 @@ $stmt = $pdo->prepare('SELECT * FROM Books WHERE Category = ? ORDER BY Title');
 $stmt->execute([$category]);
 $books = $stmt->fetchAll();
 ?>
-            <h2><?= e($category) ?></h2>
-            <?php if (!$books): ?>
-                <p class="message">No books in this category yet.</p>
-            <?php endif; ?>
-            <?php foreach ($books as $b) renderBook($b); ?>
+
+<nav class="sub-nav">
+    <ul class="type-list">
+        <?php foreach ($categories as $name => $page): ?>
+            <li><a href="<?= $page ?>"><?= e($name) ?></a></li>
+        <?php endforeach; ?>
+    </ul>
+</nav>
+
+<h2><?= e($category) ?></h2>
+<?php if (!$books): ?>
+<p class="message">No books in this category yet.</p>
+<?php endif; ?>
+<?php foreach ($books as $b) renderBook($b); ?>
 <?php require 'footer.php'; ?>

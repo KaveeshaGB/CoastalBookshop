@@ -162,7 +162,7 @@ main{
         url('images/library.jpg');
     background-size: cover;
     background-position: center;
-    min-height: 550px;
+    min-height: 580px;
     display: flex;
     flex-direction:column;
     justify-content: space-between;
@@ -226,6 +226,7 @@ h2{
 }
 
 .books h4 {
+    font-family: 'Playfair Display', Georgia, serif;
     margin: 0.5rem 0 0.2rem;
     min-height:2.6rem;
 }
@@ -375,7 +376,7 @@ input:disabled{
 }
 
 .btn:hover{
-    background-color:rgba(106, 44, 29, 0.876);
+    background-color:rgba(119, 51, 34, 0.992);
 }
 
 .message{
