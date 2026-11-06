@@ -41,9 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
             if ($member) {
                 $pdo->prepare('INSERT INTO Member (CustomerID) VALUES (?)')->execute([$id]);
-                $pdo->commit();   
-                $success = true;
-            }   
+            }
+            $pdo->commit();
+            $success = true;  
         } catch (Exception $ex) {
             $pdo->rollBack();
             $errors[] = 'Could not create the account. Please try again.';

@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Image must be smaller than 2 MB.';
         } else {
             $newName = uniqid('book_') . '.' . $ext;
-            if (move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/images/' . $newName)) {
+            if (move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/images/covers/' . $newName)) {
                 $book['ImageFile'] = $newName;
             } else {
                 $errors[] = 'Could not save the image.';
@@ -108,7 +108,7 @@ require 'header.php';
                 <?php if ($book['ImageFile']): ?>
                     <br>
                     <label class="form-label">Current image:</label>
-                    <img src="images/<?= e($book['ImageFile']) ?>" alt="" width="60">
+                    <img src="images/covers/<?= e($book['ImageFile']) ?>" alt="" width="60">
                 <?php endif; ?>
                 <br><br>
 

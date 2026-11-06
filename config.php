@@ -1,6 +1,7 @@
 <?php
 // Shared setup: session + database connection + small helpers.
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
+date_default_timezone_set('Asia/Colombo');
 
 $pdo = new PDO(
     'mysql:host=localhost;dbname=coastal_bookshop;charset=utf8mb4',
@@ -9,6 +10,7 @@ $pdo = new PDO(
     [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::MYSQL_ATTR_INIT_COMMAND => "SET time_zone = '+05:30'",
     ]
 );
 
@@ -16,6 +18,12 @@ $pdo = new PDO(
 function e($value) {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
 }
+$categories = [
+    'Fiction'     => 'fiction.php',
+    'Novel'       => 'novel.php',
+    'Short Story' => 'short_story.php',
+    'Kids Story'  => 'kids_story.php',
+];
 
 // Delivery costs (match the table on the Order page)
 const DELIVERY_COSTS = [
@@ -26,7 +34,7 @@ const DELIVERY_COSTS = [
 
 // Shows one book card (used by home + category pages)
 function renderBook(array $b) {
-    $img = $b['ImageFile'] ? 'images/' . $b['ImageFile'] : 'images/logo.jpg';
+    $img = $b['ImageFile'] ? 'images/covers/' . $b['ImageFile'] : 'images/logo.jpg';
     echo '<div class="books">';
     echo '<img src="' . e($img) . '" alt="' . e($b['Title']) . '">';
     echo '<h4>' . e($b['Title']) . '</h4>';

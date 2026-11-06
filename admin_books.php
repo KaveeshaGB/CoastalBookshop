@@ -47,7 +47,7 @@ require 'header.php';
                     <td><?= e($b['BookID']) ?></td>
                     <td>
                         <?php if ($b['ImageFile']): ?>
-                            <img src="images/<?= e($b['ImageFile']) ?>" alt="" width="40">
+                            <img src="images/covers/<?= e($b['ImageFile']) ?>" alt="" width="40">
                         <?php endif; ?>
                     </td>
                     <td><?= e($b['Title']) ?></td>
