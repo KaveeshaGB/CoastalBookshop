@@ -1,6 +1,6 @@
 <?php
 // Shared helpers for the Book Club (sessions, messages, likes).
-require_once 'config.php';
+require_once __DIR__.'/config.php';
 
 // A member is a customer who has a row in the Member table.
 function isMember(PDO $pdo, $customerId): bool {

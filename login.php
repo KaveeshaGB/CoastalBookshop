@@ -1,6 +1,6 @@
 <?php
 // Called by the log-in pop-up with fetch(); replies with JSON.
-require 'config.php';
+require __DIR__ . '/includes/config.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

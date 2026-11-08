@@ -1,6 +1,6 @@
 <?php
 // Returns only the message list (no page around it). club.js uses it to refresh the messages.
-require 'member_check.php';   // members only ($me = the member's ID)
+require __DIR__.'/includes/member_check.php';   // members only ($me = the member's ID)
 
 $ev = getSession($pdo, $_GET['id'] ?? '');
 if (!$ev) {

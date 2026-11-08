@@ -1,5 +1,5 @@
 <?php
 $category = 'Kids Story';
-require 'book_category.php';
+require __DIR__ . '/includes/book_category.php';
 ?>
 

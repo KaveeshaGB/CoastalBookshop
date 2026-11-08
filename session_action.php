@@ -1,7 +1,7 @@
 <?php
 // Called by club.js with fetch(); replies with JSON.
 // Actions: join, leave, end, post, edit, like
-require_once 'club_functions.php';
+require_once __DIR__ .'/includes/club_functions.php';
 header('Content-Type: application/json');
 
 function reply(bool $ok, string $message = ''): void {
