@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Register - Coastal Bookshop';
-require 'config.php';
+require __DIR__ . '/includes/config.php';
 
 $errors = [];
 $old = ['name' => '', 'email' => '', 'phone' => '', 'address' => ''];
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-require 'header.php';
+require __DIR__.'/includes/header.php';
 ?>
             <h2>Sign-in (Register)</h2>
 
@@ -87,4 +87,4 @@ require 'header.php';
                     <button type="submit" class="btn">Register</button>
                 </form>
             <?php endif; ?>
-<?php require 'footer.php'; ?>
+<?php require __DIR__.'/includes/footer.php'; ?>

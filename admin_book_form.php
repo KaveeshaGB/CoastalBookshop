@@ -1,5 +1,5 @@
 <?php
-require 'admin_check.php';
+require __DIR__ . '/includes/admin_check.php';
 
 $categories = ['Fiction', 'Novel', 'Short Story', 'Kids Story'];
 
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $pageTitle = ($id ? 'Edit Book' : 'Add Book') . ' - Coastal Bookshop';
-require 'header.php';
+require __DIR__.'/includes/header.php';
 ?>
             <h2><?= $id ? 'Edit Book' : 'Add New Book' ?></h2>
 
@@ -115,4 +115,4 @@ require 'header.php';
                 <button type="submit" class="btn"><?= $id ? 'Save Changes' : 'Add Book' ?></button>
                 <a class="order-link" href="admin_books.php">Cancel</a>
             </form>
-<?php require 'footer.php'; ?>
+<?php require __DIR__.'/includes/footer.php'; ?>

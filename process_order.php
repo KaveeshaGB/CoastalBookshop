@@ -1,6 +1,6 @@
 <?php
 // Receives the order form and saves it to Orders, Order_Books, PaymentMethod, Parcel/Gift.
-require 'config.php';
+require __DIR__ . '/includes/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SESSION['customer_id'])) {
     header('Location: order.php');

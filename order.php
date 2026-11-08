@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Book Order';
-require 'header.php';
+require __DIR__.'/includes/header.php';
 
 $books = $pdo->query('SELECT BookID, Title, Price, Category FROM Books ORDER BY Title')->fetchAll();
 $selected = $_GET['book'] ?? '';
@@ -130,4 +130,4 @@ unset($_SESSION['order_success'], $_SESSION['order_error']);
                     <td>Rs.800.00</td>
                 </tr>
             </table>
-<?php require 'footer.php'; ?>
+<?php require __DIR__.'/includes/footer.php'; ?>

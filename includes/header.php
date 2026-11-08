@@ -1,6 +1,6 @@
 <?php
 // Usage: set $pageTitle before including this file.
-require_once 'config.php';
+require_once __DIR__.'/config.php';
 $loggedIn = !empty($_SESSION['customer_id']);
 ?>
 <!DOCTYPE html>
@@ -9,9 +9,9 @@ $loggedIn = !empty($_SESSION['customer_id']);
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?= e($pageTitle ?? 'Coastal Bookshop') ?></title>
-        <link rel="stylesheet" href="home_style.css">
-        <link rel="stylesheet" href="club.css">
-        <script src="script.js" defer></script>
+        <link rel="stylesheet" href="css/home_style.css">
+        <link rel="stylesheet" href="css/club.css">
+        <script src="js/script.js" defer></script>
     </head>
     <body>
         <header>

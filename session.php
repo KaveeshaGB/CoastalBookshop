@@ -1,5 +1,5 @@
 <?php
-require 'member_check.php';   // members only ($me = the member's ID)
+require __DIR__.'/includes/member_check.php';   // members only ($me = the member's ID)
 
 $ev = getSession($pdo, $_GET['id'] ?? '');
 if (!$ev) {
@@ -20,7 +20,7 @@ $msg = $_SESSION['club_msg'] ?? null;
 unset($_SESSION['club_msg']);
 
 $pageTitle = $ev['EventName'] . ' - Coastal Bookshop';
-require 'header.php';
+require __DIR__.'/includes/header.php';
 ?>
             <div class="club-page" id="session-room" data-event="<?= e($ev['EventID']) ?>" data-state="<?= e($state) ?>">
                 <p><a class="order-link" href="bookclub.php">Back to all sessions</a></p>
@@ -70,5 +70,5 @@ require 'header.php';
                     </form>
                 <?php endif; ?>
             </div>
-            <script src="club.js" defer></script>
-<?php require 'footer.php'; ?>
+            <script src="js/club.js" defer></script>
+<?php require __DIR__.'/includes/footer.php'; ?>

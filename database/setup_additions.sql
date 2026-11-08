@@ -1,4 +1,3 @@
--- Run this AFTER coastal_bookshop.sql
 USE coastal_bookshop;
 
 INSERT INTO Books (BookID, Title, Author, Price, Category, ImageFile) VALUES

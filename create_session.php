@@ -1,5 +1,5 @@
 <?php
-require 'member_check.php';   // only members can start a session ($me = the member's ID)
+require __DIR__.'/includes/member_check.php';   // only members can start a session ($me = the member's ID)
 
 $errors = [];
 // A new form starts with "now" and one hour later
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $pageTitle = 'Start a Session - Coastal Bookshop';
-require 'header.php';
+require __DIR__.'/includes/header.php';
 ?>
             <h2>Start a Session</h2>
 
@@ -105,4 +105,4 @@ require 'header.php';
                 <button type="submit" class="btn">Start Session</button>
                 <a class="order-link" href="bookclub.php">Cancel</a>
             </form>
-<?php require 'footer.php'; ?>
+<?php require __DIR__.'/includes/footer.php'; ?>

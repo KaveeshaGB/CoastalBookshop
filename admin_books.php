@@ -1,5 +1,5 @@
 <?php
-require 'admin_check.php';
+require __DIR__ .'/includes/admin_check.php';
 $pageTitle = 'Manage Books - Coastal Bookshop';
 
 $msg = $_SESSION['admin_msg'] ?? null;
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
 
 // READ
 $books = $pdo->query('SELECT * FROM Books ORDER BY CAST(SUBSTRING(BookID, 2) AS UNSIGNED)')->fetchAll();
-require 'header.php';
+require __DIR__.'/includes/header.php';
 ?>
             <h2>Manage Books</h2>
 
@@ -66,4 +66,4 @@ require 'header.php';
                 </tr>
                 <?php endforeach; ?>
             </table>
-<?php require 'footer.php'; ?>
+<?php require __DIR__.'/includes/footer.php'; ?>

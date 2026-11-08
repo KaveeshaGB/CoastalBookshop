@@ -1,5 +1,3 @@
--- Book club (sessions, messages, likes)
--- Run this ONCE, AFTER coastal_bookshop.sql (and setup_additions.sql).
 USE coastal_bookshop;
 
 -- ---------------------------------------------------------

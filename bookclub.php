@@ -1,5 +1,5 @@
 <?php
-require_once 'club_functions.php';
+require_once __DIR__.'/includes/club_functions.php';
 $pageTitle = 'Book Club - Coastal Bookshop';
 
 $me       = $_SESSION['customer_id'] ?? null;
@@ -26,7 +26,7 @@ foreach ($sessions as $s) {
 }
 $titles = ['live' => 'Happening now', 'upcoming' => 'Coming up', 'ended' => 'Past sessions'];
 
-require 'header.php';
+require __DIR__.'/includes/header.php';
 ?>
             <div class="club-page">
                 <h2>Book Club</h2>
@@ -68,4 +68,4 @@ require 'header.php';
                     <?php endif; ?>
                 <?php endforeach; ?>
             </div>
-<?php require 'footer.php'; ?>
+<?php require __DIR__.'/includes/footer.php'; ?>

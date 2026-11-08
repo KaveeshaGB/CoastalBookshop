@@ -15,7 +15,7 @@ $stmt->bind_param('s', $customerId);
 $stmt->execute();
 $member = $stmt->get_result()->fetch_assoc();
 
-include 'header.php';
+require __DIR__.'/includes/header.php';
 ?>
 
 <main class="profile-page">

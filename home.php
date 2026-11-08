@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Coastal Bookshop';
-require 'header.php';
+require __DIR__.'/includes/header.php';
 
 $categories = ['Fiction' => 'fiction.php', 'Novel' => 'novel.php', 'Short Story' => 'short_story.php', 'Kids Story' => 'kids_story.php'];
 
@@ -47,4 +47,4 @@ if ($newBooks) {
             ?>
             <?php foreach ($books as $b) renderBook($b); ?>
             <?php endforeach; ?>
-<?php require 'footer.php'; ?>
+<?php require __DIR__.'/includes/footer.php'; ?>
