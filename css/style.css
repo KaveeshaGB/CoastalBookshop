@@ -365,3 +365,108 @@ footer{
         width:100%;
     }
 }
+
+/* ---------- Order form styling ---------- */
+/* Paste at the BOTTOM of your main stylesheet so it overrides earlier rules. */
+
+#order-form {
+    max-width: 760px;
+}
+
+/* Labels: fixed width so every box lines up */
+#order-form .form-label {
+    display: inline-block;
+    width: 150px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+/* Text boxes, number box, phone box and dropdowns */
+#order-form input[type="text"],
+#order-form input[type="tel"],
+#order-form input[type="number"],
+#order-form select {
+    box-sizing: border-box;
+    width: calc(100% - 160px);
+    max-width: 420px;
+    margin: 6px 0;
+    padding: 9px 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #12303a;
+    background: #f4fafb;
+    border: 2px solid #1d3a44;
+    border-radius: 8px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Quantity box and dropdown arrows */
+#order-form #quantity {
+    width: 100px;
+}
+
+#order-form select {
+    cursor: pointer;
+}
+
+/* Highlight the box being typed in */
+#order-form input:focus,
+#order-form select:focus {
+    outline: none;
+    border-color: #0b5c73;
+    box-shadow: 0 0 0 3px rgba(11, 92, 115, 0.3);
+}
+
+/* Disabled "Full Name" box */
+#order-form input:disabled {
+    background: #c9dfd8;
+    color: #35505a;
+    cursor: not-allowed;
+}
+
+/* Placeholder / empty required boxes */
+#order-form input::placeholder {
+    color: #7b9299;
+}
+
+/* Place Order button */
+#order-form .btn {
+    margin-top: 14px;
+    padding: 11px 28px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background: #1d3a44;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+#order-form .btn:hover {
+    background: #0b5c73;
+}
+
+#order-form .btn:active {
+    transform: translateY(1px);
+}
+
+/* Phones: stack label above box */
+@media (max-width: 600px) {
+    #order-form .form-label {
+        display: block;
+        width: 100%;
+    }
+
+    #order-form input[type="text"],
+    #order-form input[type="tel"],
+    #order-form input[type="number"],
+    #order-form select {
+        width: 100%;
+        max-width: none;
+    }
+
+    #order-form #quantity {
+        width: 100px;
+    }
+}

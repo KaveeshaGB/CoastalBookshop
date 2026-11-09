@@ -31,6 +31,15 @@ if ($address === '')                                    fail('Delivery address i
 $recipient = trim($_POST['recipient_name'] ?? '');
 if ($type === 'Gift' && $recipient === '')              fail('Recipient name is required for a gift.');
 
+// The session can outlive the database row (e.g. after re-importing the database).
+// Make sure this customer really exists, otherwise the Orders foreign key fails.
+$chk = $pdo->prepare('SELECT 1 FROM Customer WHERE CustomerID = ?');
+$chk->execute([$_SESSION['customer_id']]);
+if (!$chk->fetch()) {
+    unset($_SESSION['customer_id'], $_SESSION['customer_name'], $_SESSION['is_admin']);
+    fail('Your account was not found. Please register again or log in with an existing account.');
+}
+
 $stmt = $pdo->prepare('SELECT BookID, Price FROM Books WHERE BookID = ?');
 $stmt->execute([$bookId]);
 $book = $stmt->fetch();
@@ -65,8 +74,11 @@ try {
     }
 
     $pdo->commit();
-} catch (Exception $ex) {
-    $pdo->rollBack();
+} catch (Throwable $ex) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    error_log('Order save failed: ' . $ex->getMessage());
     fail('Sorry, the order could not be saved. Please try again.');
 }
 
