@@ -146,6 +146,17 @@ CREATE TABLE Member_Event (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- Customer likes Books
+CREATE TABLE IF NOT EXISTS BookLike (
+  CustomerID VARCHAR(10),
+  BookID     VARCHAR(10),
+  LikedAt    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (CustomerID, BookID),
+  FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (BookID) REFERENCES Books(BookID)
+    ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB;
 -- ---------------------------------------------------------
 -- Derived attributes (calculated, not stored)
 -- ---------------------------------------------------------

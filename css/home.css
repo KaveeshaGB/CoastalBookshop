@@ -1,0 +1,185 @@
+/* =========================================================
+   home.css - home page and book category pages
+   (load after style.css)
+   ========================================================= */
+
+
+/* ---------- Hero banner ---------- */
+
+.background-section{
+    background-image:
+        linear-gradient(rgba(74, 74, 74, 0.8), rgba(32, 32, 32, 0.7)),
+        url('../images/library.jpg');
+    background-size:cover;
+    background-position:center;
+    min-height:570px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    animation:slowZoom 12s ease-in-out infinite alternate;
+    overflow:hidden;
+    box-shadow:0 6px 12px rgba(0, 0, 0, 0.3);
+
+}
+
+.background-section p{
+    color:white;
+    text-align:center;
+    font-size:3rem;
+    line-height:1.6;
+    margin:auto 0;
+}
+
+@keyframes slowZoom{
+    from{
+        background-size:100%;
+    }
+    to{
+        background-size:115%;
+    }
+}
+
+
+/* ---------- Category links ---------- */
+
+.type-list{
+    padding-left:20px;
+    margin:10px 0;
+    list-style:none;
+    display:flex;
+    gap:0.5rem;
+}
+
+.type-list a{
+    padding:0.3rem;
+    margin:8px;
+    color:black;
+    font-size:20px;
+    font-weight:bold;
+    background-color:rgb(40, 93, 167);
+    border:1px solid rgb(4, 4, 43);
+    text-decoration:none;
+}
+
+.type-list a:hover{
+    background-color:rgb(99, 99, 187);
+}
+
+
+/* ---------- Book cards ---------- */
+
+.books{
+    margin:10px;
+    padding:10px;
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    width:calc(20% - 30px);
+    height:auto;
+    vertical-align:top;
+    text-align:center;
+}
+
+.books>img{
+    width:150px;
+    height:200px;
+    object-fit:cover;
+    border:1px solid rgb(24, 56, 78);
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+.books>img:hover{
+    transform:translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+.books>img:active{
+    transform:translateY(0);
+}
+
+.books h4{
+    font-family:'Playfair Display', Georgia, serif;
+    margin:0.5rem 0 0.2rem;
+    min-height:2.6rem;
+}
+
+.books p{
+    margin:0 0 0.75rem;
+}
+
+.book-actions{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:14px;
+    margin:0.5rem 0;
+}
+
+.heart-btn,
+.cart-btn{
+    width:42px;
+    height:42px;
+    padding:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color:white;
+    border:1px solid rgb(24, 56, 78);
+    border-radius:50%;
+    overflow:hidden;
+    cursor:pointer;
+    box-shadow:0 3px 6px rgba(0, 0, 0, 0.25);
+    transition:transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.heart-btn:hover,
+.cart-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.heart-btn:active,
+.cart-btn:active{
+    transform:translateY(0);
+}
+
+.heart-btn{
+    font-size:25px;
+    line-height:1;
+    color:white;
+    -webkit-text-stroke:1px black;
+}
+
+.heart-btn.liked{
+    color:#c0392b;
+}
+
+.cart-btn img{
+    display:block;
+    width:24px;
+    height:24px;
+    object-fit:contain;
+    border:none;
+}
+
+.cart-btn.added{
+    background-color:rgb(156, 196, 183);
+}
+.order-link{
+    font-family:'Times New Roman', Times, serif;
+    text-decoration:none;
+    color:white;
+    background-color:rgba(77, 16, 0, 0.876);
+    padding:10px;
+}
+
+.order-link:hover{
+    background-color:rgba(106, 44, 29, 0.876);
+}
+
+
+/* ---------- Responsive (max-width: 600px) ---------- */
+
+@media(max-width: 600px){
+    .books{
+        width:100%;
+    }
+}

@@ -18,6 +18,7 @@ $user = $stmt->fetch();
 if ($user && $user['PasswordHash'] !== '' && password_verify($password, $user['PasswordHash'])) {
     session_regenerate_id(true);
     $_SESSION['customer_id']   = $user['CustomerID'];
+    mergeGuestLikes($pdo);
     $_SESSION['customer_name'] = $user['Name'];
     $_SESSION['customer_name'] = $user['Name'];
     $_SESSION['is_admin']      = (int)$user['IsAdmin'];
