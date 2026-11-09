@@ -11,5 +11,6 @@
         <footer>
             <p>&copy; 2026 Coastal Bookshop</p>
         </footer>
+        <script src="js/book-actions.js"></script>
     </body>
 </html>

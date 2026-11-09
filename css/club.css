@@ -125,6 +125,30 @@
     color:white;
     background-color:rgba(77, 16, 0, 0.876);
 }
+.mini-btn.like-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+}
+
+.like-heart{
+    font-size:25px;
+    line-height:1;
+    color:white;
+    -webkit-text-stroke:1px black;
+}
+
+.mini-btn.like-btn.liked{
+    color:black;
+    background-color:white;
+}
+
+.mini-btn.like-btn.liked .like-heart{
+    color:#c0392b;
+}
+.msg-tools[hidden]{
+    display:none;
+}
 
 .edit-box textarea,
 #compose-form textarea{

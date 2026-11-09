@@ -1,0 +1,367 @@
+/* =========================================================
+   style.css - shared styles, loaded on every page
+   ========================================================= */
+
+
+/* ---------- Base ---------- */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background-color:rgba(96, 142, 151, 0.806);
+    color:black;
+    font-family:'Times New Roman', Times, serif;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+}
+
+main{
+    flex:1;
+}
+
+h2{
+    padding-left:20px;
+}
+
+a.plain{
+    color:black;
+    text-decoration:none;
+}
+
+
+/* ---------- Header and main navigation ---------- */
+
+header{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.6rem;
+    align-items:center;
+    background-color:rgb(94, 125, 169);
+}
+
+#logo{
+    width:70px;
+    height:70px;
+    padding:10px;
+    border-radius:50px;
+}
+
+#heading{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size:60px;
+}
+
+.main-nav{
+    padding:20px;
+    margin-left:60px;
+}
+
+.main-nav a{
+    color:black;
+    font-weight:bold;
+    font-size:1.5rem;
+    background-color:rgb(81, 92, 154);
+    border:1px solid rgb(0, 0, 34);
+    padding:3px;
+    margin-right:4px;
+    text-decoration:none;
+    text-align:center;
+}
+
+.main-nav a:hover{
+    background-color:rgb(98, 160, 160);
+}
+
+
+/* ---------- Sign-in area and icon links ---------- */
+
+.sign-in{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding-right:30px;
+    margin-left:auto;
+}
+
+.welcome{
+    font-weight:bold;
+    font-size:1.2rem;
+    margin-right:8px;
+}
+
+.main-nav a.icon-link{
+    padding:0;
+    margin-right:0;
+    border:none;
+    border-radius:50%;
+    background:none;
+    box-shadow:none;
+}
+
+.main-nav a.icon-link:hover{
+    background:none;
+    box-shadow:none;
+}
+
+.icon-link img{
+    display:block;
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    object-fit:cover;
+    object-position:center top;
+    background-color:white;
+    border:2px solid white;
+    box-shadow:0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+/* ---------- Profile dropdown ---------- */
+
+.profile-menu{
+    position:relative;
+}
+
+.profile-menu button{
+    background:none;
+    border:none;
+    padding:0;
+    cursor:pointer;
+}
+
+.profile-dropdown{
+    display:none;
+    position:absolute;
+    top:calc(100% + 10px);
+    right:0;
+    min-width:170px;
+    margin:0;
+    padding:6px 0;
+    list-style:none;
+    background-color:white;
+    border-radius:10px;
+    box-shadow:0 8px 20px rgba(0, 0, 0, 0.3);
+    z-index:50;
+}
+
+.profile-dropdown.open{
+    display:block;
+}
+
+.main-nav .profile-dropdown a{
+    display:block;
+    padding:10px 18px;
+    margin:0;
+    color:black;
+    font-size:1.1rem;
+    text-align:left;
+    background:none;
+    border:none;
+    border-radius:0;
+    box-shadow:none;
+}
+
+.main-nav .profile-dropdown a:hover{
+    background-color:rgb(230, 238, 245);
+    transform:none;
+    box-shadow:none;
+}
+
+
+/* ---------- Buttons and link effects ---------- */
+
+.btn{
+    font-family:'Times New Roman', Times, serif;
+    margin:10px 20px;
+    padding:8px 18px;
+    font-size:18px;
+    color:white;
+    background-color:rgba(77, 16, 0, 0.876);
+    border:none;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background-color:rgba(119, 51, 34, 0.992);
+}
+
+.main-nav a,
+.type-list a,
+.order-link,
+.btn{
+    display:inline-block;
+    border-radius:10px;
+    box-shadow:0 4px 8px rgba(0, 0, 0, 0.25);
+    transition:transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.main-nav a:hover,
+.type-list a:hover,
+.order-link:hover,
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.main-nav a:active,
+.type-list a:active,
+.order-link:active,
+.btn:active{
+    transform:translateY(0);
+    box-shadow:0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+/* ---------- Forms ---------- */
+
+.form-label{
+    font-size:18px;
+    display:inline-block;
+    padding:5px;
+    width:140px;
+    margin-left:5px;
+}
+
+input{
+    width:50%;
+    margin-left:20px;
+}
+
+input[type="checkbox"]{
+    width:auto;
+}
+
+input[type="number"]{
+    width:100px;
+}
+
+input:disabled{
+    background-color:rgb(156, 196, 183);
+    color:black;
+}
+
+select{
+    margin-left:20px;
+}
+
+
+/* ---------- Tables ---------- */
+
+table{
+    border-collapse:collapse;
+    margin:5px 10px 5px;
+    font-size:20px;
+}
+
+th,
+td{
+    border:2px solid rgb(0, 0, 44);
+    padding:5px;
+    background-color:rgb(156, 196, 183);
+}
+
+
+/* ---------- Messages and pop-up (modal) ---------- */
+
+.message{
+    margin:10px 20px;
+    padding:8px;
+    font-weight:bold;
+    background-color:rgb(156, 196, 183);
+    border:2px solid rgb(0, 0, 44);
+    width:fit-content;
+}
+
+.error{
+    margin:10px 20px;
+    padding:8px;
+    font-weight:bold;
+    color:white;
+    background-color:rgba(77, 16, 0, 0.876);
+    border-radius:4px;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background-color:rgba(0, 0, 0, 0.6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:100;
+}
+
+.modal[hidden]{
+    display:none;
+}
+
+.modal-box{
+    position:relative;
+    background-color:rgb(156, 196, 183);
+    border:2px solid rgb(0, 0, 44);
+    border-radius:6px;
+    padding:20px;
+    width:min(480px, 92%);
+}
+
+.modal-close{
+    position:absolute;
+    top:6px;
+    right:10px;
+    font-size:28px;
+    background:none;
+    border:none;
+    cursor:pointer;
+}
+
+
+/* ---------- Footer ---------- */
+
+footer{
+    background-color:rgb(53, 53, 155);
+    font-size:18px;
+    padding:6px;
+    margin-bottom:0;
+    text-align:center;
+    color:aliceblue;
+}
+
+.contact{
+    font-weight:bold;
+    padding:5px;
+    margin-left:10px;
+}
+
+
+/* ---------- Responsive (max-width: 600px) ---------- */
+
+@media(max-width: 600px){
+    #heading{
+        font-size:1.5rem;
+    }
+
+    .sign-in{
+        margin-left:0;
+    }
+
+    .form-label{
+        display:block;
+        width:100%;
+        margin-left:0;
+    }
+
+    input,
+    select{
+        width:100%;
+        margin-left:0;
+        margin-top:0.3rem;
+    }
+
+    input[type="number"]{
+        width:100%;
+    }
+}

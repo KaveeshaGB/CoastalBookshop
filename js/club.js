@@ -75,12 +75,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ---------- Like and edit (buttons inside the message list) ----------
+        // ---------- Like and edit (buttons inside the message list) ----------
     list.addEventListener('click', async function (e) {
         const msg = e.target.closest('.msg');
         if (!msg) return;
         const target = e.target;
 
-        if (target.classList.contains('like-btn')) {
+        if (target.closest('.like-btn')) {
             showError('');
             const data = new FormData();
             data.append('action', 'like');
@@ -89,7 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (result.ok) { refresh(); } else { showError(result.message); }
         }
 
-        if (target.classList.contains('edit-btn')) {
+        if (target.closest('.edit-btn')) {
+            if (msg.querySelector('.edit-box')) return;
             editing = true;
             const body = msg.querySelector('.msg-body');
             const tools = msg.querySelector('.msg-tools');

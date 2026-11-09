@@ -2,18 +2,9 @@
 $pageTitle = 'Coastal Bookshop';
 require __DIR__.'/includes/header.php';
 
-$categories = ['Fiction' => 'fiction.php', 'Novel' => 'novel.php', 'Short Story' => 'short_story.php', 'Kids Story' => 'kids_story.php'];
-
-$newBooks = $pdo->query('SELECT * FROM Books ORDER BY DateAdded DESC, BookID DESC LIMIT 5')->fetchAll();
-
-$suggested = [];
-if ($newBooks) {
-    $newIds = array_column($newBooks, 'BookID');
-    $marks  = implode(',', array_fill(0, count($newIds), '?'));
-    $statement = $pdo->prepare("SELECT * FROM Books WHERE BookID NOT IN ($marks) ORDER BY RAND() LIMIT 3");
-    $statement->execute($newIds);
-    $suggested = $statement->fetchAll();
-}
+$likedIds  = getLikedIds($pdo);
+$suggested = getSuggestedBooks($pdo, $likedIds);
+$newBooks  = $pdo->query('SELECT * FROM Books ORDER BY DateAdded DESC, BookID DESC LIMIT 5')->fetchAll();
 ?>
             <div class="background-section">
                 <p><em> a place for every book...</em></p>
@@ -35,16 +26,7 @@ if ($newBooks) {
             <?php endif; ?>
 
             <?php if ($suggested): ?>
-                <h2>You May Also Like</h2>
+                <h2>Suggestions</h2>
                 <?php foreach ($suggested as $b) renderBook($b); ?>
             <?php endif; ?>
-
-            <h2>Browse Books</h2>
-            <?php foreach ($categories as $name => $page):
-                $statement = $pdo->prepare('SELECT * FROM Books WHERE Category = ? ORDER BY BookID LIMIT 3');
-                $statement->execute([$name]);
-                $books = $statement->fetchAll();
-            ?>
-            <?php foreach ($books as $b) renderBook($b); ?>
-            <?php endforeach; ?>
 <?php require __DIR__.'/includes/footer.php'; ?>

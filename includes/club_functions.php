@@ -104,8 +104,9 @@ function renderMessages(PDO $pdo, array $ev, string $me): void {
         echo '<p class="msg-body">' . nl2br(e($m['Body'])) . '</p>';
         echo '<div class="msg-tools">';
         echo '<button type="button" class="mini-btn like-btn' . ($m['LikedByMe'] ? ' liked' : '') . '"'
-           . ($canAct ? '' : ' disabled') . '>'
-           . ($m['LikedByMe'] ? 'Liked' : 'Like') . ' (' . (int)$m['Likes'] . ')</button>';
+           . ($canAct ? '' : ' disabled') . ' aria-label="Like this message">'
+           . '<span class="like-heart">&#9829;</span> '
+           . '<span class="like-count">' . (int)$m['Likes'] . '</span></button>';
         if ($mine && $canAct) {
             echo '<button type="button" class="mini-btn edit-btn">Edit</button>';
         }

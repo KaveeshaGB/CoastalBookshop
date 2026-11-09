@@ -9,7 +9,8 @@ $loggedIn = !empty($_SESSION['customer_id']);
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?= e($pageTitle ?? 'Coastal Bookshop') ?></title>
-        <link rel="stylesheet" href="css/home_style.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/home.css">
         <link rel="stylesheet" href="css/club.css">
         <script src="js/script.js" defer></script>
     </head>

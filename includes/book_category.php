@@ -3,6 +3,7 @@
 // The page sets $category (e.g. 'Fiction') then includes this file.
 $pageTitle = $category . ' Books - Coastal Bookshop';
 require __DIR__.'/header.php';
+$likedIds = getLikedIds($pdo);
 
 $stmt = $pdo->prepare('SELECT * FROM Books WHERE Category = ? ORDER BY Title');
 $stmt->execute([$category]);

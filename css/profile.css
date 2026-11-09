@@ -1,0 +1,28 @@
+/* =========================================================
+   profile.css - member profile page
+   (load after style.css)
+   ========================================================= */
+
+
+/* ---------- Layout ---------- */
+
+.profile-page{
+    max-width:800px;
+    margin:20px auto;
+    padding:0 16px;
+}
+
+
+/* ---------- Details, events and orders tables ---------- */
+
+.profile-page table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.profile-page th,
+.profile-page td{
+    border:1px solid #333;
+    padding:8px;
+    text-align:left;
+}
