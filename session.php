@@ -23,7 +23,7 @@ $pageTitle = $ev['EventName'] . ' - Coastal Bookshop';
 require __DIR__.'/includes/header.php';
 ?>
             <div class="club-page" id="session-room" data-event="<?= e($ev['EventID']) ?>" data-state="<?= e($state) ?>">
-                <p><a class="order-link" href="bookclub.php">Back to all sessions</a></p>
+                <p><a class="order-link" href="bookclub.php#sessions">Back to all sessions</a></p>
 
                 <h2><?= e($ev['EventName']) ?> <?= sessionBadge($state) ?></h2>
 

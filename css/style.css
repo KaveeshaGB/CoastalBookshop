@@ -1,17 +1,10 @@
-/* =========================================================
-   style.css - shared styles, loaded on every page
-   ========================================================= */
-
-
-/* ---------- Base ---------- */
-
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    background-color:rgba(96, 142, 151, 0.806);
+    background-color:rgb(32 63 21 / 50%);
     color:black;
     font-family:'Times New Roman', Times, serif;
     display:flex;
@@ -40,7 +33,8 @@ header{
     flex-wrap:wrap;
     gap:0.6rem;
     align-items:center;
-    background-color:rgb(94, 125, 169);
+    background-color: #1e423f;
+    background: linear-gradient(to bottom, #2c6762ec, #1e423f);
 }
 
 #logo{
@@ -53,6 +47,7 @@ header{
 #heading{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size:60px;
+    color:#f6f2ea;
 }
 
 .main-nav{
@@ -64,8 +59,8 @@ header{
     color:black;
     font-weight:bold;
     font-size:1.5rem;
-    background-color:rgb(81, 92, 154);
-    border:1px solid rgb(0, 0, 34);
+    background-color:rgb(164 116 71 / 94%);
+    border:1px solid rgb(165 165 137);
     padding:3px;
     margin-right:4px;
     text-decoration:none;
@@ -73,7 +68,7 @@ header{
 }
 
 .main-nav a:hover{
-    background-color:rgb(98, 160, 160);
+    background-color:rgb(207 173 114);
 }
 
 
