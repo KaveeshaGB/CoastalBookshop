@@ -8,7 +8,7 @@
 
 .background-section{
     background-image:
-        linear-gradient(rgba(74, 74, 74, 0.8), rgba(32, 32, 32, 0.7)),
+        linear-gradient(rgba(48, 48, 48, 0.8), rgba(32, 32, 32, 0.7)),
         url('../images/library.jpg');
     background-size:cover;
     background-position:center;
@@ -25,7 +25,7 @@
 .background-section p{
     color:white;
     text-align:center;
-    font-size:3rem;
+    font-size:3.5rem;
     line-height:1.6;
     margin:auto 0;
 }
@@ -56,13 +56,13 @@
     color:black;
     font-size:20px;
     font-weight:bold;
-    background-color:rgb(40, 93, 167);
-    border:1px solid rgb(4, 4, 43);
+    background-color:rgb(182 120 62 / 94%);
+    border:1px solid rgb(165 165 137);
     text-decoration:none;
 }
 
 .type-list a:hover{
-    background-color:rgb(99, 99, 187);
+    background-color:rgb(207 173 114);
 }
 
 
@@ -167,8 +167,9 @@
     font-family:'Times New Roman', Times, serif;
     text-decoration:none;
     color:white;
-    background-color:rgba(77, 16, 0, 0.876);
+    background-color:#4f1704e0;
     padding:10px;
+    margin-top:15px;
 }
 
 .order-link:hover{
