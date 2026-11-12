@@ -1,28 +1,246 @@
 /* =========================================================
-   profile.css - member profile page
-   (load after style.css)
+   profile.css - member profile page (linked from profile.php)
+   Palette: parchment #f6f2ea, leather #c29b87, oak #a97954,
+   manuscript #2c6762, binding #532c2e, crimson #34000b
    ========================================================= */
 
-
-/* ---------- Layout ---------- */
-
 .profile-page{
-    max-width:800px;
-    margin:20px auto;
-    padding:0 16px;
+    max-width:900px;
+    margin:0 auto;
+    padding:24px 20px 30px;
 }
 
+/* ---------- Cards ---------- */
+.profile-card{
+    background:#fdf9f2;
+    border:1px solid #c29b87;
+    border-left:6px solid #2c6762;
+    border-radius:14px;
+    box-shadow:0 6px 16px rgba(34, 21, 14, 0.25);
+    padding:18px 24px;
+    margin-bottom:22px;
+}
 
-/* ---------- Details, events and orders tables ---------- */
+.profile-heading{
+    margin:0 0 14px;
+    padding-bottom:8px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size:1.5rem;
+    color:#532c2e;
+    border-bottom:2px solid #c29b87;
+}
 
-.profile-page table{
+/* ---------- Hero (avatar + name) ---------- */
+.profile-hero{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    background:linear-gradient(135deg, #2c6762, #1e423f);
+    border:none;
+    border-left:6px solid #a97954;
+    color:#f6f2ea;
+}
+
+.profile-avatar{
+    flex:none;
+    width:78px;
+    height:78px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#f6f2ea;
+    color:#532c2e;
+    font-family:Cambria, Georgia, serif;
+    font-size:2.2rem;
+    font-weight:bold;
+    border:3px solid #a97954;
+    box-shadow:0 3px 8px rgba(0, 0, 0, 0.35);
+}
+
+.profile-hero h2{
+    margin:0;
+    padding:0;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size:2rem;
+}
+
+.profile-sub{
+    margin:4px 0 0;
+    color:#e6dccb;
+}
+
+/* ---------- Details grid ---------- */
+.details-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:14px 24px;
+    margin:0;
+}
+
+.details-grid dt{
+    font-size:0.85rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:#a97954;
+    font-weight:bold;
+}
+
+.details-grid dd{
+    margin:2px 0 0;
+    font-size:1.1rem;
+    color:#34000b;
+    overflow-wrap:anywhere;
+}
+
+/* ---------- Events ---------- */
+.event-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.event-list li{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px 14px;
+    padding:10px 0;
+    border-bottom:1px dashed #c29b87;
+}
+
+.event-list li:last-child{
+    border-bottom:none;
+}
+
+.event-name{
+    flex:1;
+    font-weight:bold;
+    font-size:1.1rem;
+}
+
+.event-date{
+    color:#532c2e;
+}
+
+.empty-note{
+    margin:0 0 8px;
+    font-style:italic;
+    color:#532c2e;
+}
+
+.profile-btn{
+    margin:6px 0 0;
+    text-decoration:none;
+}
+
+/* ---------- Status pills ---------- */
+.pill{
+    display:inline-block;
+    padding:2px 12px;
+    border-radius:12px;
+    font-size:0.9rem;
+    font-weight:bold;
+    color:white;
+    background:#532c2e;
+}
+
+.pill-active,
+.status-delivered{ background:#2c6762; }
+
+.pill-muted,
+.status-cancelled{ background:#6b6b6b; }
+
+.status-pending{ background:#a97954; }
+.status-processing{ background:#5e7da9; }
+.status-shipped{ background:#35359b; }
+
+/* ---------- Orders table ---------- */
+.table-wrap{
+    overflow-x:auto;
+}
+
+.profile-page .orders-table{
     width:100%;
+    margin:0;
+    font-size:1rem;
     border-collapse:collapse;
 }
 
-.profile-page th,
-.profile-page td{
-    border:1px solid #333;
-    padding:8px;
+.profile-page .orders-table th,
+.profile-page .orders-table td{
+    border:none;
+    border-bottom:1px solid #d9c7b8;
+    padding:10px 12px;
     text-align:left;
+    background:transparent;
+}
+
+.profile-page .orders-table th{
+    background:#532c2e;
+    color:#f6f2ea;
+    font-family:Cambria, Georgia, serif;
+    white-space:nowrap;
+}
+
+.profile-page .orders-table th:first-child{ border-radius:8px 0 0 0; }
+.profile-page .orders-table th:last-child{ border-radius:0 8px 0 0; }
+
+.profile-page .orders-table tbody tr:nth-child(even) td{
+    background:rgba(194, 155, 135, 0.18);
+}
+
+.profile-page .orders-table tbody tr:hover td{
+    background:rgba(44, 103, 98, 0.15);
+}
+
+.profile-page .orders-table .num{
+    text-align:right;
+    white-space:nowrap;
+}
+
+/* ---------- Small screens ---------- */
+@media(max-width: 600px){
+    .profile-hero{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .details-grid{
+        grid-template-columns:1fr;
+    }
+
+    /* each order row becomes a small card */
+    .profile-page .orders-table thead{
+        display:none;
+    }
+
+    .profile-page .orders-table,
+    .profile-page .orders-table tbody,
+    .profile-page .orders-table tr,
+    .profile-page .orders-table td{
+        display:block;
+        width:100%;
+    }
+
+    .profile-page .orders-table tr{
+        margin-bottom:12px;
+        border:1px solid #c29b87;
+        border-radius:10px;
+        overflow:hidden;
+    }
+
+    .profile-page .orders-table td{
+        display:flex;
+        justify-content:space-between;
+        gap:12px;
+        text-align:right;
+    }
+
+    .profile-page .orders-table td::before{
+        content:attr(data-label);
+        font-weight:bold;
+        color:#532c2e;
+        text-align:left;
+    }
 }
