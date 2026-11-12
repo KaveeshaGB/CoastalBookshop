@@ -64,6 +64,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const orderType = document.getElementById('order-type');
         const gift      = document.getElementById('gift-fields');
         const total     = document.getElementById('order-total');
+        const payment   = document.getElementById('payment');
+        const cardBox   = document.getElementById('card-fields');
+        const cardName  = document.getElementById('card-name');
+        const cardNum   = document.getElementById('card-number');
+        const cardExp   = document.getElementById('card-expiry');
+        const cardCvv   = document.getElementById('card-cvv');
 
         function fillBooks() {
             nameSel.innerHTML = '';
@@ -90,6 +96,55 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('recipient-name').required = isGift;
         }
 
+        // Show the card boxes only when "Card" is chosen
+        function toggleCard() {
+            const isCard = payment.value === 'Card';
+            cardBox.hidden = !isCard;
+            [cardName, cardNum, cardExp, cardCvv].forEach(function (f) { f.required = isCard; });
+        }
+
+        // Card number: digits only, grouped in 4s
+        cardNum.addEventListener('input', function () {
+            const digits = cardNum.value.replace(/\D/g, '').slice(0, 16);
+            cardNum.value = digits.replace(/(.{4})/g, '$1 ').trim();
+            cardNum.setCustomValidity('');
+        });
+
+        // Expiry: digits only, slash added automatically
+        cardExp.addEventListener('input', function () {
+            const digits = cardExp.value.replace(/\D/g, '').slice(0, 4);
+            cardExp.value = digits.length > 2 ? digits.slice(0, 2) + '/' + digits.slice(2) : digits;
+            cardExp.setCustomValidity('');
+        });
+
+        // CVV: digits only
+        cardCvv.addEventListener('input', function () {
+            cardCvv.value = cardCvv.value.replace(/\D/g, '');
+        });
+
+        orderForm.addEventListener('submit', function (e) {
+            if (payment.value !== 'Card') return;
+
+            const digits = cardNum.value.replace(/\s/g, '');
+            cardNum.setCustomValidity(digits.length === 16 ? '' : 'Enter a 16-digit card number.');
+
+            const m = /^(0[1-9]|1[0-2])\/(\d{2})$/.exec(cardExp.value);
+            let expMsg = 'Enter the expiry date as MM/YY.';
+            if (m) {
+                // Valid until the end of the expiry month
+                const endOfMonth = new Date(2000 + Number(m[2]), Number(m[1]), 1);
+                expMsg = endOfMonth > new Date() ? '' : 'That card has expired.';
+            }
+            cardExp.setCustomValidity(expMsg);
+
+            cardCvv.setCustomValidity(/^\d{3,4}$/.test(cardCvv.value) ? '' : 'Enter a 3 or 4 digit CVV.');
+
+            if (!orderForm.checkValidity()) {
+                e.preventDefault();
+                orderForm.reportValidity();
+            }
+        });
+
         // If opened from an "Order Now" link, start on that book's category
         const pre = window.BOOKS.find(b => b.BookID === window.SELECTED_BOOK);
         if (pre) typeSel.value = pre.Category;
@@ -99,8 +154,10 @@ document.addEventListener('DOMContentLoaded', function () {
         qty.addEventListener('input', updateTotal);
         delivery.addEventListener('change', updateTotal);
         orderType.addEventListener('change', toggleGift);
+        payment.addEventListener('change', toggleCard);
 
         fillBooks();
         toggleGift();
+        toggleCard();
     }
 });

@@ -14,6 +14,7 @@ $loggedIn = !empty($_SESSION['customer_id']);
         <link rel="stylesheet" href="css/club.css">
         <link rel="stylesheet" href="css/form.css">
         <link rel="stylesheet" href="css/footer.css">
+        <link rel="stylesheet" href="css/cart.css">
         <script src="js/script.js" defer></script>
     </head>
     <body>
@@ -32,16 +33,22 @@ $loggedIn = !empty($_SESSION['customer_id']);
                     <a class="authentication-link" href="register.php">Sign-in</a>
                     <a class="authentication-link" href="#" id="open-login">Log-in</a>
                 <?php endif; ?>
-
-                <a class="icon-link" href="cart.php" title="Cart"><img src="images/cart.jpg" alt="Cart"></a>
-
+ 
+                <?php if ($loggedIn): ?>
+                    <a class="icon-link" href="cart.php" title="Cart"><img src="images/cart.jpg" alt="Cart"></a>
+                <?php else: ?>
+                    <!-- not logged in: open the log-in pop-up instead of the cart -->
+                    <a class="icon-link" href="#" title="Cart"
+                       onclick="document.getElementById('open-login').click(); return false;"><img src="images/cart.jpg" alt="Cart"></a>
+                <?php endif; ?>
+ 
                 <?php if ($loggedIn): ?>
                     <div class="profile-menu">
                         <button type="button" class="icon-link" id="profile-btn" title="Profile">
                             <img src="images/profile.jpg" alt="Profile">
                         </button>
                         <ul class="profile-dropdown" id="profile-dropdown">
-                            <li><a href="profile.php">Profile</a>
+                            <li><a href="profile.php">Profile</a></li>
                             <?php if (!empty($_SESSION['is_admin'])): ?>
                             <li><a href="admin_books.php">Manage Books</a></li>
                             <?php endif; ?>
@@ -51,7 +58,7 @@ $loggedIn = !empty($_SESSION['customer_id']);
                 <?php endif; ?>
             </nav>
         </header>
-
+ 
         <?php if (!$loggedIn): ?>
         <!-- Log-in pop-up box (submitted with JS to login.php) -->
         <div id="login-modal" class="modal" hidden>
@@ -72,5 +79,5 @@ $loggedIn = !empty($_SESSION['customer_id']);
             </div>
         </div>
         <?php endif; ?>
-
+ 
         <main>
