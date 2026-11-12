@@ -95,13 +95,13 @@ CREATE TABLE Parcel (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- Gift: an order for someone else
+-- Gift: an order for someone else (decoration photos are in images/Decorations)
 CREATE TABLE Gift (
   OrderID        VARCHAR(10) PRIMARY KEY,
   RecipientName  VARCHAR(100) NOT NULL,
   RecipientPhone VARCHAR(20),
   Message        VARCHAR(500),
-  DecorationType VARCHAR(50),
+  DecorationType ENUM('Option 1','Option 2','Option 3','Option 4','Option 5','Option 6','Option 7','None') NOT NULL DEFAULT 'None',
   FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
