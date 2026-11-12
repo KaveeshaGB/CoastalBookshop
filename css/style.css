@@ -431,7 +431,7 @@ footer{
     font-size: 1rem;
     font-weight: bold;
     color: #fff;
-    background: #1d3a44;
+    background: #4f1704e0;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -464,4 +464,249 @@ footer{
     #order-form #quantity {
         width: 100px;
     }
+}
+
+
+/* ---------- Order page: form on the left, delivery fees on the right ---------- */
+
+.order-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;   /* keeps the form and fees table together in the middle */
+    gap: 60px;
+    padding-right: 20px;
+}
+
+.order-layout #order-form {
+    flex: 0 1 780px;
+}
+
+.delivery-info {
+    margin-left: 0;
+    margin-top: 10px;
+}
+
+.delivery-info h3 {
+    margin: 10px 0 8px;
+}
+
+.delivery-info table {
+    margin: 0;
+}
+
+/* Card details */
+#order-form #card-expiry,
+#order-form #card-cvv {
+    width: 120px;
+}
+
+#order-form input[type="password"] {
+    box-sizing: border-box;
+    margin: 6px 0;
+    padding: 9px 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #12303a;
+    background: #f4fafb;
+    border: 2px solid #1d3a44;
+    border-radius: 8px;
+}
+
+#order-form input[type="password"]:focus {
+    outline: none;
+    border-color: #0b5c73;
+    box-shadow: 0 0 0 3px rgba(11, 92, 115, 0.3);
+}
+
+@media (max-width: 600px) {
+    .delivery-info {
+        margin-left: 0;
+    }
+
+    #order-form input[type="password"] {
+        display: block;
+        width: 120px;
+    }
+}
+
+
+/* ---------- Gift decoration picker (all 8 options in one row) ---------- */
+
+.deco-label {
+    display: block;
+    width: auto;
+}
+
+.deco-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    margin: 0 5px 6px 160px;    /* lines up with the input boxes */
+    padding: 16px 8px 8px;      /* room for the lift and shadow */
+    overflow-x: auto;           /* scrolls sideways on very small screens */
+}
+
+.deco-card {
+    position: relative;
+    animation: deco-swoosh 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    flex: 1 1 0;
+    min-width: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* hide the round button but keep it usable with the keyboard */
+.deco-card input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+}
+
+.deco-card img,
+.deco-blank {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    box-sizing: border-box;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s;
+}
+
+.deco-blank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    font-weight: normal;
+    background: #c9dfd8;
+}
+
+/* hover: lift higher, grow a little and give a quick shake */
+.deco-card:hover img,
+.deco-card:hover .deco-blank {
+    transform: translateY(-10px) scale(1.08);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.4);
+    animation: deco-shake 0.45s ease-in-out;
+}
+
+@keyframes deco-shake {
+    0%   { transform: translateY(-10px) scale(1.08) rotate(0deg); }
+    20%  { transform: translateY(-10px) scale(1.08) rotate(-5deg); }
+    40%  { transform: translateY(-10px) scale(1.08) rotate(5deg); }
+    60%  { transform: translateY(-10px) scale(1.08) rotate(-3deg); }
+    80%  { transform: translateY(-10px) scale(1.08) rotate(3deg); }
+    100% { transform: translateY(-10px) scale(1.08) rotate(0deg); }
+}
+
+@media (max-width: 600px) {
+    .deco-grid {
+        margin-left: 5px;
+    }
+
+    .deco-card {
+        min-width: 78px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .deco-card:hover img,
+    .deco-card:hover .deco-blank {
+        animation: none;
+    }
+}
+
+.deco-card input:checked ~ img,
+.deco-card input:checked ~ .deco-blank {
+    border-color: #0b5c73;
+    box-shadow: 0 0 0 3px rgba(11, 92, 115, 0.4);
+}
+
+.deco-card input:focus-visible ~ img,
+.deco-card input:focus-visible ~ .deco-blank {
+    outline: 3px solid #1d3a44;
+}
+
+/* Contact details under the delivery table (order page) */
+.delivery-info .contact {
+    margin: 20px 0 0;
+    padding: 0;
+}
+
+/* ---------- Order confirmation pop-up ---------- */
+
+.order-receipt h3 {
+    margin: 0 0 4px;
+    font-size: 1.4rem;
+}
+
+.order-receipt .receipt-id {
+    margin: 0 0 10px;
+}
+
+.receipt-table {
+    width: 100%;
+    margin: 0 0 8px;
+    font-size: 18px;
+}
+
+.receipt-table th {
+    width: 110px;
+    text-align: left;
+}
+
+.order-receipt .btn {
+    margin: 10px 0 0;
+}
+
+
+/* ---------- Decorations swoosh in (left to right) when the gift fields open ---------- */
+
+@keyframes deco-swoosh {
+    0%   { opacity: 0; transform: translateX(-90px) scale(0.8) rotate(-8deg); filter: blur(4px); }
+    60%  { opacity: 1; transform: translateX(8px) scale(1.04) rotate(2deg); filter: blur(0); }
+    100% { opacity: 1; transform: translateX(0) scale(1) rotate(0); filter: blur(0); }
+}
+
+.deco-card:nth-child(1) { animation-delay: 0.00s; }
+.deco-card:nth-child(2) { animation-delay: 0.07s; }
+.deco-card:nth-child(3) { animation-delay: 0.14s; }
+.deco-card:nth-child(4) { animation-delay: 0.21s; }
+.deco-card:nth-child(5) { animation-delay: 0.28s; }
+.deco-card:nth-child(6) { animation-delay: 0.35s; }
+.deco-card:nth-child(7) { animation-delay: 0.42s; }
+.deco-card:nth-child(8) { animation-delay: 0.49s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .deco-card { animation: none; }
+}
+
+/* ---------- Pop-up extras ---------- */
+
+.order-receipt {
+    animation: receipt-pop 0.5s cubic-bezier(0.22, 1.4, 0.36, 1) both;
+}
+
+@keyframes receipt-pop {
+    0%   { opacity: 0; transform: scale(0.6) translateY(30px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.receipt-deco {
+    display: block;
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid currentColor;
 }
