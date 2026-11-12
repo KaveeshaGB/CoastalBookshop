@@ -1,83 +1,142 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
+// Member profile page: details, joined book-club sessions, order history.
+require_once __DIR__.'/includes/config.php';   // starts session + gives $pdo and e()
 
-if (!isset($_SESSION['customer_id'])) { header('Location: login.php'); exit; }
+if (empty($_SESSION['customer_id'])) { header('Location: login.php'); exit; }
 $customerId = $_SESSION['customer_id'];
 
-$conn = new mysqli('localhost', 'root', '', 'coastal_bookshop');
-
-$stmt = $conn->prepare(
+// LEFT JOIN so a customer who is not a club member yet still sees their details
+$stmt = $pdo->prepare(
   'SELECT c.Name, c.Email, c.Phone, c.Address, m.JoinDate
-   FROM member m
-   JOIN customer c ON c.CustomerID = m.CustomerID
-   WHERE m.CustomerID = ?');
-$stmt->bind_param('s', $customerId);
-$stmt->execute();
-$member = $stmt->get_result()->fetch_assoc();
+   FROM customer c
+   LEFT JOIN member m ON m.CustomerID = c.CustomerID
+   WHERE c.CustomerID = ?');
+$stmt->execute([$customerId]);
+$member = $stmt->fetch();
 
-require __DIR__.'/includes/header.php';
-?>
-
-<main class="profile-page">
-  <h2>My Details</h2>
-  <p><strong>Name:</strong> <?= htmlspecialchars($member['Name']) ?></p>
-  <p><strong>Email:</strong> <?= htmlspecialchars($member['Email']) ?></p>
-  <p><strong>Phone:</strong> <?= htmlspecialchars($member['Phone']) ?></p>
-  <p><strong>Address:</strong> <?= htmlspecialchars($member['Address']) ?></p>
-  <p><strong>Member since:</strong> <?= htmlspecialchars($member['JoinDate']) ?></p>
-  <?php
-  
-$stmt = $conn->prepare(
+$stmt = $pdo->prepare(
   'SELECT e.EventID, e.EventName, e.EventDate, e.EndTime, e.Status, me.LeftAt
    FROM member_event me
    JOIN event e ON e.EventID = me.EventID
    WHERE me.CustomerID = ?
    ORDER BY COALESCE(e.StartTime, e.EventDate) DESC');
-$stmt->bind_param('s', $customerId);
-$stmt->execute();
-$events = $stmt->get_result();
+$stmt->execute([$customerId]);
+$events = $stmt->fetchAll();
 
-$stmt = $conn->prepare(
+$stmt = $pdo->prepare(
   'SELECT b.Title, b.Author, ob.Quantity, ob.UnitPrice, o.OrderDate, o.Status
    FROM orders o
    JOIN order_books ob ON ob.OrderID = o.OrderID
    JOIN books b ON b.BookID = ob.BookID
    WHERE o.CustomerID = ?
    ORDER BY o.OrderDate DESC');
-$stmt->bind_param('s', $customerId);
-$stmt->execute();
-$books = $stmt->get_result();
+$stmt->execute([$customerId]);
+$books = $stmt->fetchAll();
+
+$pageTitle = 'My Profile - Coastal Bookshop';
+require __DIR__.'/includes/header.php';
+
+$initial = strtoupper(substr(trim($member['Name'] ?? '?'), 0, 1));
 ?>
+            <link rel="stylesheet" href="css/profile.css">
 
-<h2>Events I Joined</h2>
-<?php if ($events->num_rows === 0): ?>
-  <p>You haven't joined any events yet.</p>
-<?php else: ?>
-  <ul>
-    <?php while ($e = $events->fetch_assoc()): ?>
-      <li><?= htmlspecialchars($e['EventName']) ?> (<?= htmlspecialchars($e['EventDate']) ?>)</li>
-    <?php endwhile; ?>
-  </ul>
-<?php endif; ?>
+            <div class="profile-page">
 
-<h2>Books I Ordered</h2>
-<?php if ($books->num_rows === 0): ?>
-  <p>You haven't ordered any books yet.</p>
-<?php else: ?>
-  <table>
-    <tr><th>Book</th><th>Author</th><th>Qty</th><th>Price</th><th>Date</th><th>Status</th></tr>
-    <?php while ($b = $books->fetch_assoc()): ?>
-      <tr>
-        <td><?= htmlspecialchars($b['Title']) ?></td>
-        <td><?= htmlspecialchars($b['Author']) ?></td>
-        <td><?= (int)$b['Quantity'] ?></td>
-        <td>Rs. <?= number_format($b['UnitPrice'], 2) ?></td>
-        <td><?= htmlspecialchars($b['OrderDate']) ?></td>
-        <td><?= htmlspecialchars($b['Status']) ?></td>
-      </tr>
-    <?php endwhile; ?>
-  </table>
-</main>
+                <!-- ---------- My details ---------- -->
+                <section class="profile-card profile-hero">
+                    <div class="profile-avatar" aria-hidden="true"><?= e($initial) ?></div>
+                    <div class="profile-hero-text">
+                        <h2><?= e($member['Name']) ?></h2>
+                        <p class="profile-sub">
+                            <?php if (!empty($member['JoinDate'])): ?>
+                                Book Club member since <?= e(date('j F Y', strtotime($member['JoinDate']))) ?>
+                            <?php else: ?>
+                                Coastal Bookshop customer
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                </section>
 
+                <section class="profile-card">
+                    <h3 class="profile-heading">My Details</h3>
+                    <dl class="details-grid">
+                        <div>
+                            <dt>Email</dt>
+                            <dd><?= e($member['Email']) ?></dd>
+                        </div>
+                        <div>
+                            <dt>Phone</dt>
+                            <dd><?= e($member['Phone']) ?></dd>
+                        </div>
+                        <div>
+                            <dt>Address</dt>
+                            <dd><?= e($member['Address']) ?></dd>
+                        </div>
+                        <div>
+                            <dt>Member since</dt>
+                            <dd><?= !empty($member['JoinDate']) ? e($member['JoinDate']) : '&mdash;' ?></dd>
+                        </div>
+                    </dl>
+                </section>
 
-<?php endif; ?>
+                <!-- ---------- Events ---------- -->
+                <section class="profile-card">
+                    <h3 class="profile-heading">Events I Joined</h3>
+                    <?php if (!$events): ?>
+                        <p class="empty-note">You haven't joined any events yet.</p>
+                        <a class="btn profile-btn" href="bookclub.php">Browse Book Club</a>
+                    <?php else: ?>
+                        <ul class="event-list">
+                            <?php foreach ($events as $ev): ?>
+                                <li>
+                                    <span class="event-name"><?= e($ev['EventName']) ?></span>
+                                    <span class="event-date"><?= e($ev['EventDate']) ?></span>
+                                    <?php if (!empty($ev['LeftAt'])): ?>
+                                        <span class="pill pill-muted">Left</span>
+                                    <?php elseif ($ev['Status'] === 'Ended'): ?>
+                                        <span class="pill pill-muted">Ended</span>
+                                    <?php else: ?>
+                                        <span class="pill pill-active">Joined</span>
+                                    <?php endif; ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </section>
+
+                <!-- ---------- Orders ---------- -->
+                <section class="profile-card">
+                    <h3 class="profile-heading">Books I Ordered</h3>
+                    <?php if (!$books): ?>
+                        <p class="empty-note">You haven't ordered any books yet.</p>
+                        <a class="btn profile-btn" href="order.php">Place an order</a>
+                    <?php else: ?>
+                        <div class="table-wrap">
+                            <table class="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Book</th><th>Author</th><th class="num">Qty</th>
+                                        <th class="num">Price</th><th>Date</th><th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($books as $b): ?>
+                                        <tr>
+                                            <td data-label="Book"><?= e($b['Title']) ?></td>
+                                            <td data-label="Author"><?= e($b['Author']) ?></td>
+                                            <td data-label="Qty" class="num"><?= (int) $b['Quantity'] ?></td>
+                                            <td data-label="Price" class="num">Rs. <?= number_format($b['UnitPrice'], 2) ?></td>
+                                            <td data-label="Date"><?= e(date('j M Y, g:i A', strtotime($b['OrderDate']))) ?></td>
+                                            <td data-label="Status">
+                                                <span class="pill status-<?= e(strtolower($b['Status'])) ?>"><?= e($b['Status']) ?></span>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php endif; ?>
+                </section>
+
+            </div>
+<?php require __DIR__.'/includes/footer.php'; ?>

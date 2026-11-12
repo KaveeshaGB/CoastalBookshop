@@ -55,36 +55,50 @@ require __DIR__.'/includes/header.php';
 ?>
             <h2>Sign-in (Register)</h2>
 
+            <div class="auth-card">
             <?php if ($success): ?>
                 <p class="message">Account created! You can now log in using the Log-in button.</p>
+                <button type="button" class="btn" onclick="document.getElementById('open-login').click()">Log-in</button>
             <?php else: ?>
                 <?php foreach ($errors as $err): ?>
                     <p class="error"><?= e($err) ?></p>
                 <?php endforeach; ?>
 
                 <form id="register-form" method="post" action="register.php">
-                    <label class="form-label" for="name">Full Name:</label>
-                    <input type="text" id="name" name="name" value="<?= e($old['name']) ?>" required>
-                    <br>
-                    <label class="form-label" for="reg-email">Email:</label>
-                    <input type="email" id="reg-email" name="email" value="<?= e($old['email']) ?>" required>
-                    <br>
-                    <label class="form-label" for="phone">Phone Number:</label>
-                    <input type="tel" id="phone" name="phone" value="<?= e($old['phone']) ?>">
-                    <br>
-                    <label class="form-label" for="address">Address:</label>
-                    <input type="text" id="address" name="address" value="<?= e($old['address']) ?>">
-                    <br>
-                    <label class="form-label" for="password">Password:</label>
-                    <input type="password" id="password" name="password" minlength="6" required>
-                    <br>
-                    <label class="form-label" for="confirm">Confirm Password:</label>
-                    <input type="password" id="confirm" name="confirm" minlength="6" required>
-                    <br>
-                    <label class="form-label" for="member">Join as member:</label>
-                    <input type="checkbox" id="member" name="member">
-                    <br><br>
+                    <div class="field">
+                        <label class="form-label" for="name">Full Name</label>
+                        <input type="text" id="name" name="name" value="<?= e($old['name']) ?>" autocomplete="name" required>
+                    </div>
+                    <div class="field">
+                        <label class="form-label" for="reg-email">Email</label>
+                        <input type="email" id="reg-email" name="email" value="<?= e($old['email']) ?>" autocomplete="email" required>
+                    </div>
+                    <div class="field">
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" value="<?= e($old['phone']) ?>" autocomplete="tel">
+                    </div>
+                    <div class="field">
+                        <label class="form-label" for="address">Address</label>
+                        <input type="text" id="address" name="address" value="<?= e($old['address']) ?>" autocomplete="street-address">
+                    </div>
+                    <div class="field">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" name="password" minlength="6" autocomplete="new-password" required>
+                        <p class="hint">At least 6 characters</p>
+                    </div>
+                    <div class="field">
+                        <label class="form-label" for="confirm">Confirm Password</label>
+                        <input type="password" id="confirm" name="confirm" minlength="6" autocomplete="new-password" required>
+                    </div>
+                    <div class="field member-field">
+                        <label class="form-label" for="member">Join as member</label>
+                        <input type="checkbox" id="member" name="member">
+                    </div>
                     <button type="submit" class="btn">Register</button>
                 </form>
+                <p class="auth-switch">Already have an account?
+                    <a href="#" onclick="document.getElementById('open-login').click(); return false;">Log-in</a>
+                </p>
             <?php endif; ?>
+            </div>
 <?php require __DIR__.'/includes/footer.php'; ?>

@@ -1,0 +1,220 @@
+/* =========================================================
+   form.css - log-in pop-up and register page
+   (load after style.css)
+   ========================================================= */
+
+/* ---------- Log-in pop-up and register form (palette match) ---------- */
+/* parchment #f6f2ea, leather #c29b87, oak #a97954, manuscript #2c6762,
+   binding #532c2e, crimson #34000b */
+
+#login-modal{
+    background-color:rgba(34, 21, 14, 0.65);
+}
+
+#login-modal .modal-box{
+    width:min(420px, 92%);
+    padding:26px 30px 22px;
+    background-color:#d3d1ce;
+    border:1px solid #c29b87;
+    border-top:6px solid #2c6762;
+    border-radius:14px;
+    box-shadow:0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+#login-modal h3{
+    margin:0 0 16px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size:1.7rem;
+    color:#532c2e;
+}
+
+#login-modal .modal-close{
+    color:#532c2e;
+    transition:color 0.2s ease;
+}
+
+#login-modal .modal-close:hover{
+    color:#34000b;
+}
+
+#login-form br{
+    display:none;
+}
+
+#login-form .form-label{
+    display:block;
+    width:auto;
+    margin:0;
+    padding:0 0 4px;
+    font-size:1rem;
+    font-weight:bold;
+    color:#532c2e;
+}
+
+#login-form input{
+    display:block;
+    width:100%;
+    margin:0 0 14px;
+    padding:9px 12px;
+    font-family:inherit;
+    font-size:1rem;
+    color:#34000b;
+    background-color:#d3d1ce;
+    border:2px solid #c29b87;
+    border-radius:8px;
+    transition:border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#login-form input:focus{
+    outline:none;
+    border-color:#2c6762;
+    box-shadow:0 0 0 3px rgba(44, 103, 98, 0.3);
+}
+
+#login-form .btn{
+    width:100%;
+    margin:4px 0 0;
+    background-color:#2c6762;
+}
+
+#login-form .btn:hover{
+    background-color:#1e423f;
+}
+
+#login-form .error{
+    margin:0 0 12px;
+}
+
+#login-modal p{
+    margin:16px 0 0;
+    text-align:center;
+    color:#532c2e;
+}
+
+#login-modal a{
+    color:#2c6762;
+    font-weight:bold;
+}
+
+#login-modal a:hover{
+    color:#34000b;
+}
+
+
+/* ---------- Register page ---------- */
+
+.auth-card{
+    max-width:620px;
+    margin:10px auto 30px;
+    padding:24px 30px 26px;
+    background-color:#d3d1ce;
+    border:1px solid #c29b87;
+    border-left:6px solid #2c6762;
+    border-radius:14px;
+    box-shadow:0 6px 16px rgba(34, 21, 14, 0.25);
+}
+
+.auth-card .field{
+    display:grid;
+    grid-template-columns:170px 1fr;
+    align-items:center;
+    gap:6px 10px;
+    margin-bottom:14px;
+}
+
+.auth-card .form-label{
+    width:auto;
+    margin:0;
+    padding:0;
+    font-size:1rem;
+    font-weight:bold;
+    color:#532c2e;
+}
+
+.auth-card input[type="text"],
+.auth-card input[type="email"],
+.auth-card input[type="tel"],
+.auth-card input[type="password"]{
+    width:100%;
+    margin:0;
+    padding:9px 12px;
+    font-family:inherit;
+    font-size:1rem;
+    color:#34000b;
+    background-color:#d3d1ce;
+    border:2px solid #462929;
+    border-radius:8px;
+    transition:border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-card input:focus{
+    outline:none;
+    border-color:#2c6762;
+    box-shadow:0 0 0 3px rgba(44, 103, 98, 0.3);
+}
+
+.auth-card .hint{
+    grid-column:2;
+    margin:-2px 0 0;
+    font-size:0.85rem;
+    color:#a97954;
+}
+
+.auth-card .member-field{
+    align-items:center;
+}
+
+.auth-card .member-field input[type="checkbox"]{
+    width:20px;
+    height:20px;
+    margin:0;
+    accent-color:#2c6762;
+    justify-self:start;
+}
+
+.auth-card .btn{
+    margin:8px 0 0;
+    background-color:#2c6762;
+}
+
+.auth-card .btn:hover{
+    background-color:#1e423f;
+}
+
+.auth-card .error{
+    margin:0 0 12px;
+}
+
+.auth-card .auth-switch{
+    margin:18px 0 0;
+    color:#532c2e;
+}
+
+.auth-card .auth-switch a{
+    color:#2c6762;
+    font-weight:bold;
+}
+
+.auth-card .message{
+    width:auto;
+    margin:0 0 14px;
+    background-color:rgba(44, 103, 98, 0.15);
+    border:1px solid #2c6762;
+    border-radius:8px;
+    color:#1e423f;
+}
+
+@media(max-width: 600px){
+    .auth-card{
+        margin:10px 12px 24px;
+        padding:20px;
+    }
+
+    .auth-card .field{
+        grid-template-columns:1fr;
+    }
+
+    .auth-card .hint{
+        grid-column:1;
+    }
+}

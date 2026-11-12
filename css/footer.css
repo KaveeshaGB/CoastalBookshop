@@ -1,0 +1,58 @@
+/* =========================================================
+   footer.css - site footer with contact details
+   (load after style.css; overrides the old footer rules)
+   ========================================================= */
+
+footer{
+    padding:0;
+    text-align:left;
+    font-size:1rem;
+    color:#f6f2ea;
+    background-color:#1e423f;
+    background:linear-gradient(to bottom, #2c6762ec, #1e423f);
+}
+
+.footer-contact{
+    max-width:1100px;
+    margin:0 auto;
+    padding:22px 30px 14px;
+}
+
+.footer-contact h3{
+    margin:0 0 8px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size:1.5rem;
+    color:#f6f2ea;
+}
+
+.footer-contact p{
+    margin:0;
+    line-height:1.7;
+    color:#e6dccb;
+}
+
+.footer-contact a{
+    color:#e6dccb;
+    text-decoration:none;
+}
+
+.footer-contact a:hover{
+    color:#c29b87;
+    text-decoration:underline;
+}
+
+.footer-copy{
+    margin:0;
+    padding:10px 30px;
+    text-align:center;
+    font-size:0.95rem;
+    color:#e6dccb;
+    border-top:1px solid rgba(194, 155, 135, 0.45);
+}
+
+@media(max-width: 600px){
+    .footer-contact{
+        padding:18px 20px 12px;
+        text-align:center;
+    }
+}

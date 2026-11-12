@@ -12,6 +12,8 @@ $loggedIn = !empty($_SESSION['customer_id']);
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/home.css">
         <link rel="stylesheet" href="css/club.css">
+        <link rel="stylesheet" href="css/form.css">
+        <link rel="stylesheet" href="css/footer.css">
         <link rel="stylesheet" href="css/cart.css">
         <script src="js/script.js" defer></script>
     </head>
