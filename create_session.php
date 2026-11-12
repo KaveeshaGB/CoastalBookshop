@@ -97,12 +97,11 @@ require __DIR__.'/includes/header.php';
                 <input type="datetime-local" id="end" name="end" value="<?= e($f['end']) ?>" required>
                 <br>
 
-                <label class="form-label" for="public">Show to everyone:</label>
+                <label class="form-label" for="public">Make Public:</label>
                 <input type="checkbox" id="public" name="public" <?= $f['public'] ? 'checked' : '' ?>>
-                <span>Everyone can see this session is happening. Only members can join it.</span>
                 <br><br>
 
                 <button type="submit" class="btn">Start Session</button>
-                <a class="order-link" href="bookclub.php">Cancel</a>
+                <a class="btn" href="bookclub.php">Cancel</a>
             </form>
 <?php require __DIR__.'/includes/footer.php'; ?>

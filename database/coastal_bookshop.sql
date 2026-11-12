@@ -157,6 +157,16 @@ CREATE TABLE IF NOT EXISTS BookLike (
   FOREIGN KEY (BookID) REFERENCES Books(BookID)
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
+ALTER TABLE Books ADD COLUMN EbookFile VARCHAR(255) NULL AFTER ImageFile;
+
+CREATE TABLE EbookDownload (
+  CustomerID   VARCHAR(10) NOT NULL,
+  BookID       VARCHAR(10) NOT NULL,
+  DownloadedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (CustomerID, BookID),
+  FOREIGN KEY (CustomerID) REFERENCES Customer (CustomerID) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (BookID)     REFERENCES Books (BookID)       ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- ---------------------------------------------------------
 -- Derived attributes (calculated, not stored)
 -- ---------------------------------------------------------

@@ -1,5 +1,29 @@
 /* Book club pages. Uses the same colours as home_style.css. */
 
+/* =========================================================
+   COLOUR VARIABLES
+   Change these to change the mood of the whole book club.
+   ========================================================= */
+:root {
+  --parchment : #f6f2ea;
+  --leather   : #c29b87;
+  --oak       : #a97954;
+  --manuscript: #2c6762ec;
+  --binding   : #532c2e;
+  --crimson   : #34000b;     /* FIX: had a stray extra colon */
+
+  /* FIX: these were used below but never defined, so they showed nothing */
+  --cozy-paper        : #f6f2ea;
+  --cozy-plank        : #a97954;   /* wooden shelf board */
+  --cozy-walnut       : #532c2e;   /* book spine */
+  --cozy-walnut-light : #7a4a4c;   /* cover with no image */
+  --cozy-ink          : #2c1a1a;   /* shelf text */
+  --pic-border        : #532c2e;   /* banner picture border */
+  --title-color       : #2d0d0f;   /* banner title */
+}
+
+[hidden] { display: none !important; }
+
 .club-page{
     max-width:900px;
     margin:0 auto;
@@ -42,7 +66,8 @@
 }
 
 .club-badge.live{
-    background-color:rgba(77, 16, 0, 0.876);
+    background-color:rgb(159 33 1);
+    border:2px solid #780a0a;
 }
 
 .club-badge.ended{
@@ -53,16 +78,23 @@
     background-color:rgb(94, 125, 169);
 }
 
+.live-count {
+  margin-left: 8px;
+  padding: 2px 9px;
+  font-size: 0.8rem;
+  color: var(--cozy-paper);
+  background: #b3412f;
+  border-radius: 999px;
+}
+
 .session-actions .btn{
     margin:10px 10px 10px 0;
 }
 
 /* ---------- Messages ---------- */
-#message-list{
-    max-height:460px;
-    overflow-y:auto;
-    padding:4px 0;
-}
+/* FIX: #message-list was defined twice (once here, once in the chat room
+   section). Merged into the chat room rule further down. The old
+   max-height:460px was removed because it fought with the chat box height. */
 
 .msg{
     background-color:rgb(156, 196, 183);
@@ -79,6 +111,8 @@
 
 .msg-head{
     display:flex;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
     flex-wrap:wrap;
     gap:4px 12px;
     align-items:baseline;
@@ -127,6 +161,7 @@
     color:white;
     background-color:rgba(77, 16, 0, 0.876);
 }
+
 .mini-btn.like-btn{
     display:inline-flex;
     align-items:center;
@@ -171,41 +206,11 @@
     margin:8px 10px 0 0;
 }
 
-
-
 @media(max-width: 600px){
     .msg.mine{
         margin-left:0;
     }
 }
-
-/* =========================================================
-   BOOK CLUB: COZY THEME
-   Paste at the bottom of your club stylesheet so it wins over
-   older rules. Change the five colours below to change the mood.
-   ========================================================= */
-:root {
-  --parchment : #f6f2ea; 
-  --leather   : #c29b87;  
-  --oak       : #a97954;   
-  --manuscript: #2c6762ec;   
-  --binding   : #532c2e;   
-  --crimson:  :   #34000b;  
-}
-
-[hidden] { display: none !important; }
-
-
-
-.live-count {
-  margin-left: 8px;
-  padding: 2px 9px;
-  font-size: 0.8rem;
-  color: var(--cozy-paper);
-  background: #b3412f;
-  border-radius: 999px;
-}
-
 
 /* ---------- Hero: picture + Welcome ---------- */
 .club-hero {
@@ -217,6 +222,7 @@
   padding: 0 32px;
   overflow-x: clip;           /* stops a sideways scrollbar while the picture slides in */
 }
+
 .club-hero .hero-pic {
   display: block;
   flex: 0 1 58%;
@@ -230,6 +236,7 @@
   animation: hero-in 1.5s ease-out both,
              hero-drift 8s ease-in-out 1.8s infinite alternate;
 }
+
 @keyframes hero-in {
   from { opacity: 0; transform: translateX(200px); }    /* starts off to the right */
   to   { opacity: 1; transform: none; }
@@ -247,8 +254,8 @@
   to   { opacity: 1; transform: none; }
 }
 @keyframes tabs-in {
-  from { opacity: 0; transform:translateY(20px); }
-  to   { opacity: 1; transform:translateY(0) }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .club-welcome {
@@ -269,10 +276,6 @@
   animation: welcome-in-two 1.5s ease-out 2.6s both;
 }
 
-/* When a tab is open, the picture steps aside; Welcome and the buttons stay */
-.club-hero.has-panel .hero-pic { display: none; }
-
-
 /* ---------- The two buttons under Welcome (fade in after both lines) ---------- */
 .club-tabs {
   display: flex;
@@ -281,44 +284,35 @@
   margin-top: 24px;
   animation: tabs-in 1s ease-out 3.8s both;
 }
+
 .club-tabs button {
   font: inherit;
   font-size: 1.05rem;
   font-weight: bold;
-  margin-left:20px;
-  color:#ecdfc5;
-  background:linear-gradient(to bottom,#1e423f, #2c6762ec);
+  margin-left: 20px;
+  color: #ecdfc5;
+  background: linear-gradient(to bottom, #1e423f, #2c6762ec);
   border: 2px solid #7c6d4d;
   border-radius: 999px;
   padding: 10px 22px;
-  box-shadow: 0 4px 10px rgba(58, 34, 22, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);   /* FIX: box-shadow was written twice */
   cursor: pointer;
-  box-shadow:0 4px 8px rgba(0, 0, 0, 0.25);
-  transition:transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .club-tabs button:hover {
-    transform:translateY(-2px);
-    box-shadow:0 8px 16px rgba(0, 0, 0, 0.3); 
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
-.club-tabs button.is-active {
-    transform:translateY(0);
-    box-shadow:0 2px 4px rgba(0, 0, 0, 0.3);
-}
-.club-tabs button.is-active .live-count { 
-    display: none; 
+
+.club-tabs button.is-active .live-count {
+  display: none;
 }
 
 @media (max-width: 800px) {
   .club-hero { flex-direction: column; }
   .club-hero .hero-pic { width: 100%; flex-basis: auto; min-height: 320px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .club-hero .hero-pic,
-  .club-welcome h2,
-  .club-tabs { animation: tabs-in 1s ease-out 2.8s both; }
-}
-
 
 /* ---------- Bookshelf ---------- */
 .shelf-row {
@@ -333,10 +327,11 @@
   border-bottom: 16px solid var(--cozy-plank);      /* the wooden board */
   box-shadow: 0 10px 14px -8px rgba(58, 34, 22, 0.55);
 }
+
 .shelf-book {
-    width: 150px;
-    padding-bottom: 16px; 
-    text-align: center; 
+  width: 150px;
+  padding-bottom: 16px;
+  text-align: center;
 }
 
 .shelf-cover {
@@ -349,6 +344,7 @@
   border-radius: 3px 7px 7px 3px;
   box-shadow: 5px 7px 12px rgba(58, 34, 22, 0.4);
 }
+
 .shelf-cover.no-cover {
   display: flex;
   align-items: center;
@@ -359,17 +355,17 @@
   font-weight: bold;
   background: var(--cozy-walnut-light);
 }
+
 .shelf-title { margin: 0; font-weight: bold; color: var(--cozy-ink); }
 .shelf-author,
 .shelf-date { margin: 2px 0 8px; font-size: 0.9rem; color: var(--cozy-ink); }
 .shelf-row.waiting .shelf-cover { opacity: 0.8; }
 
 /* ===== Tab open: banner replaces the Welcome text ===== */
-
 .panel-banner { display: none; }                               /* hidden on the landing view */
 
+.club-hero.has-panel .hero-pic { display: none; }              /* picture steps aside (was written twice) */
 .club-hero.has-panel .club-welcome > h2 { display: none; }     /* the two Welcome lines */
-.club-hero.has-panel .hero-pic { display: none; }              /* old landing picture (harmless if already hidden) */
 .club-hero.has-panel .club-welcome { width: 100%; }            /* span the page so the title can sit in the middle */
 .club-hero.has-panel .panel-banner { display: grid; }
 .club-hero.has-panel .club-tabs { animation: none; }
@@ -419,11 +415,289 @@
     .panel-banner-pic, .panel-banner-title { grid-column: 1; grid-row: auto; justify-self: center; }
 }
 
-#panel-sessions>h3{
-    color:#2d0d0f;
-    font-size: 1.8rem;       /* ← size */
-    font-family: Cambria, Cochin, Georgia, 'Times New Roman', serif;   /* ← font */
-    margin: 28px 0 12px;     /* space above and below the title */
+#panel-sessions > h3 {
+    color: #2d0d0f;
+    font-size: 1.8rem;
+    font-family: Cambria, Cochin, Georgia, 'Times New Roman', serif;
+    margin: 28px 0 12px;
     padding-bottom: 6px;
     border-bottom: 2px solid #2d0d0f;
+}
+
+/* ===== Chat room ===== */
+.chat-box {
+    position: relative;
+    isolation: isolate;               /* keeps the background layer behind the messages */
+    display: flex;
+    flex-direction: column;
+    height: 60vh;
+    min-height: 380px;
+    margin-top: 10px;
+    border-radius: 14px;
+    overflow: hidden;
+    background-color: #cfd8cc;        /* colour showing through the faded image */
+}
+
+/* The image sits on its own layer, so only it is made transparent */
+.chat-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: url("../images/bookClub-chat-Background.jpg") center / cover no-repeat;
+    opacity: 0.3;                     /* lower = fainter */
+}
+
+#message-list {
+    flex: 1;                          /* takes all space above the bar */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 14px 18px;
+}
+
+#message-list > :first-child { margin-top: auto; }   /* few messages sit at the bottom, like WhatsApp */
+
+/* The bar at the bottom */
+.chat-compose {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.chat-compose textarea {
+    flex: 1;
+    width: auto;
+    margin: 0;
+    box-sizing: border-box;
+    resize: none;
+    max-height: 120px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 22px;
+    font: inherit;
+    background: #fff;
+}
+
+.send-btn {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: #5c2511;              /* same maroon as your buttons */
+    color: #fff;
+    cursor: pointer;
+}
+
+.send-btn:hover { filter: brightness(1.2); }
+.send-btn svg { margin-left: 2px; }   /* centres the arrow's visual weight */
+
+.chat-notice { margin: 0; text-align: center; }
+
+/* FIX: reduced-motion used to replay a fade animation; now it simply turns
+   the animations off and shows everything straight away. */
+@media (prefers-reduced-motion: reduce) {
+  .club-hero .hero-pic,
+  .club-welcome h2,
+  .club-tabs {
+    animation: none;
+  }
+  .panel-banner-pic {
+    animation: none;
+    clip-path: none;
+  }
+  .panel-banner-title {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   START A SESSION PAGE (create_session.php)  — NEW
+   Scoped to the form that posts to create_session.php, so
+   nothing else on the site is affected. No HTML changes needed.
+   ========================================================= */
+
+/* Page heading */
+h2:has(~ form[action="create_session.php"]) {
+    font-size: 2rem;
+    letter-spacing: 0.5px;
+    color: #1f3a38;
+    margin: 28px 0 18px 25px;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+/* The form becomes a card with a label / field grid */
+form[action="create_session.php"] {
+    display: grid;
+    grid-template-columns: 190px 30px 1fr;
+    align-items: center;
+    gap: 18px 14px;
+    max-width: 860px;
+    margin: 10px 0 40px 25px;
+    padding: 32px 36px 36px;
+    background: rgba(255, 255, 255, 0.38);
+    border: 1px solid rgba(31, 74, 74, 0.25);
+    border-top: 4px solid #2f6b66;
+    border-right:6px solid #2f6b66;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(31, 58, 56, 0.22);
+}
+
+/* The <br> tags are only line breaks; the grid handles layout now */
+form[action="create_session.php"] br {
+    display: none;
+}
+
+/* Labels */
+form[action="create_session.php"] .form-label {
+    grid-column: 1;
+    width: auto;
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #1f3a38;
+}
+
+/* Text, select and date fields */
+form[action="create_session.php"] input[type="text"],
+form[action="create_session.php"] input[type="datetime-local"],
+form[action="create_session.php"] select {
+    grid-column: 2 / -1;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #1d2b2a;
+    background: #fbfaf5;
+    border: 2px solid #b9c4b4;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+form[action="create_session.php"] input[type="text"]:hover,
+form[action="create_session.php"] input[type="datetime-local"]:hover,
+form[action="create_session.php"] select:hover {
+    border-color: #7f9a8f;
+}
+
+form[action="create_session.php"] input[type="text"]:focus,
+form[action="create_session.php"] input[type="datetime-local"]:focus,
+form[action="create_session.php"] select:focus {
+    background: #ffffff;
+    border-color: #2f6b66;
+    box-shadow: 0 0 0 4px rgba(47, 107, 102, 0.22);
+}
+
+form[action="create_session.php"] select,
+form[action="create_session.php"] input[type="datetime-local"] {
+    cursor: pointer;
+}
+
+/* Checkbox + its explanation */
+form[action="create_session.php"] input[type="checkbox"] {
+    grid-column: 2;
+    width: 22px;
+    height: 22px;
+    margin-left: 20px;
+    accent-color: #113f3b;
+    cursor: pointer;
+}
+
+
+form[action="create_session.php"] .btn{
+    grid-row: 6;
+    align-self: center;
+    justify-self: start;
+    width: auto;
+    text-decoration: none;
+    margin: 14px 0 0;
+    white-space: nowrap;
+    box-shadow: 0 5px 8px rgba(5, 2, 1, 0.45);
+}
+
+/* Start Session: first column */
+form[action="create_session.php"] button.btn{
+    grid-column: 1;
+}
+
+/* Cancel: right next to it */
+form[action="create_session.php"] a.btn{
+    grid-column: 2 / -1;
+}
+
+form[action="create_session.php"] .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(5, 2, 1, 0.45);
+}
+
+form[action="create_session.php"] .btn:active{
+    transform: translateY(0);
+}
+
+form[action="create_session.php"] .btn:focus-visible{
+    outline: 3px solid #2f6b66;
+    outline-offset: 3px;
+}
+
+/* Error messages above the form */
+h2 ~ p.error:has(~ form[action="create_session.php"]) {
+    max-width: 860px;
+    margin: 10px 0 0 25px;
+    padding: 12px 16px;
+    background: #fbe9e7;
+    color: #8c1d18;
+    border-left: 5px solid #c0392b;
+    border-radius: 8px;
+}
+
+/* Tablets / phones: stack labels above fields */
+@media (max-width: 700px) {
+    form[action="create_session.php"] {
+        grid-template-columns: 30px 1fr;
+        margin: 10px 14px 30px;
+        padding: 24px 20px 28px;
+        gap: 10px 12px;
+    }
+
+    form[action="create_session.php"] .form-label {
+        grid-column: 1 / -1;
+        margin-top: 8px;
+    }
+
+    form[action="create_session.php"] input[type="text"],
+    form[action="create_session.php"] input[type="datetime-local"],
+    form[action="create_session.php"] select {
+        grid-column: 1 / -1;
+    }
+
+    form[action="create_session.php"] input[type="checkbox"] {
+        grid-column: 1;
+    }
+
+    form[action="create_session.php"] input[type="checkbox"] + span {
+        grid-column: 2;
+    }
+
+    form[action="create_session.php"] .btn,
+    form[action="create_session.php"] .order-link {
+        grid-column: 1 / -1;
+        justify-self: stretch;
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    form[action="create_session.php"] * {
+        transition: none !important;
+    }
 }
