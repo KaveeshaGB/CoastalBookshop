@@ -46,8 +46,12 @@ document.addEventListener('DOMContentLoaded', function () {
             data.append('action', action);
             const result = await send(data);
             if (result.ok) {
-                window.location.reload();
-            } else {
+                if (action === 'end' || action === 'leave') {
+                    window.location.href = 'bookclub.php';
+                }else{
+                    window.location.reload();
+                }
+            }else{
                 showError(result.message);
             }
         });
