@@ -1,0 +1,8 @@
+# Environment and secrets
+.env
+
+# Uploaded ebook files
+ebooks/*
+
+# Keep the protection file
+!ebooks/.htaccess

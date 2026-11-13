@@ -21,7 +21,7 @@ A bookshop website built with PHP and MySQL. Customers can browse books by categ
 2. Clone the repo into `C:\xampp\htdocs`:
    git clone https://github.com/KaveeshaGB/CoastalBookshop.git
 3. Open phpMyAdmin (http://localhost/phpmyadmin) and create a database named `coastal_bookshop`.
-4. Import the file `Databases/coastal_bookshop.sql` into that database.
+4. Import the file `database/coastal_bookshop.sql` into that database.
 5. Check `includes/config.php` and make sure the database name, username and password match your computer.
 6. Open http://localhost/CoastalBookshop in your browser.
 
@@ -31,7 +31,7 @@ A bookshop website built with PHP and MySQL. Customers can browse books by categ
 - MalmiUmayangana
 - RameshaUJayasekara
 - NirmaniPiyumika
-- 
+- Chayakaggodaarachchi
 
 ## Git workflow
 

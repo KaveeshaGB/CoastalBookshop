@@ -1,0 +1,353 @@
+/* ================================================================
+   ADMIN STYLES  (Manage Books + Add / Edit Book)
+   Paste at the BOTTOM of css/style.css.
+   If you pasted the earlier "Manage Books" block, delete it first:
+   this file replaces it.
+   ================================================================ */
+
+/* Shared colours, so both pages always match */
+:root {
+    --adm-teal       : #2f6b64;
+    --adm-teal-dark  : #1f4d47;
+    --adm-cell       : rgb(166, 204, 192);
+    --adm-cell-alt   : rgb(150, 192, 179);
+    --adm-cell-hover : rgb(221, 236, 230);
+    --adm-brown      : rgba(77, 16, 0, 0.876);
+    --adm-brown-hover: rgba(119, 51, 34, 0.992);
+    --adm-red        : #7a1f1f;
+    --adm-red-hover  : #9b2a2a;
+    --adm-ink        : #1c2b28;
+    --adm-paper      : #f6f2ea;
+}
+
+
+/* ================================================================
+   1. MANAGE BOOKS  (admin_books.php)
+   The table has no class, so it is found through the
+   "+ Add New Book" link that sits just above it.
+   ================================================================ */
+
+/* "+ Add New Book" link */
+a.order-link[href="admin_book_form.php"] {
+    margin: 6px 20px 0;
+    padding: 9px 18px;
+    font-size: 17px;
+    color: #fff;
+    text-decoration: none;
+    background-color: var(--adm-brown);
+}
+a.order-link[href="admin_book_form.php"]:hover {
+    background-color: var(--adm-brown-hover);
+}
+
+/* The table */
+a.order-link[href="admin_book_form.php"] ~ table {
+    width: calc(100% - 40px);
+    margin: 14px 20px 30px;
+    font-size: 15px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid var(--adm-teal-dark);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Header row */
+a.order-link[href="admin_book_form.php"] ~ table th {
+    padding: 12px 10px;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--adm-paper);
+    background-color: var(--adm-teal);
+    border: none;
+    border-bottom: 3px solid var(--adm-teal-dark);
+}
+
+/* Body cells */
+a.order-link[href="admin_book_form.php"] ~ table td {
+    padding: 10px;
+    vertical-align: middle;
+    color: var(--adm-ink);
+    background-color: var(--adm-cell);
+    border: none;
+    border-bottom: 1px solid rgba(31, 77, 71, 0.35);
+}
+
+/* Zebra rows + hover highlight */
+a.order-link[href="admin_book_form.php"] ~ table tr:nth-child(even) td {
+    background-color: var(--adm-cell-alt);
+}
+a.order-link[href="admin_book_form.php"] ~ table tr:hover td {
+    background-color: var(--adm-cell-hover);
+}
+a.order-link[href="admin_book_form.php"] ~ table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ID column */
+a.order-link[href="admin_book_form.php"] ~ table td:first-child {
+    font-weight: bold;
+    color: var(--adm-teal-dark);
+    white-space: nowrap;
+}
+
+/* Cover thumbnails */
+a.order-link[href="admin_book_form.php"] ~ table td img {
+    display: block;
+    width: 46px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Actions column: Edit and Delete side by side, same size */
+a.order-link[href="admin_book_form.php"] ~ table td:last-child {
+    white-space: nowrap;
+}
+a.order-link[href="admin_book_form.php"] ~ table td:last-child form {
+    display: inline-block;
+    margin: 0;
+}
+a.order-link[href="admin_book_form.php"] ~ table td .order-link,
+a.order-link[href="admin_book_form.php"] ~ table td .btn {
+    display: inline-block;
+    min-width: 62px;
+    margin: 0 3px 0 0 !important;      /* beats the inline style on the Delete button */
+    padding: 8px 12px !important;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: var(--adm-brown);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+a.order-link[href="admin_book_form.php"] ~ table td .order-link:hover,
+a.order-link[href="admin_book_form.php"] ~ table td .btn:hover {
+    background-color: var(--adm-brown-hover);
+}
+
+/* Delete is a darker red so it stands apart from Edit */
+a.order-link[href="admin_book_form.php"] ~ table td .btn {
+    background-color: var(--adm-red);
+}
+a.order-link[href="admin_book_form.php"] ~ table td .btn:hover {
+    background-color: var(--adm-red-hover);
+}
+
+/* Small screens: the table scrolls sideways instead of breaking the page */
+@media (max-width: 900px) {
+    a.order-link[href="admin_book_form.php"] ~ table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+
+/* ================================================================
+   2. ADD / EDIT BOOK  (admin_book_form.php)
+   Same card look as the "Start a Session" form.
+   ================================================================ */
+
+ /*================================================================
+   2. ADD / EDIT BOOK  (admin_book_form.php)
+   Same card look as the "Start a Session" form.
+   ================================================================ */
+ 
+form[action^="admin_"][action$="_form.php"] {
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    align-items: center;
+    gap: 16px 16px;
+    max-width: 860px;
+    margin: 10px 0 40px 25px;
+    padding: 32px 36px 36px;
+    background: rgba(255, 255, 255, 0.38);
+    border: 1px solid rgba(31, 74, 74, 0.25);
+    border-top: 4px solid var(--adm-teal);
+    border-right: 6px solid var(--adm-teal);
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(31, 58, 56, 0.22);
+}
+ 
+/* The <br> tags are only line breaks; the grid handles the layout */
+form[action^="admin_"][action$="_form.php"] br {
+    display: none;
+}
+ 
+/* Labels */
+form[action^="admin_"][action$="_form.php"] .form-label {
+    grid-column: 1;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #1f3a38;
+}
+ 
+/* Text, number, date and select fields */
+form[action^="admin_"][action$="_form.php"] input[type="text"],
+form[action^="admin_"][action$="_form.php"] input[type="number"],
+form[action^="admin_"][action$="_form.php"] input[type="date"],
+form[action^="admin_"][action$="_form.php"] select {
+    grid-column: 2;
+    width: 100%;
+    margin: 0;
+    padding: 11px 14px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #1d2b2a;
+    background: #fbfaf5;
+    border: 2px solid #b9c4b4;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+ 
+/* Short fields do not need the full width */
+form[action^="admin_"][action$="_form.php"] input[type="number"],
+form[action^="admin_"][action$="_form.php"] input[type="date"],
+form[action^="admin_"][action$="_form.php"] select {
+    width: 100%;
+    max-width: 260px;
+    cursor: pointer;
+}
+form[action^="admin_"][action$="_form.php"] input[type="number"] {
+    cursor: text;
+}
+ 
+form[action^="admin_"][action$="_form.php"] input[type="text"]:hover,
+form[action^="admin_"][action$="_form.php"] input[type="number"]:hover,
+form[action^="admin_"][action$="_form.php"] input[type="date"]:hover,
+form[action^="admin_"][action$="_form.php"] select:hover {
+    border-color: #7f9a8f;
+}
+ 
+form[action^="admin_"][action$="_form.php"] input[type="text"]:focus,
+form[action^="admin_"][action$="_form.php"] input[type="number"]:focus,
+form[action^="admin_"][action$="_form.php"] input[type="date"]:focus,
+form[action^="admin_"][action$="_form.php"] select:focus {
+    background: #fff;
+    border-color: var(--adm-teal);
+    box-shadow: 0 0 0 4px rgba(47, 107, 102, 0.22);
+}
+ 
+/* Cover image: file chooser */
+form[action^="admin_"][action$="_form.php"] input[type="file"] {
+    grid-column: 2;
+    width: 100%;
+    margin: 0;
+    padding: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #1d2b2a;
+    background: #fbfaf5;
+    border: 2px dashed #9fb3a8;
+    border-radius: 10px;
+}
+form[action^="admin_"][action$="_form.php"] input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #fff;
+    background: var(--adm-brown);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+form[action^="admin_"][action$="_form.php"] input[type="file"]::file-selector-button:hover {
+    background: var(--adm-brown-hover);
+}
+ 
+/* Current cover shown when editing */
+form[action^="admin_"][action$="_form.php"] img {
+    grid-column: 2;
+    width: 70px;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+ 
+/* Buttons: Save in the first column, Cancel right next to it */
+form[action^="admin_"][action$="_form.php"] .btn,
+form[action^="admin_"][action$="_form.php"] .order-link {
+    align-self: center;
+    justify-self: start;
+    width: auto;
+    margin: 14px 0 0;
+    white-space: nowrap;
+    text-decoration: none;
+    box-shadow: 0 5px 8px rgba(5, 2, 1, 0.45);
+}
+form[action^="admin_"][action$="_form.php"] button.btn {
+    grid-column: 1;
+}
+form[action^="admin_"][action$="_form.php"] .order-link {
+    grid-column: 2;
+    padding: 8px 18px;
+    font-size: 18px;
+    color: #fff;
+    background-color: var(--adm-brown);
+}
+form[action^="admin_"][action$="_form.php"] .order-link:hover {
+    background-color: var(--adm-brown-hover);
+}
+form[action^="admin_"][action$="_form.php"] .btn:hover,
+form[action^="admin_"][action$="_form.php"] .order-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(5, 2, 1, 0.45);
+}
+form[action^="admin_"][action$="_form.php"] .btn:active,
+form[action^="admin_"][action$="_form.php"] .order-link:active {
+    transform: translateY(0);
+}
+form[action^="admin_"][action$="_form.php"] .btn:focus-visible,
+form[action^="admin_"][action$="_form.php"] .order-link:focus-visible {
+    outline: 3px solid var(--adm-teal);
+    outline-offset: 3px;
+}
+ 
+/* Error messages above the form */
+h2 ~ p.error:has(~ form[action^="admin_"][action$="_form.php"]) {
+    max-width: 860px;
+    margin: 10px 0 0 25px;
+    padding: 12px 16px;
+    background: #fbe9e7;
+    color: #8c1d18;
+    border-left: 5px solid #c0392b;
+    border-radius: 8px;
+}
+ 
+/* Small screens: one column, labels above fields */
+@media (max-width: 700px) {
+    form[action^="admin_"][action$="_form.php"] {
+        grid-template-columns: 1fr;
+        margin: 10px 12px 30px;
+        padding: 22px 18px 26px;
+    }
+    form[action^="admin_"][action$="_form.php"] .form-label,
+    form[action^="admin_"][action$="_form.php"] input,
+    form[action^="admin_"][action$="_form.php"] select,
+    form[action^="admin_"][action$="_form.php"] img,
+    form[action^="admin_"][action$="_form.php"] button.btn,
+    form[action^="admin_"][action$="_form.php"] .order-link {
+        grid-column: 1;
+    }
+    form[action^="admin_"][action$="_form.php"] input[type="number"],
+    form[action^="admin_"][action$="_form.php"] input[type="date"],
+    form[action^="admin_"][action$="_form.php"] select {
+        max-width: none;
+    }
+}

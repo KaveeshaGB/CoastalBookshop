@@ -8,7 +8,8 @@ $isMember = isMember($pdo, $me);
 $msg      = $_SESSION['club_msg'] ?? null;
 $err      = $_SESSION['club_error'] ?? null;
 $shelfErr = $_SESSION['shelf_error'] ?? null;
-unset($_SESSION['club_msg'], $_SESSION['club_error'], $_SESSION['shelf_error']);
+$shelfMsg = $_SESSION['shelf_msg'] ?? null;
+unset($_SESSION['club_msg'], $_SESSION['club_error'], $_SESSION['shelf_error'], $_SESSION['shelf_msg']);
 
 // ---------- Sessions ----------
 // Everyone sees public sessions. Members also see the sessions that are not public.
@@ -29,51 +30,51 @@ foreach ($sessions as $s) {
 $titles    = ['live' => 'Happening now', 'upcoming' => 'Coming up', 'ended' => 'Past sessions'];
 $liveCount = count($groups['live']);
 
-// ---------- Bookshelf (members only) ----------
-// Only ebooks the member has BOUGHT: the book has an ebook file AND is in one of their orders.
-$shelf = [];     // already downloaded
-$waiting = [];   // bought, not downloaded yet
+// ---------- Bookshelf ----------
+// Members see two groups: ebooks they have bought (on top) and ebooks they can still buy (under).
+$owned     = [];   // bought
+$available = [];   // not bought yet
 if ($isMember) {
     $stmt = $pdo->prepare(
-        "SELECT b.BookID, b.Title, b.Author, b.ImageFile, d.DownloadedAt
-           FROM Books b
-           LEFT JOIN EbookDownload d ON d.BookID = b.BookID AND d.CustomerID = ?
-          WHERE b.EbookFile IS NOT NULL AND b.EbookFile <> ''
-            AND EXISTS (SELECT 1
-                          FROM Orders o
-                          JOIN Order_Books ob ON ob.OrderID = o.OrderID
-                         WHERE o.CustomerID = ? AND ob.BookID = b.BookID)
-          ORDER BY d.DownloadedAt DESC, b.Title"
+        'SELECT e.EbookID, e.Title, e.Author, e.Price, e.CoverImage, m.PurchasedAt
+           FROM Ebook e
+           LEFT JOIN Member_Ebook m ON m.EbookID = e.EbookID AND m.CustomerID = ?
+          ORDER BY m.PurchasedAt DESC, e.Title'
     );
-    $stmt->execute([$me, $me]);
+    $stmt->execute([$me]);
     foreach ($stmt->fetchAll() as $b) {
-        if ($b['DownloadedAt']) $shelf[] = $b; else $waiting[] = $b;
+        if ($b['PurchasedAt']) $owned[] = $b; else $available[] = $b;
     }
 }
 
-// One book standing on the shelf
-function shelfBook(array $b, bool $downloaded): void { ?>
+// One ebook standing on the shelf
+function shelfBook(array $b, bool $bought): void { ?>
                         <div class="shelf-book">
-                            <?php if ($b['ImageFile']): ?>
-                                <img class="shelf-cover" src="images/covers/<?= e($b['ImageFile']) ?>" alt="Cover of <?= e($b['Title']) ?>">
+                            <?php if ($b['CoverImage']): ?>
+                                <img class="shelf-cover" src="images/covers/<?= e($b['CoverImage']) ?>" alt="Cover of <?= e($b['Title']) ?>">
                             <?php else: ?>
                                 <div class="shelf-cover no-cover"><?= e($b['Title']) ?></div>
                             <?php endif; ?>
                             <p class="shelf-title"><?= e($b['Title']) ?></p>
                             <p class="shelf-author"><?= e($b['Author']) ?></p>
-                            <?php if ($downloaded): ?>
-                                <p class="shelf-date">Downloaded <?= e(date('d M Y', strtotime($b['DownloadedAt']))) ?></p>
-                                <a class="order-link" href="download_ebook.php?id=<?= urlencode($b['BookID']) ?>">Download again</a>
+                            <?php if ($bought): ?>
+                                <p class="shelf-date">Bought <?= e(date('d M Y', strtotime($b['PurchasedAt']))) ?></p>
+                                <?php // target="_blank" opens the ebook in a new tab ?>
+                                <a class="order-link" href="read_ebook.php?id=<?= urlencode($b['EbookID']) ?>"
+                                   target="_blank" rel="noopener">Read</a>
                             <?php else: ?>
-                                <?php // after the first download, reload so the book moves onto the shelf ?>
-                                <a class="order-link" href="download_ebook.php?id=<?= urlencode($b['BookID']) ?>"
-                                   onclick="setTimeout(function () { location.reload(); }, 1500);">Download</a>
+                                <p class="shelf-date">Rs.<?= number_format($b['Price'], 2) ?></p>
+                                <form method="post" action="buy_ebook.php"
+                                      onsubmit="return confirm('Buy this ebook for Rs.<?= number_format($b['Price'], 2) ?>?');">
+                                    <input type="hidden" name="ebook_id" value="<?= e($b['EbookID']) ?>">
+                                    <button type="submit" class="btn">Buy</button>
+                                </form>
                             <?php endif; ?>
                         </div>
 <?php }
 
 // Which tab opens by itself (after a message or an error)
-$start = $shelfErr ? 'bookshelf' : (($msg || $err) ? 'sessions' : '');
+$start = ($shelfErr || $shelfMsg) ? 'bookshelf' : (($msg || $err) ? 'sessions' : '');
 
 require __DIR__.'/includes/header.php';
 ?>
@@ -96,12 +97,10 @@ require __DIR__.'/includes/header.php';
                             <span class="live-count"><?= $liveCount ?> live</span>
                             <?php endif; ?>
                         </button>
-                        <?php if ($isMember): ?>
-                            <button type="button" role="tab" id="tab-bookshelf" data-tab="bookshelf" data-label="My Bookshelf"
-                                    aria-controls="panel-bookshelf" aria-selected="false">
-                                <span class="tab-label">My Bookshelf</span>
-                            </button>
-                        <?php endif; ?>
+                        <button type="button" role="tab" id="tab-bookshelf" data-tab="bookshelf" data-label="My Bookshelf"
+                                aria-controls="panel-bookshelf" aria-selected="false">
+                            <span class="tab-label">My Bookshelf</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -116,7 +115,11 @@ require __DIR__.'/includes/header.php';
                     <?php if ($isMember): ?>
                         <a class="order-link" href="create_session.php">+ Create session</a>
                     <?php elseif ($me): ?>
-                        <p class="message">You can see the public sessions. Only members can join them.</p>
+                    <p class="message">You can see the public sessions. Only members can join them.</p>
+                    <form method="post" action="become_member.php"
+                    onsubmit="return confirm('Become a book club member?');">
+                        <button type="submit" class="btn">Become a member</button>
+                    </form>
                     <?php else: ?>
                         <p class="message">Log in as a member to join a session, or register and tick "Join as member".</p>
                     <?php endif; ?>
@@ -147,32 +150,43 @@ require __DIR__.'/includes/header.php';
                     <?php endforeach; ?>
                 </section>
 
-                <!-- MY BOOKSHELF (members only) -->
-                <?php if ($isMember): ?>
+                <!-- MY BOOKSHELF -->
                 <section id="panel-bookshelf" role="tabpanel" aria-labelledby="tab-bookshelf" class="shelf-page" hidden>
+                    <?php if ($shelfMsg): ?><p class="message"><?= e($shelfMsg) ?></p><?php endif; ?>
                     <?php if ($shelfErr): ?><p class="error"><?= e($shelfErr) ?></p><?php endif; ?>
 
-                    <?php if (!$shelf && !$waiting): ?>
-                        <p class="message">You don't own any ebooks yet. Once you buy one, it will show up here.</p>
+                    <?php if (!$me): ?>
+                        <p class="message">Log in to see your bookshelf. New here? Register and tick "Join as member".</p>
+
+                    <?php elseif (!$isMember): ?>
+                        <p class="message">You are not a member yet, so you can't buy ebooks.
+                            Become a member to buy ebooks and read them here.</p>
+                        <form method="post" action="become_member.php"
+                              onsubmit="return confirm('Become a book club member?');">
+                            <input type="hidden" name="return" value="bookshelf">
+                            <button type="submit" class="btn">Become a member</button>
+                        </form>
+
                     <?php else: ?>
                         <h3>On your shelf</h3>
-                        <?php if ($shelf): ?>
-                            <div class="shelf-row">
-                                <?php foreach ($shelf as $b) shelfBook($b, true); ?>
-                            </div>
+                        <?php if (!$owned): ?>
+                            <p class="message">You don't own any ebooks yet. Once you buy one, it will show up here.</p>
                         <?php else: ?>
-                            <p class="message">Your shelf is empty. Download one of your ebooks below to place it here.</p>
+                            <div class="shelf-row">
+                                <?php foreach ($owned as $b) shelfBook($b, true); ?>
+                            </div>
                         <?php endif; ?>
 
-                        <?php if ($waiting): ?>
-                            <h3>Bought and ready to download</h3>
+                        <h3>More ebooks to buy</h3>
+                        <?php if (!$available): ?>
+                            <p class="message">You own every ebook we have right now.</p>
+                        <?php else: ?>
                             <div class="shelf-row waiting">
-                                <?php foreach ($waiting as $b) shelfBook($b, false); ?>
+                                <?php foreach ($available as $b) shelfBook($b, false); ?>
                             </div>
                         <?php endif; ?>
                     <?php endif; ?>
                 </section>
-                <?php endif; ?>
             </div>
 
             <script>
@@ -210,5 +224,10 @@ require __DIR__.'/includes/header.php';
 
                         // On load: use the #sessions / #bookshelf in the address, else whatever the server asked for
                     show(location.hash.replace('#', '') || content.dataset.start);
+
+                    // The Ebooks link in the top nav only changes the #hash when you are already on this page
+                    window.addEventListener('hashchange', function () {
+                        show(location.hash.replace('#', ''));
+                    });
                     })();
             </script>

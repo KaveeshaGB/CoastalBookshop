@@ -7,7 +7,7 @@ $customerId = $_SESSION['customer_id'];
 
 // LEFT JOIN so a customer who is not a club member yet still sees their details
 $stmt = $pdo->prepare(
-  'SELECT c.Name, c.Email, c.Phone, c.Address, m.JoinDate
+  'SELECT c.Name, c.Email, c.Phone, c.Address, m.JoinDate, m.ResignedAt
    FROM customer c
    LEFT JOIN member m ON m.CustomerID = c.CustomerID
    WHERE c.CustomerID = ?');
@@ -37,6 +37,7 @@ $pageTitle = 'My Profile - Coastal Bookshop';
 require __DIR__.'/includes/header.php';
 
 $initial = strtoupper(substr(trim($member['Name'] ?? '?'), 0, 1));
+$isActive = !empty($member['JoinDate']) && empty($member['ResignedAt']);
 ?>
             <link rel="stylesheet" href="css/profile.css">
 
@@ -48,7 +49,7 @@ $initial = strtoupper(substr(trim($member['Name'] ?? '?'), 0, 1));
                     <div class="profile-hero-text">
                         <h2><?= e($member['Name']) ?></h2>
                         <p class="profile-sub">
-                            <?php if (!empty($member['JoinDate'])): ?>
+                            <?php if ($isActive): ?>
                                 Book Club member since <?= e(date('j F Y', strtotime($member['JoinDate']))) ?>
                             <?php else: ?>
                                 Coastal Bookshop customer
@@ -74,9 +75,16 @@ $initial = strtoupper(substr(trim($member['Name'] ?? '?'), 0, 1));
                         </div>
                         <div>
                             <dt>Member since</dt>
-                            <dd><?= !empty($member['JoinDate']) ? e($member['JoinDate']) : '&mdash;' ?></dd>
+                            <dd><?= $isActive ? e($member['JoinDate']) : '&mdash;' ?></dd>
                         </div>
                     </dl>
+                    <?php if ($isActive): ?>
+                    <form method="post" action="become_member.php"
+                        onsubmit="return confirm('Resign from your membership? You will leave all sessions.');">
+                        <input type="hidden" name="action" value="resign">
+                        <button type="submit" class="btn profile-btn">Resign membership</button>
+                    </form>
+                    <?php endif; ?>
                 </section>
 
                 <!-- ---------- Events ---------- -->

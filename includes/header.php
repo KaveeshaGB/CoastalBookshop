@@ -15,6 +15,7 @@ $loggedIn = !empty($_SESSION['customer_id']);
         <link rel="stylesheet" href="css/form.css">
         <link rel="stylesheet" href="css/footer.css">
         <link rel="stylesheet" href="css/cart.css">
+        <link rel="stylesheet" href="css/admin.css">
         <script src="js/script.js" defer></script>
     </head>
     <body>
@@ -25,6 +26,7 @@ $loggedIn = !empty($_SESSION['customer_id']);
                 <a href="home.php">Home</a>
                 <a href="order.php">Order</a>
                 <a href="bookclub.php">Book Club</a>
+                <a href="bookclub.php#bookshelf">Ebooks</a>
             </nav>
             <nav class="sign-in main-nav">
                 <?php if ($loggedIn): ?>

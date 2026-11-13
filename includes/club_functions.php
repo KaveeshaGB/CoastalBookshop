@@ -5,7 +5,7 @@ require_once __DIR__.'/config.php';
 // A member is a customer who has a row in the Member table.
 function isMember(PDO $pdo, $customerId): bool {
     if (!$customerId) return false;
-    $stmt = $pdo->prepare('SELECT 1 FROM Member WHERE CustomerID = ?');
+    $stmt = $pdo->prepare('SELECT 1 FROM Member WHERE CustomerID = ? AND ResignedAt IS NULL');
     $stmt->execute([$customerId]);
     return (bool)$stmt->fetchColumn();
 }
