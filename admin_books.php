@@ -39,6 +39,8 @@ require __DIR__.'/includes/header.php';
                     <th>Author</th>
                     <th>Category</th>
                     <th>Price</th>
+                    <th>Stock</th>
+                    <th>Offer</th>
                     <th>Date Added</th>
                     <th>Actions</th>
                 </tr>
@@ -54,6 +56,13 @@ require __DIR__.'/includes/header.php';
                     <td><?= e($b['Author']) ?></td>
                     <td><?= e($b['Category']) ?></td>
                     <td>Rs.<?= number_format($b['Price'], 2) ?></td>
+                    <td><?php if (isOutOfStock($b)): ?><span class="stock-warn">Out of stock</span><?php else: ?><?= (int)$b['Stock'] ?><?php endif; ?></td>
+                    <td>
+                        <?php if (hasOffer($b)): ?>
+                            -<?= (int)$b['DiscountPercent'] ?>% (Rs.<?= number_format(finalPrice($b), 2) ?>)
+                            <?php if ($b['OfferEnds']): ?><br>until <?= e($b['OfferEnds']) ?><?php endif; ?>
+                        <?php else: ?>-<?php endif; ?>
+                    </td>
                     <td><?= e($b['DateAdded']) ?></td>
                     <td>
                         <a class="order-link" href="admin_book_form.php?id=<?= urlencode($b['BookID']) ?>">Edit</a>

@@ -32,23 +32,70 @@ const DELIVERY_COSTS = [
     'Express'      => 800,
 ];
 
+// ---------- Offers and stock ----------
+// Is a discount running for this book right now? (DiscountPercent is set and OfferEnds has not passed)
+function hasOffer(array $b): bool {
+    if ((int)($b['DiscountPercent'] ?? 0) <= 0) return false;
+    return empty($b['OfferEnds']) || $b['OfferEnds'] >= date('Y-m-d');
+}
+
+// The price the customer actually pays (discount applied while the offer is running)
+function finalPrice(array $b): float {
+    $price = (float)$b['Price'];
+    if (!hasOffer($b)) return $price;
+    return round($price * (100 - (int)$b['DiscountPercent']) / 100, 2);
+}
+
+// True when no copies are left
+function isOutOfStock(array $b): bool {
+    return (int)($b['Stock'] ?? 0) <= 0;
+}
+
 // Shows one book card (used by home + category pages)
 function renderBook(array $b) {
     global $likedIds;
     $liked = in_array($b['BookID'], $likedIds ?? [], true);
     $img = $b['ImageFile'] ? 'images/covers/' . $b['ImageFile'] : 'images/logo.png';
+    $out   = isOutOfStock($b);
+    $offer = hasOffer($b);
+    $left  = (int)($b['Stock'] ?? 0);
 
-    echo '<div class="books">';
+    echo '<div class="books' . ($out ? ' out-of-stock' : '') . '">';
+    if ($out) {
+        echo '<span class="book-badge badge-out">Out of Stock</span>';
+    } elseif ($offer) {
+        echo '<span class="book-badge badge-offer">-' . (int)$b['DiscountPercent'] . '%</span>';
+    }
     echo '<img src="' . e($img) . '" alt="' . e($b['Title']) . '">';
     echo '<h4>' . e($b['Title']) . '</h4>';
-    echo '<p>Rs.' . number_format($b['Price'], 2) . '</p>';
+    if ($offer) {
+        echo '<p><span class="old-price">Rs.' . number_format($b['Price'], 2) . '</span> '
+           . '<span class="new-price">Rs.' . number_format(finalPrice($b), 2) . '</span></p>';
+        if (!empty($b['OfferEnds'])) {
+            echo '<p class="offer-ends">Offer ends ' . e($b['OfferEnds']) . '</p>';
+        }
+    } else {
+        echo '<p>Rs.' . number_format($b['Price'], 2) . '</p>';
+    }
+    if (!$out && $left <= 5) {
+        echo '<p class="low-stock">Only ' . $left . ' left</p>';
+    }
 
     echo '<div class="book-actions">';
     echo '<button type="button" class="heart-btn' . ($liked ? ' liked' : '') . '" data-book="' . e($b['BookID']) . '" aria-label="Like this book">&#9829;</button>';
-    echo '<button type="button" class="cart-btn" data-book="' . e($b['BookID']) . '" aria-label="Add to cart"><img src="images/cart.jpg" alt=""></button>';
+    if ($out) {
+        // No "cart-btn" class on purpose, so book-actions.js ignores it
+        echo '<button type="button" class="cart-off" disabled title="Out of stock" aria-label="Out of stock"><img src="images/cart.jpg" alt=""></button>';
+    } else {
+        echo '<button type="button" class="cart-btn" data-book="' . e($b['BookID']) . '" aria-label="Add to cart"><img src="images/cart.jpg" alt=""></button>';
+    }
     echo '</div>';
 
-    echo '<a class="order-link" href="order.php?book=' . urlencode($b['BookID']) . '">Order Now</a>';
+    if ($out) {
+        echo '<span class="order-link disabled">Out of Stock</span>';
+    } else {
+        echo '<a class="order-link" href="order.php?book=' . urlencode($b['BookID']) . '">Order Now</a>';
+    }
     echo '</div>';
 }
 

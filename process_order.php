@@ -7,6 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SESSION['customer_id'])) {
     exit;
 }
  
+// Thrown inside the order transaction when a book has run out
+class OutOfStockException extends Exception {}
+
 function fail($msg) {
     $_SESSION['order_error'] = $msg;
     $back = !empty($_POST['from_cart']) ? 'order.php?from=cart' : 'order.php';
@@ -74,18 +77,18 @@ if ($fromCart) {
     // Prices come from the database, never from the browser
     $ids  = array_map('strval', array_keys($cart));
     $in   = implode(',', array_fill(0, count($ids), '?'));
-    $stmt = $pdo->prepare("SELECT BookID, Title, Price FROM Books WHERE BookID IN ($in)");
+    $stmt = $pdo->prepare("SELECT BookID, Title, Price, DiscountPercent, OfferEnds FROM Books WHERE BookID IN ($in)");
     $stmt->execute($ids);
     foreach ($stmt->fetchAll() as $r) {
-        $lines[] = [$r['BookID'], $r['Title'], (float)$r['Price'], (int)$cart[$r['BookID']]];
+        $lines[] = [$r['BookID'], $r['Title'], finalPrice($r), (int)$cart[$r['BookID']]];
     }
     if (!$lines) fail('Your cart is empty.');
 } else {
-    $stmt = $pdo->prepare('SELECT BookID, Title, Price FROM Books WHERE BookID = ?');
+    $stmt = $pdo->prepare('SELECT BookID, Title, Price, DiscountPercent, OfferEnds FROM Books WHERE BookID = ?');
     $stmt->execute([$bookId]);
     $book = $stmt->fetch();
     if (!$book) fail('That book was not found.');
-    $lines[] = [$book['BookID'], $book['Title'], (float)$book['Price'], $qty];
+    $lines[] = [$book['BookID'], $book['Title'], finalPrice($book), $qty];
 }
  
 try {
@@ -98,8 +101,15 @@ try {
         ->execute([$orderId, $delivery, $pack, $address, $instr ?: null, $_SESSION['customer_id']]);
  
     $ins = $pdo->prepare('INSERT INTO Order_Books (OrderID, BookID, Quantity, UnitPrice) VALUES (?,?,?,?)');
+    // Takes the copies off the stock. The "AND Stock >= ?" part means it only works if enough are left,
+    // so two customers cannot both buy the last copy.
+    $take = $pdo->prepare('UPDATE Books SET Stock = Stock - ? WHERE BookID = ? AND Stock >= ?');
     $subtotal = 0;
     foreach ($lines as [$lineId, $lineTitle, $linePrice, $lineQty]) {
+        $take->execute([$lineQty, $lineId, $lineQty]);
+        if ($take->rowCount() === 0) {
+            throw new OutOfStockException('Sorry, "' . $lineTitle . '" is out of stock or has fewer copies than you asked for.');
+        }
         $ins->execute([$orderId, $lineId, $lineQty, $linePrice]);
         $subtotal += $linePrice * $lineQty;
     }
@@ -121,6 +131,11 @@ try {
     }
  
     $pdo->commit();
+} catch (OutOfStockException $ex) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    fail($ex->getMessage());
 } catch (Throwable $ex) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();

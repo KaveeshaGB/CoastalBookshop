@@ -2,21 +2,30 @@
 $pageTitle = 'Book Order';
 require __DIR__.'/includes/header.php';
  
-$books = $pdo->query('SELECT BookID, Title, Price, Category FROM Books ORDER BY Title')->fetchAll();
+$books = $pdo->query('SELECT BookID, Title, Price, Category, Stock, DiscountPercent, OfferEnds FROM Books ORDER BY Title')->fetchAll();
+// Add the price after any offer, so script.js can use it
+foreach ($books as &$bk) {
+    $bk['FinalPrice'] = finalPrice($bk);
+    $bk['OnOffer']    = hasOffer($bk);
+}
+unset($bk);
 $selected = $_GET['book'] ?? '';
  
 // Cart mode: opened from the cart's "Place Order" button (order.php?from=cart)
 $fromCart     = ($_GET['from'] ?? '') === 'cart';
 $cartItems    = [];
 $cartSubtotal = 0;
+$cartStockProblem = false;
 if ($fromCart && $loggedIn && !empty($_SESSION['cart'])) {
     $ids  = array_map('strval', array_keys($_SESSION['cart']));
     $in   = implode(',', array_fill(0, count($ids), '?'));
-    $stmt = $pdo->prepare("SELECT BookID, Title, Author, Price FROM Books WHERE BookID IN ($in)");
+    $stmt = $pdo->prepare("SELECT BookID, Title, Author, Price, Stock, DiscountPercent, OfferEnds FROM Books WHERE BookID IN ($in)");
     $stmt->execute($ids);
     foreach ($stmt->fetchAll() as $b) {
         $b['Qty']  = $_SESSION['cart'][$b['BookID']];
-        $b['Line'] = $b['Price'] * $b['Qty'];
+        $b['Unit'] = finalPrice($b);
+        $b['Line'] = $b['Unit'] * $b['Qty'];
+        if ($b['Qty'] > (int)$b['Stock']) $cartStockProblem = true;
         $cartSubtotal += $b['Line'];
         $cartItems[] = $b;
     }
@@ -98,7 +107,14 @@ unset($_SESSION['order_receipt'], $_SESSION['order_success'], $_SESSION['order_e
                         <tr>
                             <td><?= e($b['Title']) ?></td>
                             <td><?= e($b['Author']) ?></td>
-                            <td>Rs.<?= number_format($b['Price'], 2) ?></td>
+                            <td>
+                                <?php if (hasOffer($b)): ?>
+                                    <span class="old-price">Rs.<?= number_format($b['Price'], 2) ?></span>
+                                    <span class="new-price">Rs.<?= number_format($b['Unit'], 2) ?></span>
+                                <?php else: ?>
+                                    Rs.<?= number_format($b['Price'], 2) ?>
+                                <?php endif; ?>
+                            </td>
                             <td><?= (int)$b['Qty'] ?></td>
                             <td>Rs.<?= number_format($b['Line'], 2) ?></td>
                         </tr>
@@ -106,6 +122,9 @@ unset($_SESSION['order_receipt'], $_SESSION['order_success'], $_SESSION['order_e
                         <tr><td colspan="4"><strong>Subtotal</strong></td>
                             <td><strong>Rs.<?= number_format($cartSubtotal, 2) ?></strong></td></tr>
                     </table>
+                    <?php if ($cartStockProblem): ?>
+                        <p class="error">Some books in your cart are out of stock or have fewer copies than you chose. Please go back to your cart and fix it.</p>
+                    <?php endif; ?>
                     <p><a class="order-link" href="cart.php">Change cart</a></p>
  
                     <!-- The single-book fields stay in the page (hidden and switched off) so script.js keeps working -->
@@ -136,6 +155,7 @@ unset($_SESSION['order_receipt'], $_SESSION['order_success'], $_SESSION['order_e
                 <label class="form-label" for="quantity">Quantity:</label>
                 <input type="number" id="quantity" name="quantity" value="1" min="1" max="20" required>
                 <br>
+                <p id="stock-note" class="error" hidden></p>
                 <?php endif; ?>
  
                 <label class="form-label" for="delivery-method">Delivery Method:</label>
@@ -225,7 +245,7 @@ unset($_SESSION['order_receipt'], $_SESSION['order_success'], $_SESSION['order_e
                 <?php else: ?>
                     <p id="order-total" class="message"></p>
                 <?php endif; ?>
-                <button type="submit" class="btn">Place Order</button>
+                <button type="submit" class="btn" <?= $cartStockProblem ? 'disabled' : '' ?>>Place Order</button>
             </form>
  
             <?php if ($cartMode): ?>
