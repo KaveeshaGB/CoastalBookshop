@@ -29,6 +29,7 @@ require __DIR__.'/includes/header.php';
             <?php if ($err): ?><p class="error"><?= e($err) ?></p><?php endif; ?>
 
             <a class="order-link" href="admin_book_form.php">+ Add New Book</a>
+            <a class="order-link" href="admin_ebook_form.php">+ Add New Ebook</a>
             <br><br>
 
             <table>

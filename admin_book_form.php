@@ -2,6 +2,14 @@
 require __DIR__ . '/includes/admin_check.php';
 
 $categories = ['Fiction', 'Novel', 'Short Story', 'Kids Story'];
+$book['Discount']     = (int)($_POST['discount'] ?? 0);
+$book['OfferEndDate'] = trim($_POST['offer_end'] ?? '');
+
+// No end date = no offer
+if ($book['OfferEndDate'] === '') {
+    $book['Discount']     = 0;
+    $book['OfferEndDate'] = null;
+}
 
 $id = $_GET['id'] ?? $_POST['id'] ?? '';
 $errors = [];

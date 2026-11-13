@@ -275,7 +275,7 @@ td{
     margin:10px 20px;
     padding:8px;
     font-weight:bold;
-    color:white;
+    color:rgb(255, 253, 253);
     background-color:rgba(77, 16, 0, 0.876);
     border-radius:4px;
 }
@@ -710,3 +710,4 @@ footer{
     border-radius: 10px;
     border: 2px solid currentColor;
 }
+

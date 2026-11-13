@@ -193,3 +193,38 @@ UPDATE Gift SET DecorationType = 'None';
 ALTER TABLE Gift
   MODIFY DecorationType ENUM('Option 1','Option 2','Option 3','Option 4','Option 5','Option 6','Option 7','None')
   NOT NULL DEFAULT 'None';
+CREATE TABLE Ebook (
+    EbookID    VARCHAR(10)   NOT NULL,
+    Title      VARCHAR(150)  NOT NULL,
+    Author     VARCHAR(100)  NOT NULL,
+    Price      DECIMAL(10,2) NOT NULL,
+    CoverImage VARCHAR(255)  NULL,       -- file name inside images/covers/
+    FileName   VARCHAR(255)  NOT NULL,   -- PDF file name inside the ebooks/ folder
+    PRIMARY KEY (EbookID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 2. Which member bought which ebook (Member buys Ebook: many-to-many)
+CREATE TABLE Member_Ebook (
+    CustomerID  VARCHAR(10)   NOT NULL,
+    EbookID     VARCHAR(10)   NOT NULL,
+    PricePaid   DECIMAL(10,2) NOT NULL,   -- price at the time of purchase
+    PurchasedAt DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (CustomerID, EbookID),
+    CONSTRAINT fk_me_member FOREIGN KEY (CustomerID) REFERENCES Member (CustomerID),
+    CONSTRAINT fk_me_ebook  FOREIGN KEY (EbookID)    REFERENCES Ebook (EbookID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Ebook offers (Ebook was created without these two columns)
+ALTER TABLE Ebook
+  ADD COLUMN IF NOT EXISTS DiscountPercent TINYINT NOT NULL DEFAULT 0
+      CHECK (DiscountPercent BETWEEN 0 AND 100),
+  ADD COLUMN IF NOT EXISTS OfferEnds DATE NULL;
+
+-- No end date = no offer (clear old rows first, then add the rule)
+UPDATE Books SET DiscountPercent = 0 WHERE OfferEnds IS NULL;
+ALTER TABLE Books ADD CONSTRAINT chk_books_offer_needs_date
+  CHECK (DiscountPercent = 0 OR OfferEnds IS NOT NULL);
+
+UPDATE Ebook SET DiscountPercent = 0 WHERE OfferEnds IS NULL;
+ALTER TABLE Ebook ADD CONSTRAINT chk_ebook_offer_needs_date
+  CHECK (DiscountPercent = 0 OR OfferEnds IS NOT NULL);
