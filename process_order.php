@@ -151,12 +151,16 @@ foreach ($lines as [$lineId, $lineTitle, $linePrice, $lineQty]) {
     $items[] = ['title' => $lineTitle, 'price' => $linePrice, 'qty' => $lineQty];
 }
  
-$total = $subtotal + DELIVERY_COSTS[$delivery];
+$packagingFee = ($pack === 'Protective') ? PROTECTIVE_BOX_FEE : 0;
+$giftFee      = ($type === 'Gift' && $decoration !== 'None') ? GIFT_FEE : 0;   // no charge for "No decoration"
+$total = $subtotal + DELIVERY_COSTS[$delivery] + $packagingFee + $giftFee;
 $_SESSION['order_receipt'] = [
     'id'         => $orderId,
     'items'      => $items,
     'delivery'   => $delivery,
     'delivery_fee' => (float) DELIVERY_COSTS[$delivery],
+    'packaging_fee' => (float) $packagingFee,
+    'gift_fee'     => (float) $giftFee,
     'total'      => (float) $total,
     'decoration' => ($type === 'Gift' && $decoration !== 'None') ? $decoration : null,
 ];

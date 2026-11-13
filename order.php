@@ -57,6 +57,12 @@ unset($_SESSION['order_receipt'], $_SESSION['order_success'], $_SESSION['order_e
                         </td></tr>
                         <?php endif; ?>
                         <tr><th>Delivery</th><td><?= e($receipt['delivery']) ?> (Rs.<?= number_format($receipt['delivery_fee'], 2) ?>)</td></tr>
+                        <?php if (!empty($receipt['packaging_fee'])): ?>
+                        <tr><th>Protective box</th><td>Rs.<?= number_format($receipt['packaging_fee'], 2) ?></td></tr>
+                        <?php endif; ?>
+                        <?php if (!empty($receipt['gift_fee'])): ?>
+                        <tr><th>Gift order</th><td>Rs.<?= number_format($receipt['gift_fee'], 2) ?></td></tr>
+                        <?php endif; ?>
                         <tr><th>Total</th><td><strong>Rs.<?= number_format($receipt['total'], 2) ?></strong></td></tr>
                     </table>
                     <button type="button" class="btn" id="ok-order-modal">OK</button>
@@ -86,6 +92,8 @@ unset($_SESSION['order_receipt'], $_SESSION['order_success'], $_SESSION['order_e
                 window.BOOKS = <?= json_encode($books) ?>;
                 window.SELECTED_BOOK = <?= json_encode($selected) ?>;
                 window.DELIVERY_COSTS = <?= json_encode(DELIVERY_COSTS) ?>;
+                window.PROTECTIVE_BOX_FEE = <?= json_encode(PROTECTIVE_BOX_FEE) ?>;
+                window.GIFT_FEE = <?= json_encode(GIFT_FEE) ?>;
             </script>
  
             <form id="order-form" method="post" action="process_order.php">
@@ -254,13 +262,23 @@ unset($_SESSION['order_receipt'], $_SESSION['order_success'], $_SESSION['order_e
                     var subtotal = <?= json_encode((float)$cartSubtotal) ?>;
                     var costs    = <?= json_encode(DELIVERY_COSTS) ?>;
                     var delivery = document.getElementById('delivery-method');
+                    var packaging = document.getElementById('packaging');
+                    var orderType = document.getElementById('order-type');
                     var out      = document.getElementById('cart-order-total');
  
                     function refresh() {
                         var cost = costs[delivery.value] || 0;
-                        out.textContent = 'Total (including delivery): Rs.' + (subtotal + cost).toFixed(2);
+                        if (packaging.value === 'Protective') cost += window.PROTECTIVE_BOX_FEE;
+                        var deco = document.querySelector('input[name="decoration_type"]:checked');
+                        if (orderType.value === 'Gift' && deco && deco.value !== 'None') cost += window.GIFT_FEE;
+                        out.textContent = 'Total (including delivery and extras): Rs.' + (subtotal + cost).toFixed(2);
                     }
                     delivery.addEventListener('change', refresh);
+                    packaging.addEventListener('change', refresh);
+                    orderType.addEventListener('change', refresh);
+                    document.querySelectorAll('input[name="decoration_type"]').forEach(function (r) {
+                        r.addEventListener('change', refresh);
+                    });
                     refresh();
                 })();
             </script>
@@ -292,6 +310,8 @@ unset($_SESSION['order_receipt'], $_SESSION['order_success'], $_SESSION['order_e
                     </tr>
                 </table>
  
+                <p class="extras-note">&#128230; Protect your books in transit with a sturdy protective box for just Rs.200 more!</p>
+                <p class="extras-note">&#127873; Make it a gift: pick a decoration and we'll wrap your books beautifully for only Rs.500 more!</p>
             </aside>
             </div>
 <?php require __DIR__.'/includes/footer.php'; ?>

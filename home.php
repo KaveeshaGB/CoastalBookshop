@@ -36,7 +36,7 @@ $newBooks  = $pdo->query('SELECT * FROM Books ORDER BY DateAdded DESC, BookID DE
             <?php endif; ?>
 
             <?php if ($suggested): ?>
-                <h2>Suggestions</h2>
+                <h2>Wishlist</h2>
                 <?php foreach ($suggested as $b) renderBook($b); ?>
             <?php endif; ?>
 <?php require __DIR__.'/includes/footer.php'; ?>
