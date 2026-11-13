@@ -219,6 +219,8 @@ ALTER TABLE Ebook
   ADD COLUMN IF NOT EXISTS DiscountPercent TINYINT NOT NULL DEFAULT 0
       CHECK (DiscountPercent BETWEEN 0 AND 100),
   ADD COLUMN IF NOT EXISTS OfferEnds DATE NULL;
+ALTER TABLE Member
+  ADD COLUMN ResignedAt DATETIME NULL DEFAULT NULL;
 
 -- No end date = no offer (clear old rows first, then add the rule)
 UPDATE Books SET DiscountPercent = 0 WHERE OfferEnds IS NULL;

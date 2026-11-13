@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const nameSel   = document.getElementById('book-name');
         const qty       = document.getElementById('quantity');
         const delivery  = document.getElementById('delivery-method');
+        const packaging = document.getElementById('packaging');
         const orderType = document.getElementById('order-type');
         const gift      = document.getElementById('gift-fields');
         const total     = document.getElementById('order-total');
@@ -112,7 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     note.hidden = true;
                 }
             }
-            const sum = Number(book.FinalPrice) * Number(qty.value || 1) + window.DELIVERY_COSTS[delivery.value];
+            let sum = Number(book.FinalPrice) * Number(qty.value || 1) + window.DELIVERY_COSTS[delivery.value];
+            if (packaging.value === 'Protective') sum += window.PROTECTIVE_BOX_FEE;   // protective box: +Rs.200
+            // gift order: +Rs.500, but free if "No decoration" is chosen
+            const deco = document.querySelector('input[name="decoration_type"]:checked');
+            if (orderType.value === 'Gift' && deco && deco.value !== 'None') sum += window.GIFT_FEE;
             total.textContent = 'Estimated total: Rs.' + sum.toFixed(2);
         }
 
@@ -179,7 +184,11 @@ document.addEventListener('DOMContentLoaded', function () {
         nameSel.addEventListener('change', updateTotal);
         qty.addEventListener('input', updateTotal);
         delivery.addEventListener('change', updateTotal);
-        orderType.addEventListener('change', toggleGift);
+        packaging.addEventListener('change', updateTotal);
+        orderType.addEventListener('change', function () { toggleGift(); updateTotal(); });
+        document.querySelectorAll('input[name="decoration_type"]').forEach(function (r) {
+            r.addEventListener('change', updateTotal);
+        });
         payment.addEventListener('change', toggleCard);
 
         fillBooks();
