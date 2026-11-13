@@ -182,3 +182,14 @@ CREATE TABLE EbookDownload (
 -- SELECT EventID, COUNT(*) AS MemberCount
 -- FROM Member_Event
 -- GROUP BY EventID;
+
+ALTER TABLE Books
+  ADD COLUMN Stock           INT         NOT NULL DEFAULT 10 CHECK (Stock >= 0),
+  ADD COLUMN DiscountPercent TINYINT     NOT NULL DEFAULT 0  CHECK (DiscountPercent BETWEEN 0 AND 100),
+  ADD COLUMN OfferEnds       DATE        NULL;
+
+UPDATE Gift SET DecorationType = 'None';
+
+ALTER TABLE Gift
+  MODIFY DecorationType ENUM('Option 1','Option 2','Option 3','Option 4','Option 5','Option 6','Option 7','None')
+  NOT NULL DEFAULT 'None';

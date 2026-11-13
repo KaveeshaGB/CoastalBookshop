@@ -76,17 +76,43 @@ document.addEventListener('DOMContentLoaded', function () {
             window.BOOKS.filter(b => b.Category === typeSel.value).forEach(function (b) {
                 const opt = document.createElement('option');
                 opt.value = b.BookID;
-                opt.textContent = b.Title + ' - Rs.' + Number(b.Price).toFixed(2);
-                if (b.BookID === window.SELECTED_BOOK) opt.selected = true;
+                if (Number(b.Stock) <= 0) {
+                    // Sold out: still listed, but cannot be chosen
+                    opt.textContent = b.Title + ' - OUT OF STOCK';
+                    opt.disabled = true;
+                } else {
+                    opt.textContent = b.Title + ' - Rs.' + Number(b.FinalPrice).toFixed(2) +
+                                      (b.OnOffer ? ' (' + b.DiscountPercent + '% off)' : '');
+                    if (b.BookID === window.SELECTED_BOOK) opt.selected = true;
+                }
                 nameSel.appendChild(opt);
             });
             updateTotal();
         }
 
         function updateTotal() {
+            const note = document.getElementById('stock-note');
             const book = window.BOOKS.find(b => String(b.BookID) === nameSel.value);
-            if (!book) { total.textContent = ''; return; }
-            const sum = Number(book.Price) * Number(qty.value || 1) + window.DELIVERY_COSTS[delivery.value];
+            if (!book) {
+                total.textContent = '';
+                if (note) {
+                    note.textContent = 'Every book in this category is out of stock right now.';
+                    note.hidden = false;
+                }
+                return;
+            }
+            // Never let the quantity go above the copies left
+            const stock = Number(book.Stock);
+            qty.max = Math.max(1, Math.min(20, stock));
+            if (note) {
+                if (Number(qty.value) > stock) {
+                    note.textContent = 'Only ' + stock + ' in stock.';
+                    note.hidden = false;
+                } else {
+                    note.hidden = true;
+                }
+            }
+            const sum = Number(book.FinalPrice) * Number(qty.value || 1) + window.DELIVERY_COSTS[delivery.value];
             total.textContent = 'Estimated total: Rs.' + sum.toFixed(2);
         }
 

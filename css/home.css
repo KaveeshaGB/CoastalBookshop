@@ -69,6 +69,7 @@
 /* ---------- Book cards ---------- */
 
 .books{
+    position:relative;
     margin:10px;
     padding:10px;
     display:inline-flex;
@@ -176,6 +177,85 @@
     background-color:rgba(106, 44, 29, 0.876);
 }
 
+
+/* ---------- Offers and stock ---------- */
+
+.book-badge{
+    position:absolute;
+    top:14px;
+    left:14px;
+    z-index:2;
+    padding:4px 9px;
+    font-weight:bold;
+    font-size:0.85rem;
+    color:white;
+    border-radius:4px;
+    box-shadow:0 2px 5px rgba(0, 0, 0, 0.35);
+}
+.badge-offer{ background-color:#c91616f1; }
+.badge-out{ background-color:#555; }
+
+.old-price{
+    text-decoration:line-through;
+    color:#777;
+}
+.new-price{
+    font-weight:bold;
+    color:#34000b;
+}
+.offer-ends,
+.low-stock{
+    font-size:0.85rem;
+    margin:-0.4rem 0 0.5rem;
+}
+.low-stock{
+    color:#a33;
+    font-weight:bold;
+}
+
+.books.out-of-stock>img{
+    filter:grayscale(1);
+    opacity:0.55;
+}
+.books.out-of-stock>img:hover{
+    transform:none;
+    box-shadow:none;
+}
+
+.cart-off{
+    width:42px;
+    height:42px;
+    padding:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color:#ccc;
+    border:1px solid #888;
+    border-radius:50%;
+    opacity:0.6;
+    cursor:not-allowed;
+}
+.cart-off img{
+    display:block;
+    width:24px;
+    height:24px;
+    object-fit:contain;
+    border:none;
+    filter:grayscale(1);
+}
+
+.order-link.disabled{
+    background-color:#777;
+    cursor:not-allowed;
+}
+.order-link.disabled:hover{
+    background-color:#777;
+}
+
+.stock-warn{
+    color:#a33;
+    font-weight:bold;
+}
 
 /* ---------- Responsive (max-width: 600px) ---------- */
 

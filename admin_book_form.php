@@ -5,7 +5,8 @@ $categories = ['Fiction', 'Novel', 'Short Story', 'Kids Story'];
 
 $id = $_GET['id'] ?? $_POST['id'] ?? '';
 $errors = [];
-$book   = ['Title' => '', 'Author' => '', 'Price' => '', 'Category' => $categories[0], 'ImageFile' => ''];
+$book   = ['Title' => '', 'Author' => '', 'Price' => '', 'Category' => $categories[0], 'ImageFile' => '',
+           'Stock' => 10, 'DiscountPercent' => 0, 'OfferEnds' => ''];
 
 // Editing: load the existing row
 if ($id) {
@@ -25,11 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $book['Author']   = trim($_POST['author'] ?? '');
     $book['Price']    = trim($_POST['price'] ?? '');
     $book['Category'] = $_POST['category'] ?? '';
+    $book['Stock']    = trim($_POST['stock'] ?? '');
+    $book['DiscountPercent'] = trim($_POST['discount'] ?? '') === '' ? '0' : trim($_POST['discount']);
+    $book['OfferEnds'] = trim($_POST['offer_ends'] ?? '');
 
     if ($book['Title'] === '')  $errors[] = 'Title is required.';
     if ($book['Author'] === '') $errors[] = 'Author is required.';
     if (!is_numeric($book['Price']) || $book['Price'] < 0) $errors[] = 'Enter a valid price.';
     if (!in_array($book['Category'], $categories, true))   $errors[] = 'Choose a valid category.';
+    if (filter_var($book['Stock'], FILTER_VALIDATE_INT) === false || (int)$book['Stock'] < 0) $errors[] = 'Stock must be a whole number, 0 or more.';
+    if (filter_var($book['DiscountPercent'], FILTER_VALIDATE_INT) === false || (int)$book['DiscountPercent'] < 0 || (int)$book['DiscountPercent'] > 100) $errors[] = 'Discount must be a whole number from 0 to 100.';
+    if ($book['OfferEnds'] !== '') {
+        $d = DateTime::createFromFormat('Y-m-d', $book['OfferEnds']);
+        if (!$d || $d->format('Y-m-d') !== $book['OfferEnds']) $errors[] = 'Enter a valid offer end date.';
+    }
 
     // Optional image upload
     if (!$errors && !empty($_FILES['image']['name'])) {
@@ -54,15 +64,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$errors) {
         if ($id) {
             // UPDATE
-            $stmt = $pdo->prepare('UPDATE Books SET Title=?, Author=?, Price=?, Category=?, ImageFile=? WHERE BookID=?');
-            $stmt->execute([$book['Title'], $book['Author'], $book['Price'], $book['Category'], $book['ImageFile'] ?: null, $id]);
+            $stmt = $pdo->prepare('UPDATE Books SET Title=?, Author=?, Price=?, Category=?, ImageFile=?, Stock=?, DiscountPercent=?, OfferEnds=? WHERE BookID=?');
+            $stmt->execute([$book['Title'], $book['Author'], $book['Price'], $book['Category'], $book['ImageFile'] ?: null,
+                            (int)$book['Stock'], (int)$book['DiscountPercent'], $book['OfferEnds'] ?: null, $id]);
             $_SESSION['admin_msg'] = 'Book updated.';
         
         } else {
         // CREATE
         $newId = nextId($pdo, 'Books', 'BookID', 'b');
-        $stmt = $pdo->prepare('INSERT INTO Books (BookID, Title, Author, Price, Category, ImageFile) VALUES (?,?,?,?,?,?)');
-        $stmt->execute([$newId, $book['Title'], $book['Author'], $book['Price'], $book['Category'], $book['ImageFile'] ?: null]);
+        $stmt = $pdo->prepare('INSERT INTO Books (BookID, Title, Author, Price, Category, ImageFile, Stock, DiscountPercent, OfferEnds) VALUES (?,?,?,?,?,?,?,?,?)');
+        $stmt->execute([$newId, $book['Title'], $book['Author'], $book['Price'], $book['Category'], $book['ImageFile'] ?: null,
+                        (int)$book['Stock'], (int)$book['DiscountPercent'], $book['OfferEnds'] ?: null]);
         $_SESSION['admin_msg'] = 'Book added.';
         }
         
@@ -93,6 +105,18 @@ require __DIR__.'/includes/header.php';
 
                 <label class="form-label" for="price">Price (Rs.):</label>
                 <input type="number" id="price" name="price" step="0.01" min="0" value="<?= e($book['Price']) ?>" required>
+                <br>
+
+                <label class="form-label" for="stock">Stock (copies):</label>
+                <input type="number" id="stock" name="stock" step="1" min="0" value="<?= e($book['Stock']) ?>" required>
+                <br>
+
+                <label class="form-label" for="discount">Discount (%):</label>
+                <input type="number" id="discount" name="discount" step="1" min="0" max="100" value="<?= e($book['DiscountPercent']) ?>">
+                <br>
+
+                <label class="form-label" for="offer-ends">Offer ends on:</label>
+                <input type="date" id="offer-ends" name="offer_ends" value="<?= e($book['OfferEnds']) ?>">
                 <br>
 
                 <label class="form-label" for="category">Category:</label>

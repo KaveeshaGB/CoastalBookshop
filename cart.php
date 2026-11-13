@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add')
     $bookId = trim($_POST['book_id'] ?? '');
     $qty    = max(1, (int)($_POST['quantity'] ?? 1));
  
-    $stmt = $pdo->prepare('SELECT Title FROM Books WHERE BookID = ?');
+    $stmt = $pdo->prepare('SELECT Title, Stock FROM Books WHERE BookID = ?');
     $stmt->execute([$bookId]);
     $book = $stmt->fetch();
     if (!$book) {
@@ -32,7 +32,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add')
         exit;
     }
  
-    $cart[$bookId] = min(20, ($cart[$bookId] ?? 0) + $qty);
+    // Stock check (the server always has the final say, not the button on the page)
+    $stock = (int)$book['Stock'];
+    $have  = (int)($cart[$bookId] ?? 0);
+    if ($stock <= 0) {
+        echo json_encode(['ok' => false, 'message' => 'Sorry, "' . $book['Title'] . '" is out of stock.']);
+        exit;
+    }
+    if ($have + $qty > $stock) {
+        $msg = 'Only ' . $stock . ' cop' . ($stock === 1 ? 'y' : 'ies') . ' of "' . $book['Title'] . '" available';
+        $msg .= $have ? ' (you already have ' . $have . ' in your cart).' : '.';
+        echo json_encode(['ok' => false, 'message' => $msg]);
+        exit;
+    }
+
+    $cart[$bookId] = min(20, $have + $qty);
     $_SESSION['cart'] = $cart;
     echo json_encode(['ok' => true, 'title' => $book['Title'], 'count' => array_sum($cart)]);
     exit;
@@ -48,6 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  
         if ($action === 'update') {
             if ($qty < 1 || $qty > 20) fail('Quantity must be between 1 and 20.');
+            $st = $pdo->prepare('SELECT Stock FROM Books WHERE BookID = ?');
+            $st->execute([$bookId]);
+            $stock = (int)$st->fetchColumn();
+            if ($qty > $stock) fail($stock > 0 ? 'Only ' . $stock . ' in stock.' : 'That book is out of stock.');
             if (isset($cart[$bookId])) $cart[$bookId] = $qty;
         } else {
             unset($cart[$bookId]);
@@ -61,15 +79,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // ---------- Show the cart page ----------
 $items = [];
 $subtotal = 0;
+$stockProblem = false;   // true if something in the cart is sold out (or not enough copies)
 if ($loggedInNow && $cart) {
     $ids  = array_map('strval', array_keys($cart));
     $in   = implode(',', array_fill(0, count($ids), '?'));
-    $stmt = $pdo->prepare("SELECT BookID, Title, Author, Price, ImageFile FROM Books WHERE BookID IN ($in)");
+    $stmt = $pdo->prepare("SELECT BookID, Title, Author, Price, ImageFile, Stock, DiscountPercent, OfferEnds FROM Books WHERE BookID IN ($in)");
     $stmt->execute($ids);
     foreach ($stmt->fetchAll() as $b) {
         $b['Qty']  = $cart[$b['BookID']];
-        $b['Line'] = $b['Price'] * $b['Qty'];
-        $subtotal += $b['Line'];
+        $b['Unit'] = finalPrice($b);
+        $b['Line'] = $b['Unit'] * $b['Qty'];
+        $b['Short'] = $b['Qty'] > (int)$b['Stock'];
+        if ($b['Short']) $stockProblem = true;
+        else $subtotal += $b['Line'];
         $items[]   = $b;
     }
 }
@@ -107,14 +129,26 @@ require __DIR__.'/includes/header.php';
                             <img src="images/covers/<?= e($b['ImageFile']) ?>" alt="" width="40">
                         <?php endif; ?>
                         <?= e($b['Title']) ?>
+                        <?php if (isOutOfStock($b)): ?>
+                            <br><span class="stock-warn">Out of stock</span>
+                        <?php elseif ($b['Short']): ?>
+                            <br><span class="stock-warn">Only <?= (int)$b['Stock'] ?> in stock</span>
+                        <?php endif; ?>
                     </td>
                     <td><?= e($b['Author']) ?></td>
-                    <td>Rs.<?= number_format($b['Price'], 2) ?></td>
+                    <td>
+                        <?php if (hasOffer($b)): ?>
+                            <span class="old-price">Rs.<?= number_format($b['Price'], 2) ?></span><br>
+                            <span class="new-price">Rs.<?= number_format($b['Unit'], 2) ?></span>
+                        <?php else: ?>
+                            Rs.<?= number_format($b['Price'], 2) ?>
+                        <?php endif; ?>
+                    </td>
                     <td>
                         <form method="post" action="cart.php" class="cart-inline">
                             <input type="hidden" name="action" value="update">
                             <input type="hidden" name="book" value="<?= e($b['BookID']) ?>">
-                            <input type="number" name="quantity" value="<?= (int)$b['Qty'] ?>" min="1" max="20">
+                            <input type="number" name="quantity" value="<?= (int)$b['Qty'] ?>" min="1" max="<?= max(1, min(20, (int)$b['Stock'])) ?>">
                             <button type="submit" class="btn">Update</button>
                         </form>
                     </td>
@@ -133,6 +167,10 @@ require __DIR__.'/includes/header.php';
             </table>
  
             <br>
+            <?php if ($stockProblem): ?>
+                <p class="error">Some books in your cart are out of stock or have fewer copies than you chose. Please remove them or lower the quantity to continue.</p>
+            <?php else: ?>
             <a class="btn" href="order.php?from=cart" style="text-decoration:none;display:inline-block;">Place Order</a>
+            <?php endif; ?>
             <?php endif; ?>
 <?php require __DIR__.'/includes/footer.php'; ?>
