@@ -1,6 +1,11 @@
 <?php
 $pageTitle = 'Register - Coastal Bookshop';
 require __DIR__ . '/includes/config.php';
+// Already logged in? Send them home instead of showing the sign-up form.
+if (!empty($_SESSION['customer_id'])) {
+    header('Location: home.php');
+    exit;
+}
 
 $errors = [];
 $old = ['name' => '', 'email' => '', 'phone' => '', 'address' => ''];

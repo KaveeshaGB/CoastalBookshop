@@ -1,13 +1,12 @@
 USE coastal_bookshop;
 
--- ---------------------------------------------------------
--- Event = a book club session
--- HostID    : the member who started it
+-- Event   : a book club session
+-- HostID  : the member who started it
 -- StartTime / EndTime : when the session runs (messages can be sent and edited only in this time)
 -- Status    : the host can end a session early by setting this to 'Ended'
 -- IsPublic  : 1 = everyone can see the session in the list, 0 = only members can see it
--- (EventDate stays, and is filled with the date of StartTime)
--- ---------------------------------------------------------
+-- EventDate : The date the event started
+
 ALTER TABLE Event
   ADD COLUMN HostID    VARCHAR(10) NULL AFTER BookID,
   ADD COLUMN StartTime DATETIME NULL,
@@ -18,18 +17,16 @@ ALTER TABLE Event
     ON UPDATE CASCADE ON DELETE RESTRICT,
   ADD CONSTRAINT chk_event_times CHECK (StartTime IS NULL OR EndTime IS NULL OR EndTime > StartTime);
 
--- Member_Event = a member joined a session. LeftAt is filled when the member leaves.
+-- Member join event
 ALTER TABLE Member_Event
   ADD COLUMN LeftAt DATETIME NULL;
 
--- ---------------------------------------------------------
 -- Weak entity: Message depends on Event (Event has Messages)
--- A message is identified by its event + its own MessageID (M001, M002 ... inside each event)
--- ---------------------------------------------------------
+
 CREATE TABLE Message (
   EventID    VARCHAR(10),
   MessageID  VARCHAR(10),
-  CustomerID VARCHAR(10) NOT NULL,                    -- the member who wrote it
+  CustomerID VARCHAR(10) NOT NULL, --Them member who started the session
   Body       VARCHAR(1000) NOT NULL,
   SentAt     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   EditedAt   DATETIME NULL,
@@ -40,9 +37,7 @@ CREATE TABLE Message (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- Many-to-many: Member likes Message (one like per member per message)
--- ---------------------------------------------------------
+-- Member likes Message (Many-to-many)
 CREATE TABLE Message_Like (
   EventID    VARCHAR(10),
   MessageID  VARCHAR(10),
@@ -54,9 +49,7 @@ CREATE TABLE Message_Like (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- Derived attributes (calculated, not stored)
--- ---------------------------------------------------------
+-- Derived attributes
 
 -- Number of members currently in a session
 -- SELECT COUNT(*) FROM Member_Event WHERE EventID = 'E001' AND LeftAt IS NULL;
