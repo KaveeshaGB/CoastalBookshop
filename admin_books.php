@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
         $err = 'This book is part of an order, so it cannot be deleted.';
     }
 }
+
 // DELETE EBOOK
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ebook_id'])) {
     $stmt = $pdo->prepare('SELECT FileName FROM Ebook WHERE EbookID = ?');
@@ -33,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ebook_id'])) {
             if (is_file($path)) unlink($path);
         }
         $_SESSION['admin_msg'] = 'Ebook deleted.';
-        header('Location: admin_books.php');
+        header('Location: admin_books.php#ebooks');
         exit;
     } catch (PDOException $ex) {
         $ebookErr = 'Members have already bought this ebook, so it cannot be deleted.';
@@ -57,6 +58,7 @@ require __DIR__.'/includes/header.php';
             <?php if ($err): ?><p class="error"><?= e($err) ?></p><?php endif; ?>
 
             <a class="order-link" href="admin_book_form.php">+ Add New Book</a>
+            <a class="order-link" href="admin_ebook_form.php">+ Add New Ebook</a>
             <a class="order-link" href="home.php">Back</a>
             <br><br>
 
@@ -106,18 +108,25 @@ require __DIR__.'/includes/header.php';
             </table>
 
             <h2 id="ebooks">Manage Ebooks</h2>
-            <a class="order-link" href="admin_ebook_form.php">+ Add New Ebook</a>
-            <?php if ($ebookErr): ?><p class="error"><?= e($ebookErr) ?></p><?php endif; ?>
 
-            <br><br>
+            <?php if ($ebookErr): ?><p class="error"><?= e($ebookErr) ?></p><?php endif; ?>
 
             <table class="admin-table">
                 <tr>
-                    <th>ID</th><th>Cover</th><th>Title</th><th>Author</th><th>Price</th>
-                    <th>Offer</th><th>File</th><th>Bought by</th><th>Actions</th>
+                    <th>ID</th>
+                    <th>Cover</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Price</th>
+                    <th>Offer</th>
+                    <th>File</th>
+                    <th>Bought by</th>
+                    <th>Actions</th>
                 </tr>
                 <?php if (!$ebooks): ?>
-                <tr><td colspan="9">No ebooks yet. Use "+ Add New Ebook" to add the first one.</td></tr>
+                <tr>
+                    <td colspan="9">No ebooks yet. Use "+ Add New Ebook" to add the first one.</td>
+                </tr>
                 <?php endif; ?>
                 <?php foreach ($ebooks as $eb): ?>
                 <tr>
@@ -145,7 +154,7 @@ require __DIR__.'/includes/header.php';
                     <td><?= (int)$eb['Buyers'] ?></td>
                     <td>
                         <a class="order-link" href="admin_ebook_form.php?id=<?= urlencode($eb['EbookID']) ?>">Edit</a>
-                        <form method="post" style="display:inline"
+                        <form method="post" action="admin_books.php#ebooks" style="display:inline"
                               onsubmit="return confirm('Delete this ebook?');">
                             <input type="hidden" name="delete_ebook_id" value="<?= e($eb['EbookID']) ?>">
                             <button type="submit" class="btn" style="margin:0;padding:10px;">Delete</button>

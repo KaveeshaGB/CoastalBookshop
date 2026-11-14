@@ -12,7 +12,17 @@
     --adm-paper      : #f6f2ea;
 }
 
-table.admin-table {
+
+/* ================================================================
+   1. MANAGE BOOKS  (admin_books.php)
+   The table has no class, so it is found through the
+   "+ Add New Book" link that sits just above it.
+   ================================================================ */
+
+/* "+ Add New Book" link */
+a.order-link[href="admin_book_form.php"],
+a.order-link[href="admin_ebook_form.php"],
+a.order-link[href="home.php"] {
     margin: 6px 20px 0;
     padding: 9px 18px;
     font-size: 17px;
@@ -20,7 +30,9 @@ table.admin-table {
     text-decoration: none;
     background-color: var(--adm-brown);
 }
-a.order-link[href="admin_book_form.php"]:hover {
+a.order-link[href="admin_book_form.php"]:hover,
+a.order-link[href="admin_ebook_form.php"]:hover,
+a.order-link[href="home.php"]:hover {
     background-color: var(--adm-brown-hover);
 }
 

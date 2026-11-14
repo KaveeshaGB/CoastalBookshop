@@ -180,7 +180,7 @@ require __DIR__.'/includes/header.php';
                         </form>
 
                     <?php else: ?>
-                        <h3>On your shelf</h3>
+                        <h3>On My shelf</h3>
                         <?php if (!$owned): ?>
                             <p class="message">You don't own any ebooks yet. Once you buy one, it will show up here.</p>
                         <?php else: ?>

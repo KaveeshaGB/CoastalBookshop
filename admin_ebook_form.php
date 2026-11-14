@@ -184,6 +184,6 @@ require __DIR__ . '/includes/header.php';
                 <br><br>
 
                 <button type="submit" class="btn"><?= $id ? 'Save Changes' : 'Add Ebook' ?></button>
-                <a class="order-link" href="admin_books.php#ebooks">Cancel</a>
+                <a class="order-link" href="admin_books.php#ebooks">Cancel</a>            
             </form>
 <?php require __DIR__ . '/includes/footer.php'; ?>
