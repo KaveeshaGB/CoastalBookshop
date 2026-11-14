@@ -1,15 +1,11 @@
 -- Coastal Bookshop database
--- Based on the agreed ER diagram
-
 CREATE DATABASE IF NOT EXISTS coastal_bookshop
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
 USE coastal_bookshop;
 
--- ---------------------------------------------------------
 -- Strong entities
--- ---------------------------------------------------------
 
 CREATE TABLE Customer (
   CustomerID   VARCHAR(10) PRIMARY KEY,
@@ -35,7 +31,7 @@ CREATE TABLE Event (
   EventID   VARCHAR(10) PRIMARY KEY,
   EventName VARCHAR(150) NOT NULL,
   EventDate DATE NOT NULL,
-  BookID    VARCHAR(10),                           -- the book featured at the event
+  BookID    VARCHAR(10), 
   FOREIGN KEY (BookID) REFERENCES Books(BookID)
     ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB;
@@ -47,8 +43,6 @@ CREATE TABLE Cart (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- Orders (not "Order", because ORDER is a reserved word in SQL)
--- DeliveryOption, PackagingType and DeliveryAddress apply to every order type
 CREATE TABLE Orders (
   OrderID              VARCHAR(10) PRIMARY KEY,
   OrderDate            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -63,11 +57,8 @@ CREATE TABLE Orders (
     ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
 -- Weak entities
--- ---------------------------------------------------------
 
--- Member depends on Customer (member of)
 CREATE TABLE Member (
   CustomerID VARCHAR(10) PRIMARY KEY,
   JoinDate   DATE NOT NULL DEFAULT (CURRENT_DATE),
@@ -75,7 +66,6 @@ CREATE TABLE Member (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- PaymentMethod depends on Orders (paid by)
 CREATE TABLE PaymentMethod (
   OrderID    VARCHAR(10),
   MethodType ENUM('Card','Cash on Delivery','Bank Transfer') NOT NULL,
@@ -84,18 +74,15 @@ CREATE TABLE PaymentMethod (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- Order specialization (disjoint, total): every order is a Parcel OR a Gift
--- ---------------------------------------------------------
-
--- Parcel: an order for the customer themself (no extra attributes)
+-- Order specialization: every order is a Parcel OR a Gift
+-- Parcel: an order for the customer (themselves)
 CREATE TABLE Parcel (
   OrderID VARCHAR(10) PRIMARY KEY,
   FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- Gift: an order for someone else (decoration photos are in images/Decorations)
+-- Gift: an order for someone else
 CREATE TABLE Gift (
   OrderID        VARCHAR(10) PRIMARY KEY,
   RecipientName  VARCHAR(100) NOT NULL,
@@ -106,9 +93,7 @@ CREATE TABLE Gift (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
 -- Many-to-many relationships
--- ---------------------------------------------------------
 
 -- Cart has Books
 CREATE TABLE Cart_Books (
@@ -122,7 +107,7 @@ CREATE TABLE Cart_Books (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- Order has Books (UnitPrice keeps the price at the time of purchase)
+-- Order has Books
 CREATE TABLE Order_Books (
   OrderID   VARCHAR(10),
   BookID    VARCHAR(10),
@@ -167,54 +152,50 @@ CREATE TABLE EbookDownload (
   FOREIGN KEY (CustomerID) REFERENCES Customer (CustomerID) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (BookID)     REFERENCES Books (BookID)       ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
--- ---------------------------------------------------------
--- Derived attributes (calculated, not stored)
--- ---------------------------------------------------------
 
--- Cart TotalPrice and BookCount for one cart
--- SELECT SUM(cb.Quantity * b.Price) AS TotalPrice,
---        SUM(cb.Quantity)           AS BookCount
--- FROM Cart_Books cb
--- JOIN Books b ON b.BookID = cb.BookID
--- WHERE cb.CartID = 'CT001';
+-- Stock and offers (Books)
 
--- Event MemberCount
--- SELECT EventID, COUNT(*) AS MemberCount
--- FROM Member_Event
--- GROUP BY EventID;
-
+-- Stock           :Copies left
+-- DiscountPercent : percentage taken off the price
+-- OfferEnds       : last day of the offer. After this date the full price applies.
 ALTER TABLE Books
   ADD COLUMN Stock           INT         NOT NULL DEFAULT 10 CHECK (Stock >= 0),
   ADD COLUMN DiscountPercent TINYINT     NOT NULL DEFAULT 0  CHECK (DiscountPercent BETWEEN 0 AND 100),
   ADD COLUMN OfferEnds       DATE        NULL;
 
-UPDATE Gift SET DecorationType = 'None';
+-- Gift decoration choices
 
+UPDATE Gift SET DecorationType = 'None';
 ALTER TABLE Gift
   MODIFY DecorationType ENUM('Option 1','Option 2','Option 3','Option 4','Option 5','Option 6','Option 7','None')
   NOT NULL DEFAULT 'None';
+
+
+--Ebooks
+-- books have no ebook version.Only members can buy books.
+
 CREATE TABLE Ebook (
     EbookID    VARCHAR(10)   NOT NULL,
     Title      VARCHAR(150)  NOT NULL,
     Author     VARCHAR(100)  NOT NULL,
     Price      DECIMAL(10,2) NOT NULL,
-    CoverImage VARCHAR(255)  NULL,       -- file name inside images/covers/
-    FileName   VARCHAR(255)  NOT NULL,   -- PDF file name inside the ebooks/ folder
+    CoverImage VARCHAR(255)  NULL,      
+    FileName   VARCHAR(255)  NOT NULL,   
     PRIMARY KEY (EbookID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 2. Which member bought which ebook (Member buys Ebook: many-to-many)
+--Member buys Ebook 
 CREATE TABLE Member_Ebook (
     CustomerID  VARCHAR(10)   NOT NULL,
     EbookID     VARCHAR(10)   NOT NULL,
-    PricePaid   DECIMAL(10,2) NOT NULL,   -- price at the time of purchase
+    PricePaid   DECIMAL(10,2) NOT NULL, 
     PurchasedAt DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (CustomerID, EbookID),
     CONSTRAINT fk_me_member FOREIGN KEY (CustomerID) REFERENCES Member (CustomerID),
     CONSTRAINT fk_me_ebook  FOREIGN KEY (EbookID)    REFERENCES Ebook (EbookID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Ebook offers (Ebook was created without these two columns)
+-- Ebook offers
 ALTER TABLE Ebook
   ADD COLUMN IF NOT EXISTS DiscountPercent TINYINT NOT NULL DEFAULT 0
       CHECK (DiscountPercent BETWEEN 0 AND 100),
@@ -222,7 +203,6 @@ ALTER TABLE Ebook
 ALTER TABLE Member
   ADD COLUMN ResignedAt DATETIME NULL DEFAULT NULL;
 
--- No end date = no offer (clear old rows first, then add the rule)
 UPDATE Books SET DiscountPercent = 0 WHERE OfferEnds IS NULL;
 ALTER TABLE Books ADD CONSTRAINT chk_books_offer_needs_date
   CHECK (DiscountPercent = 0 OR OfferEnds IS NOT NULL);

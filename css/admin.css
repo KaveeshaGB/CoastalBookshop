@@ -41,7 +41,7 @@ a.order-link[href="admin_book_form.php"]:hover {
 }
 
 /* The table */
-a.order-link[href="admin_book_form.php"] ~ table {
+table.admin-table {
     width: calc(100% - 40px);
     margin: 14px 20px 30px;
     font-size: 15px;
@@ -54,7 +54,7 @@ a.order-link[href="admin_book_form.php"] ~ table {
 }
 
 /* Header row */
-a.order-link[href="admin_book_form.php"] ~ table th {
+table.admin-table th {
     padding: 12px 10px;
     font-size: 14px;
     letter-spacing: 0.04em;
@@ -67,7 +67,7 @@ a.order-link[href="admin_book_form.php"] ~ table th {
 }
 
 /* Body cells */
-a.order-link[href="admin_book_form.php"] ~ table td {
+table.admin-table td {
     padding: 10px;
     vertical-align: middle;
     color: var(--adm-ink);
@@ -77,25 +77,25 @@ a.order-link[href="admin_book_form.php"] ~ table td {
 }
 
 /* Zebra rows + hover highlight */
-a.order-link[href="admin_book_form.php"] ~ table tr:nth-child(even) td {
+table.admin-table tr:nth-child(even) td {
     background-color: var(--adm-cell-alt);
 }
-a.order-link[href="admin_book_form.php"] ~ table tr:hover td {
+table.admin-table tr:hover td {
     background-color: var(--adm-cell-hover);
 }
-a.order-link[href="admin_book_form.php"] ~ table tr:last-child td {
+table.admin-table tr:last-child td {
     border-bottom: none;
 }
 
 /* ID column */
-a.order-link[href="admin_book_form.php"] ~ table td:first-child {
+table.admin-table td:first-child {
     font-weight: bold;
     color: var(--adm-teal-dark);
     white-space: nowrap;
 }
 
 /* Cover thumbnails */
-a.order-link[href="admin_book_form.php"] ~ table td img {
+table.admin-table td img {
     display: block;
     width: 46px;
     height: 64px;
@@ -106,15 +106,15 @@ a.order-link[href="admin_book_form.php"] ~ table td img {
 }
 
 /* Actions column: Edit and Delete side by side, same size */
-a.order-link[href="admin_book_form.php"] ~ table td:last-child {
+table.admin-table td:last-child {
     white-space: nowrap;
 }
-a.order-link[href="admin_book_form.php"] ~ table td:last-child form {
+table.admin-table td:last-child form {
     display: inline-block;
     margin: 0;
 }
-a.order-link[href="admin_book_form.php"] ~ table td .order-link,
-a.order-link[href="admin_book_form.php"] ~ table td .btn {
+table.admin-table td .order-link,
+table.admin-table td .btn {
     display: inline-block;
     min-width: 62px;
     margin: 0 3px 0 0 !important;      /* beats the inline style on the Delete button */
@@ -130,22 +130,22 @@ a.order-link[href="admin_book_form.php"] ~ table td .btn {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     cursor: pointer;
 }
-a.order-link[href="admin_book_form.php"] ~ table td .order-link:hover,
-a.order-link[href="admin_book_form.php"] ~ table td .btn:hover {
+table.admin-table td .order-link:hover,
+table.admin-table td .btn:hover {
     background-color: var(--adm-brown-hover);
 }
 
 /* Delete is a darker red so it stands apart from Edit */
-a.order-link[href="admin_book_form.php"] ~ table td .btn {
+table.admin-table td .btn {
     background-color: var(--adm-red);
 }
-a.order-link[href="admin_book_form.php"] ~ table td .btn:hover {
+table.admin-table td .btn:hover {
     background-color: var(--adm-red-hover);
 }
 
 /* Small screens: the table scrolls sideways instead of breaking the page */
 @media (max-width: 900px) {
-    a.order-link[href="admin_book_form.php"] ~ table {
+    table.admin-table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;

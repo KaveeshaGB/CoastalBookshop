@@ -322,10 +322,10 @@
   gap: 26px;
   margin: 0 0 40px;
   padding: 22px 24px 0;
-  background: linear-gradient(to bottom, rgba(58, 34, 22, 0.14), rgba(58, 34, 22, 0.04));
-  border-radius: 10px 10px 0 0;
-  border-bottom: 16px solid var(--cozy-plank);      /* the wooden board */
-  box-shadow: 0 10px 14px -8px rgba(58, 34, 22, 0.55);
+  background: linear-gradient(to bottom, rgb(2 79 41 / 30%), rgb(35 96 27 / 7%));  border-radius: 10px 10px 0 0;
+  border-bottom: 12px solid #2e4d39;      /* the wooden board */
+  box-shadow: 0 8px 14px -5px rgb(0 0 0 / 54%);
+
 }
 
 .shelf-book {
@@ -360,7 +360,38 @@
 .shelf-author,
 .shelf-date { margin: 2px 0 8px; font-size: 0.9rem; color: var(--cozy-ink); }
 .shelf-row.waiting .shelf-cover { opacity: 0.8; }
-
+.shelf-book { position: relative; }
+.shelf-book .offer-ends { margin: 0 0 8px; }
+.shelf-cover{
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+.shelf-cover:hover{
+    transform:translateY(-8px);
+    box-shadow:0 8px 16px rgba(0, 0, 0, 0.3);
+}
+.shelf-cover:active{
+    transform:translateY(0);
+}
+/* Align the ebook cards on the shelf */
+.shelf-row{
+    align-items:stretch;      /* every card gets the same height, so the covers start at the same top */
+}
+.shelf-book{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+.shelf-title{
+    line-height:1.2;
+    min-height:3.6em;         /* room for 3 lines, so author and price line up */
+}
+.shelf-book form,
+.shelf-book > .order-link{
+    margin-top:auto;          /* pushes Buy and Read to the bottom of the card */
+}
+.shelf-book .shelf-author{
+    font-size: 1.0rem;
+}
 /* ===== Tab open: banner replaces the Welcome text ===== */
 .panel-banner { display: none; }                               /* hidden on the landing view */
 
@@ -701,3 +732,73 @@ h2 ~ p.error:has(~ form[action="create_session.php"]) {
         transition: none !important;
     }
 }
+
+/* Keep Buy and Read at the bottom of every card */
+.shelf-book > .btn,
+.shelf-book > .order-link{
+    margin-top:auto;
+}
+
+/* ---------- Buy ebook pop-up ---------- */
+#buy-modal{
+    background-color:rgba(34, 21, 14, 0.65);
+}
+#buy-modal .modal-box{
+    width:min(440px, 92%);
+    padding:26px 30px 22px;
+    background-color:#d3d1ce;
+    border:1px solid #c29b87;
+    border-top:6px solid #2c6762;
+    border-radius:14px;
+    box-shadow:0 12px 30px rgba(0, 0, 0, 0.45);
+}
+#buy-modal h3{
+    margin:0 0 6px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size:1.6rem;
+    color:#532c2e;
+}
+#buy-modal .modal-close{ color:#532c2e; }
+#buy-summary{
+    margin:0 0 16px;
+    font-weight:bold;
+    color:#34000b;
+}
+#buy-form .form-label{
+    display:block;
+    width:auto;
+    margin:0;
+    padding:0 0 4px;
+    font-size:1rem;
+    font-weight:bold;
+    color:#532c2e;
+}
+#buy-form input{
+    display:block;
+    width:100%;
+    margin:0 0 14px;
+    padding:9px 12px;
+    font-family:inherit;
+    font-size:1rem;
+    color:#34000b;
+    background-color:#f4fafb;
+    border:2px solid #c29b87;
+    border-radius:8px;
+}
+#buy-form input:disabled{
+    background-color:#c9dfd8;
+    color:#35505a;
+}
+#buy-form input:focus{
+    outline:none;
+    border-color:#2c6762;
+    box-shadow:0 0 0 3px rgba(44, 103, 98, 0.3);
+}
+#buy-form .card-row{ display:flex; gap:14px; }
+#buy-form .card-row > div{ flex:1; }
+#buy-form .btn{
+    width:100%;
+    margin:4px 0 0;
+    background-color:#2c6762;
+}
+#buy-form .btn:hover{ background-color:#1e423f; }

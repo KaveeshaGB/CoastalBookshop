@@ -23,7 +23,7 @@ if (!$ebook) {
 }
 
 // basename() stops anyone from reaching files outside /ebooks
-$path = __DIR__.'/ebooks/'.basename($ebook['FileName']);
+$path = EBOOK_DIR . '/' . basename($ebook['FileName']);
 if (!is_file($path)) {
     http_response_code(404);
     exit('Sorry, that ebook file is not available right now.');
