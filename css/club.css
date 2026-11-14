@@ -1,25 +1,18 @@
-/* Book club pages. Uses the same colours as home_style.css. */
-
-/* =========================================================
-   COLOUR VARIABLES
-   Change these to change the mood of the whole book club.
-   ========================================================= */
 :root {
   --parchment : #f6f2ea;
   --leather   : #c29b87;
   --oak       : #a97954;
   --manuscript: #2c6762ec;
   --binding   : #532c2e;
-  --crimson   : #34000b;     /* FIX: had a stray extra colon */
+  --crimson   : #34000b;  
 
-  /* FIX: these were used below but never defined, so they showed nothing */
   --cozy-paper        : #f6f2ea;
-  --cozy-plank        : #a97954;   /* wooden shelf board */
-  --cozy-walnut       : #532c2e;   /* book spine */
-  --cozy-walnut-light : #7a4a4c;   /* cover with no image */
-  --cozy-ink          : #2c1a1a;   /* shelf text */
-  --pic-border        : #532c2e;   /* banner picture border */
-  --title-color       : #2d0d0f;   /* banner title */
+  --cozy-plank        : #a97954; 
+  --cozy-walnut       : #532c2e;
+  --cozy-walnut-light : #7a4a4c;
+  --cozy-ink          : #2c1a1a;  
+  --pic-border        : #532c2e; 
+  --title-color       : #2d0d0f; 
 }
 
 [hidden] { display: none !important; }
@@ -34,7 +27,6 @@
     padding-left:0;
 }
 
-/* ---------- Session cards ---------- */
 .club-card{
     background: rgb(254 233 144 / 25%);
     border: 2px solid rgb(16 51 16 / 67%);
@@ -90,11 +82,6 @@
 .session-actions .btn{
     margin:10px 10px 10px 0;
 }
-
-/* ---------- Messages ---------- */
-/* FIX: #message-list was defined twice (once here, once in the chat room
-   section). Merged into the chat room rule further down. The old
-   max-height:460px was removed because it fought with the chat box height. */
 
 .msg{
     background-color:rgb(156, 196, 183);
@@ -212,15 +199,14 @@
     }
 }
 
-/* ---------- Hero: picture + Welcome ---------- */
 .club-hero {
   display: flex;
   align-items: center;
   gap: 48px;
   max-width: 1300px;
-  margin: 28px auto;          /* auto = centred on the page; use 28px 0 to hug the left */
+  margin: 28px auto;
   padding: 0 32px;
-  overflow-x: clip;           /* stops a sideways scrollbar while the picture slides in */
+  overflow-x: clip;   
 }
 
 .club-hero .hero-pic {
@@ -238,7 +224,7 @@
 }
 
 @keyframes hero-in {
-  from { opacity: 0; transform: translateX(200px); }    /* starts off to the right */
+  from { opacity: 0; transform: translateX(200px); } 
   to   { opacity: 1; transform: none; }
 }
 @keyframes hero-drift {
@@ -259,10 +245,9 @@
 }
 
 .club-welcome {
-  flex: 1;                      /* wrapper itself no longer animates */
+  flex: 1;    
 }
 
-/* Line one: slides in from the left */
 .club-welcome h2 {
   font-size: 3rem;
   color: #422022;
@@ -270,13 +255,11 @@
   animation: welcome-in 1.2s ease-out 1.6s both;
 }
 
-/* Line two: waits for line one to finish, starts nearer the middle, rests indented right */
 .club-welcome h2.line-two {
   margin-left: 60px;
   animation: welcome-in-two 1.5s ease-out 2.6s both;
 }
 
-/* ---------- The two buttons under Welcome (fade in after both lines) ---------- */
 .club-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -295,7 +278,7 @@
   border: 2px solid #7c6d4d;
   border-radius: 999px;
   padding: 10px 22px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);   /* FIX: box-shadow was written twice */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); 
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -314,7 +297,6 @@
   .club-hero .hero-pic { width: 100%; flex-basis: auto; min-height: 320px; }
 }
 
-/* ---------- Bookshelf ---------- */
 .shelf-row {
   display: flex;
   flex-wrap: wrap;
@@ -324,7 +306,7 @@
   padding: 22px 24px 0;
   background: linear-gradient(to bottom, rgba(58, 34, 22, 0.14), rgba(58, 34, 22, 0.04));
   border-radius: 10px 10px 0 0;
-  border-bottom: 16px solid var(--cozy-plank);      /* the wooden board */
+  border-bottom: 16px solid var(--cozy-plank); 
   box-shadow: 0 10px 14px -8px rgba(58, 34, 22, 0.55);
 }
 
@@ -340,7 +322,7 @@
   height: 190px;
   margin: 0 auto 10px;
   object-fit: cover;
-  border-left: 6px solid var(--cozy-walnut);        /* book spine */
+  border-left: 6px solid var(--cozy-walnut);
   border-radius: 3px 7px 7px 3px;
   box-shadow: 5px 7px 12px rgba(58, 34, 22, 0.4);
 }
@@ -361,17 +343,17 @@
 .shelf-date { margin: 2px 0 8px; font-size: 0.9rem; color: var(--cozy-ink); }
 .shelf-row.waiting .shelf-cover { opacity: 0.8; }
 
-/* ===== Tab open: banner replaces the Welcome text ===== */
-.panel-banner { display: none; }                               /* hidden on the landing view */
 
-.club-hero.has-panel .hero-pic { display: none; }              /* picture steps aside (was written twice) */
-.club-hero.has-panel .club-welcome > h2 { display: none; }     /* the two Welcome lines */
-.club-hero.has-panel .club-welcome { width: 100%; }            /* span the page so the title can sit in the middle */
+.panel-banner { display: none; }                               
+
+.club-hero.has-panel .hero-pic { display: none; }              
+.club-hero.has-panel .club-welcome > h2 { display: none; }     
+.club-hero.has-panel .club-welcome { width: 100%; }            
 .club-hero.has-panel .panel-banner { display: grid; }
 .club-hero.has-panel .club-tabs { animation: none; }
 
 .panel-banner {
-    grid-template-columns: 1fr auto 1fr;   /* picture | title | empty: keeps the title in the true middle */
+    grid-template-columns: 1fr auto 1fr;   
     align-items: center;
     gap: 20px;
     margin-bottom: 20px;
@@ -386,7 +368,7 @@
     max-width: 260px;
     border-radius: 12px;
     border: 3px solid var(--pic-border);
-    clip-path: inset(0 0 0 100%);                       /* hidden at the start */
+    clip-path: inset(0 0 0 100%);                      
     animation: picEmerge 1.4s ease-out forwards;
 }
 
@@ -396,13 +378,13 @@
     margin: 0;
     text-align: center;
     color: var(--title-color);
-    opacity: 0;                                         /* hidden until the animation runs */
+    opacity: 0;                                       
     animation: titleFadeIn 1.6s ease-out 0.5s forwards;
 }
 
 @keyframes picEmerge {
-    from { clip-path: inset(0 0 0 100%); }              /* nothing visible, at the right edge */
-    to   { clip-path: inset(0 0 0 0); }                 /* fully revealed, no movement */
+    from { clip-path: inset(0 0 0 100%); }          
+    to   { clip-path: inset(0 0 0 0); }        
 }
 
 @keyframes titleFadeIn {
@@ -424,10 +406,9 @@
     border-bottom: 2px solid #2d0d0f;
 }
 
-/* ===== Chat room ===== */
 .chat-box {
     position: relative;
-    isolation: isolate;               /* keeps the background layer behind the messages */
+    isolation: isolate;              
     display: flex;
     flex-direction: column;
     height: 60vh;
@@ -435,30 +416,29 @@
     margin-top: 10px;
     border-radius: 14px;
     overflow: hidden;
-    background-color: #cfd8cc;        /* colour showing through the faded image */
+    background-color: #cfd8cc;      
 }
 
-/* The image sits on its own layer, so only it is made transparent */
 .chat-box::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: -1;
     background: url("../images/bookClub-chat-Background.jpg") center / cover no-repeat;
-    opacity: 0.3;                     /* lower = fainter */
+    opacity: 0.3; 
 }
 
 #message-list {
-    flex: 1;                          /* takes all space above the bar */
+    flex: 1;              
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     padding: 14px 18px;
 }
 
-#message-list > :first-child { margin-top: auto; }   /* few messages sit at the bottom, like WhatsApp */
+#message-list > :first-child { margin-top: auto; }   
 
-/* The bar at the bottom */
+
 .chat-compose {
     display: flex;
     align-items: flex-end;
@@ -489,18 +469,16 @@
     place-items: center;
     border: none;
     border-radius: 50%;
-    background: #5c2511;              /* same maroon as your buttons */
+    background: #5c2511;   
     color: #fff;
     cursor: pointer;
 }
 
 .send-btn:hover { filter: brightness(1.2); }
-.send-btn svg { margin-left: 2px; }   /* centres the arrow's visual weight */
+.send-btn svg { margin-left: 2px; } 
 
 .chat-notice { margin: 0; text-align: center; }
 
-/* FIX: reduced-motion used to replay a fade animation; now it simply turns
-   the animations off and shows everything straight away. */
 @media (prefers-reduced-motion: reduce) {
   .club-hero .hero-pic,
   .club-welcome h2,
@@ -517,14 +495,6 @@
   }
 }
 
-
-/* =========================================================
-   START A SESSION PAGE (create_session.php)  — NEW
-   Scoped to the form that posts to create_session.php, so
-   nothing else on the site is affected. No HTML changes needed.
-   ========================================================= */
-
-/* Page heading */
 h2:has(~ form[action="create_session.php"]) {
     font-size: 2rem;
     letter-spacing: 0.5px;
@@ -534,7 +504,6 @@ h2:has(~ form[action="create_session.php"]) {
     display: inline-block;
 }
 
-/* The form becomes a card with a label / field grid */
 form[action="create_session.php"] {
     display: grid;
     grid-template-columns: 190px 30px 1fr;
@@ -551,12 +520,10 @@ form[action="create_session.php"] {
     box-shadow: 0 12px 30px rgba(31, 58, 56, 0.22);
 }
 
-/* The <br> tags are only line breaks; the grid handles layout now */
 form[action="create_session.php"] br {
     display: none;
 }
 
-/* Labels */
 form[action="create_session.php"] .form-label {
     grid-column: 1;
     width: auto;
@@ -566,7 +533,6 @@ form[action="create_session.php"] .form-label {
     color: #1f3a38;
 }
 
-/* Text, select and date fields */
 form[action="create_session.php"] input[type="text"],
 form[action="create_session.php"] input[type="datetime-local"],
 form[action="create_session.php"] select {
@@ -603,7 +569,6 @@ form[action="create_session.php"] input[type="datetime-local"] {
     cursor: pointer;
 }
 
-/* Checkbox + its explanation */
 form[action="create_session.php"] input[type="checkbox"] {
     grid-column: 2;
     width: 22px;
@@ -612,7 +577,6 @@ form[action="create_session.php"] input[type="checkbox"] {
     accent-color: #113f3b;
     cursor: pointer;
 }
-
 
 form[action="create_session.php"] .btn{
     grid-row: 6;
@@ -625,12 +589,10 @@ form[action="create_session.php"] .btn{
     box-shadow: 0 5px 8px rgba(5, 2, 1, 0.45);
 }
 
-/* Start Session: first column */
 form[action="create_session.php"] button.btn{
     grid-column: 1;
 }
 
-/* Cancel: right next to it */
 form[action="create_session.php"] a.btn{
     grid-column: 2 / -1;
 }
@@ -649,7 +611,6 @@ form[action="create_session.php"] .btn:focus-visible{
     outline-offset: 3px;
 }
 
-/* Error messages above the form */
 h2 ~ p.error:has(~ form[action="create_session.php"]) {
     max-width: 860px;
     margin: 10px 0 0 25px;
@@ -660,7 +621,6 @@ h2 ~ p.error:has(~ form[action="create_session.php"]) {
     border-radius: 8px;
 }
 
-/* Tablets / phones: stack labels above fields */
 @media (max-width: 700px) {
     form[action="create_session.php"] {
         grid-template-columns: 30px 1fr;
