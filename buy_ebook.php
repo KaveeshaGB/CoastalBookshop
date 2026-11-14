@@ -18,6 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$me) {
 if (!isMember($pdo, $me)) {
     backToShelf('shelf_error', 'You are not a member, so you can\'t buy ebooks.');
 }
+// Card details: checked here, never saved (same rules as the order form)
+$cardName   = trim($_POST['card_name'] ?? '');
+$cardNumber = preg_replace('/[\s-]+/', '', $_POST['card_number'] ?? '');
+$cardExpiry = trim($_POST['card_expiry'] ?? '');
+$cardCvv    = trim($_POST['card_cvv'] ?? '');
 
 // Card details: checked here, never saved (same rules as the order form)
 $cardName   = trim($_POST['card_name'] ?? '');

@@ -6,6 +6,7 @@ $msg = $_SESSION['admin_msg'] ?? null;
 unset($_SESSION['admin_msg']);
 $err = null;
 $ebookErr = null;
+$ebookDir = EBOOK_DIR;
 
 // DELETE
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
@@ -48,6 +49,7 @@ $ebooks = $pdo->query(
        FROM Ebook e
       ORDER BY e.EbookID'
 )->fetchAll();
+
 require __DIR__.'/includes/header.php';
 ?>
             <h2>Manage Books</h2>

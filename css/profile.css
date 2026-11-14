@@ -1,16 +1,9 @@
-/* =========================================================
-   profile.css - member profile page (linked from profile.php)
-   Palette: parchment #f6f2ea, leather #c29b87, oak #a97954,
-   manuscript #2c6762, binding #532c2e, crimson #34000b
-   ========================================================= */
-
 .profile-page{
     max-width:900px;
     margin:0 auto;
     padding:24px 20px 30px;
 }
 
-/* ---------- Cards ---------- */
 .profile-card{
     background:#fdf9f2;
     border:1px solid #c29b87;
@@ -30,7 +23,6 @@
     border-bottom:2px solid #c29b87;
 }
 
-/* ---------- Hero (avatar + name) ---------- */
 .profile-hero{
     display:flex;
     align-items:center;
@@ -70,7 +62,6 @@
     color:#e6dccb;
 }
 
-/* ---------- Details grid ---------- */
 .details-grid{
     display:grid;
     grid-template-columns:repeat(2, 1fr);
@@ -93,7 +84,6 @@
     overflow-wrap:anywhere;
 }
 
-/* ---------- Events ---------- */
 .event-list{
     list-style:none;
     margin:0;
@@ -134,7 +124,6 @@
     text-decoration:none;
 }
 
-/* ---------- Status pills ---------- */
 .pill{
     display:inline-block;
     padding:2px 12px;
@@ -155,7 +144,7 @@
 .status-processing{ background:#5e7da9; }
 .status-shipped{ background:#35359b; }
 
-/* ---------- Orders table ---------- */
+
 .table-wrap{
     overflow-x:auto;
 }
@@ -199,7 +188,6 @@
     white-space:nowrap;
 }
 
-/* ---------- Small screens ---------- */
 @media(max-width: 600px){
     .profile-hero{
         flex-direction:column;
@@ -210,7 +198,6 @@
         grid-template-columns:1fr;
     }
 
-    /* each order row becomes a small card */
     .profile-page .orders-table thead{
         display:none;
     }

@@ -1,11 +1,3 @@
-/* ================================================================
-   ADMIN STYLES  (Manage Books + Add / Edit Book)
-   Paste at the BOTTOM of css/style.css.
-   If you pasted the earlier "Manage Books" block, delete it first:
-   this file replaces it.
-   ================================================================ */
-
-/* Shared colours, so both pages always match */
 :root {
     --adm-teal       : #2f6b64;
     --adm-teal-dark  : #1f4d47;
@@ -121,7 +113,7 @@ table.admin-table td .order-link,
 table.admin-table td .btn {
     display: inline-block;
     min-width: 62px;
-    margin: 0 3px 0 0 !important;      /* beats the inline style on the Delete button */
+    margin: 0 3px 0 0 !important;  
     padding: 8px 12px !important;
     font-family: 'Times New Roman', Times, serif;
     font-size: 14px;
@@ -147,7 +139,6 @@ table.admin-table td .btn:hover {
     background-color: var(--adm-red-hover);
 }
 
-/* Small screens: the table scrolls sideways instead of breaking the page */
 @media (max-width: 900px) {
     table.admin-table {
         display: block;
@@ -156,17 +147,6 @@ table.admin-table td .btn:hover {
     }
 }
 
-
-/* ================================================================
-   2. ADD / EDIT BOOK  (admin_book_form.php)
-   Same card look as the "Start a Session" form.
-   ================================================================ */
-
- /*================================================================
-   2. ADD / EDIT BOOK  (admin_book_form.php)
-   Same card look as the "Start a Session" form.
-   ================================================================ */
- 
 form[action^="admin_"][action$="_form.php"] {
     display: grid;
     grid-template-columns: 190px 1fr;
@@ -182,13 +162,11 @@ form[action^="admin_"][action$="_form.php"] {
     border-radius: 16px;
     box-shadow: 0 12px 30px rgba(31, 58, 56, 0.22);
 }
- 
-/* The <br> tags are only line breaks; the grid handles the layout */
+
 form[action^="admin_"][action$="_form.php"] br {
     display: none;
 }
- 
-/* Labels */
+
 form[action^="admin_"][action$="_form.php"] .form-label {
     grid-column: 1;
     width: auto;
@@ -198,8 +176,7 @@ form[action^="admin_"][action$="_form.php"] .form-label {
     font-weight: bold;
     color: #1f3a38;
 }
- 
-/* Text, number, date and select fields */
+
 form[action^="admin_"][action$="_form.php"] input[type="text"],
 form[action^="admin_"][action$="_form.php"] input[type="number"],
 form[action^="admin_"][action$="_form.php"] input[type="date"],
@@ -217,8 +194,7 @@ form[action^="admin_"][action$="_form.php"] select {
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
- 
-/* Short fields do not need the full width */
+
 form[action^="admin_"][action$="_form.php"] input[type="number"],
 form[action^="admin_"][action$="_form.php"] input[type="date"],
 form[action^="admin_"][action$="_form.php"] select {
@@ -245,8 +221,7 @@ form[action^="admin_"][action$="_form.php"] select:focus {
     border-color: var(--adm-teal);
     box-shadow: 0 0 0 4px rgba(47, 107, 102, 0.22);
 }
- 
-/* Cover image: file chooser */
+
 form[action^="admin_"][action$="_form.php"] input[type="file"] {
     grid-column: 2;
     width: 100%;
@@ -273,8 +248,7 @@ form[action^="admin_"][action$="_form.php"] input[type="file"]::file-selector-bu
 form[action^="admin_"][action$="_form.php"] input[type="file"]::file-selector-button:hover {
     background: var(--adm-brown-hover);
 }
- 
-/* Current cover shown when editing */
+
 form[action^="admin_"][action$="_form.php"] img {
     grid-column: 2;
     width: 70px;
@@ -283,8 +257,7 @@ form[action^="admin_"][action$="_form.php"] img {
     border: 1px solid rgba(0, 0, 0, 0.35);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
- 
-/* Buttons: Save in the first column, Cancel right next to it */
+
 form[action^="admin_"][action$="_form.php"] .btn,
 form[action^="admin_"][action$="_form.php"] .order-link {
     align-self: center;
@@ -322,8 +295,7 @@ form[action^="admin_"][action$="_form.php"] .order-link:focus-visible {
     outline: 3px solid var(--adm-teal);
     outline-offset: 3px;
 }
- 
-/* Error messages above the form */
+
 h2 ~ p.error:has(~ form[action^="admin_"][action$="_form.php"]) {
     max-width: 860px;
     margin: 10px 0 0 25px;
@@ -333,8 +305,7 @@ h2 ~ p.error:has(~ form[action^="admin_"][action$="_form.php"]) {
     border-left: 5px solid #c0392b;
     border-radius: 8px;
 }
- 
-/* Small screens: one column, labels above fields */
+
 @media (max-width: 700px) {
     form[action^="admin_"][action$="_form.php"] {
         grid-template-columns: 1fr;

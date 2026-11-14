@@ -87,7 +87,7 @@ require __DIR__ . '/includes/header.php';
                     </td>
                     <td>
                         <?= e($b['FileName']) ?>
-                        <?php if (!is_file(__DIR__ . '/ebooks/' . basename($b['FileName']))): ?>
+                        <?php if (is_file(EBOOK_DIR . '/' . basename($eb['FileName']))): ?>
                             <br><span class="error">File missing</span>
                         <?php endif; ?>
                     </td>
