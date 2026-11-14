@@ -1,4 +1,3 @@
-/* "Added to cart" confirmation box */
 #cart-toast {
     position: fixed;
     top: 90px;
@@ -27,12 +26,10 @@
     text-decoration: underline;
 }
 
-/* Small flash on the cart icon under a book */
 .cart-btn.added {
     background: #2f6b64;
 }
 
-/* Cart page */
 .cart-table {
     width: 100%;
     border-collapse: collapse;
