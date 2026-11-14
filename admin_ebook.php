@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
 
         // Remove the ebook file from the ebooks folder too
         if ($file) {
-            $path = __DIR__ . '/ebooks/' . basename($file);
+            $path = EBOOK_DIR . '/' . basename($file);
             if (is_file($path)) unlink($path);
         }
 
@@ -87,7 +87,7 @@ require __DIR__ . '/includes/header.php';
                     </td>
                     <td>
                         <?= e($b['FileName']) ?>
-                        <?php if (!is_file(__DIR__ . '/ebooks/' . basename($b['FileName']))): ?>
+                        <?php if (is_file(EBOOK_DIR . '/' . basename($eb['FileName']))): ?>
                             <br><span class="error">File missing</span>
                         <?php endif; ?>
                     </td>

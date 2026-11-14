@@ -35,7 +35,7 @@ const DELIVERY_COSTS = [
 // Extra charges added to the order total
 const PROTECTIVE_BOX_FEE = 200;   // when "Protective box" packaging is chosen
 const GIFT_FEE           = 500;   // when the order type is "Gift"
-
+const EBOOK_DIR = __DIR__ . '/../ebooks/copy';
 // ---------- Offers and stock ----------
 // Is a discount running for this book right now? (DiscountPercent is set and OfferEnds has not passed)
 function hasOffer(array $b): bool {

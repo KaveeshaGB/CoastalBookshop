@@ -18,8 +18,10 @@ if ($id) {
 }
 
 // The ebooks folder must exist and must not be openable straight from the browser
-$ebookDir = __DIR__ . '/ebooks';
+$ebookDir = EBOOK_DIR;
+$coverDir = __DIR__ . '/images/covers';
 if (!is_dir($ebookDir)) mkdir($ebookDir, 0755, true);
+if (!is_dir($coverDir)) mkdir($coverDir, 0755, true);
 if (!is_file($ebookDir . '/.htaccess')) file_put_contents($ebookDir . '/.htaccess', "Require all denied\n");
 
 // Form submitted
@@ -86,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Save the uploaded files
     if (!$errors && $coverUpload) {
         $name = uniqid('cover_') . '.' . $coverUpload[1];
-        if (move_uploaded_file($coverUpload[0], __DIR__ . '/images/covers/' . $name)) {
+        if (move_uploaded_file($coverUpload[0], $coverDir . '/' . $name)) {
             $ebook['CoverImage'] = $name;
         } else {
             $errors[] = 'Could not save the cover image.';
@@ -126,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['admin_msg'] = 'Ebook added.';
         }
 
-        header('Location: admin_books.php');
+        header('Location: admin_books.php#ebooks');
         exit;
     }
 }
@@ -140,7 +142,7 @@ require __DIR__ . '/includes/header.php';
                 <p class="error"><?= e($err) ?></p>
             <?php endforeach; ?>
 
-            <form method="post" action="admin_ebooks_form.php" enctype="multipart/form-data">
+            <form method="post" action="admin_ebook_form.php" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?= e($id) ?>">
 
                 <label class="form-label" for="title">Title:</label>
@@ -182,6 +184,6 @@ require __DIR__ . '/includes/header.php';
                 <br><br>
 
                 <button type="submit" class="btn"><?= $id ? 'Save Changes' : 'Add Ebook' ?></button>
-                <a class="order-link" href="admin_books.php">Cancel</a>
+                <a class="order-link" href="admin_books.php#ebooks">Cancel</a>
             </form>
 <?php require __DIR__ . '/includes/footer.php'; ?>

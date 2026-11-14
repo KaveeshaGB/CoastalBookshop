@@ -28,7 +28,7 @@ $book = $stmt->fetch();
 if (!$book) backToShelf('You can only download ebooks you have bought.');
 
 // basename() stops anyone from reaching files outside /ebooks
-$path = __DIR__.'/ebooks/'.basename($book['EbookFile']);
+$path = EBOOK_DIR . '/' . basename($file);
 if (!is_file($path)) backToShelf('Sorry, that ebook file is not available right now.');
 
 // Remember the first download (this is what puts the book on the shelf)
