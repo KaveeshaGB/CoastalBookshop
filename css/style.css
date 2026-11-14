@@ -25,9 +25,6 @@ a.plain{
     text-decoration:none;
 }
 
-
-/* ---------- Header and main navigation ---------- */
-
 header{
     display:flex;
     flex-wrap:wrap;
@@ -71,9 +68,6 @@ header{
     background-color:rgb(207 173 114);
 }
 
-
-/* ---------- Sign-in area and icon links ---------- */
-
 .sign-in{
     display:flex;
     align-items:center;
@@ -113,9 +107,6 @@ header{
     border:2px solid white;
     box-shadow:0 3px 8px rgba(0, 0, 0, 0.3);
 }
-
-
-/* ---------- Profile dropdown ---------- */
 
 .profile-menu{
     position:relative;
@@ -166,9 +157,6 @@ header{
     box-shadow:none;
 }
 
-
-/* ---------- Buttons and link effects ---------- */
-
 .btn{
     font-family:'Times New Roman', Times, serif;
     margin:10px 20px;
@@ -210,9 +198,6 @@ header{
     box-shadow:0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-
-/* ---------- Forms ---------- */
-
 .form-label{
     font-size:18px;
     display:inline-block;
@@ -243,9 +228,6 @@ select{
     margin-left:20px;
 }
 
-
-/* ---------- Tables ---------- */
-
 table{
     border-collapse:collapse;
     margin:5px 10px 5px;
@@ -258,9 +240,6 @@ td{
     padding:5px;
     background-color:rgb(156, 196, 183);
 }
-
-
-/* ---------- Messages and pop-up (modal) ---------- */
 
 .message{
     margin:10px 20px;
@@ -313,9 +292,6 @@ td{
     cursor:pointer;
 }
 
-
-/* ---------- Footer ---------- */
-
 footer{
     background-color:rgb(53, 53, 155);
     font-size:18px;
@@ -330,9 +306,6 @@ footer{
     padding:5px;
     margin-left:10px;
 }
-
-
-/* ---------- Responsive (max-width: 600px) ---------- */
 
 @media(max-width: 600px){
     #heading{
@@ -361,14 +334,10 @@ footer{
     }
 }
 
-/* ---------- Order form styling ---------- */
-/* Paste at the BOTTOM of your main stylesheet so it overrides earlier rules. */
-
 #order-form {
     max-width: 760px;
 }
 
-/* Labels: fixed width so every box lines up */
 #order-form .form-label {
     display: inline-block;
     width: 150px;
@@ -376,7 +345,6 @@ footer{
     vertical-align: middle;
 }
 
-/* Text boxes, number box, phone box and dropdowns */
 #order-form input[type="text"],
 #order-form input[type="tel"],
 #order-form input[type="number"],
@@ -395,7 +363,6 @@ footer{
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Quantity box and dropdown arrows */
 #order-form #quantity {
     width: 100px;
 }
@@ -404,7 +371,6 @@ footer{
     cursor: pointer;
 }
 
-/* Highlight the box being typed in */
 #order-form input:focus,
 #order-form select:focus {
     outline: none;
@@ -412,19 +378,17 @@ footer{
     box-shadow: 0 0 0 3px rgba(11, 92, 115, 0.3);
 }
 
-/* Disabled "Full Name" box */
 #order-form input:disabled {
     background: #c9dfd8;
     color: #35505a;
     cursor: not-allowed;
 }
 
-/* Placeholder / empty required boxes */
 #order-form input::placeholder {
     color: #7b9299;
 }
 
-/* Place Order button */
+
 #order-form .btn {
     margin-top: 14px;
     padding: 11px 28px;
@@ -446,7 +410,6 @@ footer{
     transform: translateY(1px);
 }
 
-/* Phones: stack label above box */
 @media (max-width: 600px) {
     #order-form .form-label {
         display: block;
@@ -466,14 +429,11 @@ footer{
     }
 }
 
-
-/* ---------- Order page: form on the left, delivery fees on the right ---------- */
-
 .order-layout {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    justify-content: center;   /* keeps the form and fees table together in the middle */
+    justify-content: center;  
     gap: 60px;
     padding-right: 20px;
 }
@@ -500,12 +460,10 @@ footer{
     font-weight: bold;
     font-size: 1.3rem;
     color: #000000;
-    /* adds no width of its own, so the table stays on the right and the text wraps under it */
     width: 0;
     min-width: 100%;
 }
 
-/* Card details */
 #order-form #card-expiry,
 #order-form #card-cvv {
     width: 120px;
@@ -540,9 +498,6 @@ footer{
     }
 }
 
-
-/* ---------- Gift decoration picker (all 8 options in one row) ---------- */
-
 .deco-label {
     display: block;
     width: auto;
@@ -552,9 +507,9 @@ footer{
     display: flex;
     flex-wrap: nowrap;
     gap: 10px;
-    margin: 0 5px 6px 160px;    /* lines up with the input boxes */
-    padding: 16px 8px 8px;      /* room for the lift and shadow */
-    overflow-x: auto;           /* scrolls sideways on very small screens */
+    margin: 0 5px 6px 160px;
+    padding: 16px 8px 8px;   
+    overflow-x: auto;   
 }
 
 .deco-card {
@@ -572,7 +527,6 @@ footer{
     text-align: center;
 }
 
-/* hide the round button but keep it usable with the keyboard */
 .deco-card input {
     position: absolute;
     opacity: 0;
@@ -602,7 +556,6 @@ footer{
     background: #c9dfd8;
 }
 
-/* hover: lift higher, grow a little and give a quick shake */
 .deco-card:hover img,
 .deco-card:hover .deco-blank {
     transform: translateY(-10px) scale(1.08);
@@ -647,13 +600,10 @@ footer{
     outline: 3px solid #1d3a44;
 }
 
-/* Contact details under the delivery table (order page) */
 .delivery-info .contact {
     margin: 20px 0 0;
     padding: 0;
 }
-
-/* ---------- Order confirmation pop-up ---------- */
 
 .order-receipt h3 {
     margin: 0 0 4px;
@@ -679,9 +629,6 @@ footer{
     margin: 10px 0 0;
 }
 
-
-/* ---------- Decorations swoosh in (left to right) when the gift fields open ---------- */
-
 @keyframes deco-swoosh {
     0%   { opacity: 0; transform: translateX(-90px) scale(0.8) rotate(-8deg); filter: blur(4px); }
     60%  { opacity: 1; transform: translateX(8px) scale(1.04) rotate(2deg); filter: blur(0); }
@@ -700,8 +647,6 @@ footer{
 @media (prefers-reduced-motion: reduce) {
     .deco-card { animation: none; }
 }
-
-/* ---------- Pop-up extras ---------- */
 
 .order-receipt {
     animation: receipt-pop 0.5s cubic-bezier(0.22, 1.4, 0.36, 1) both;
