@@ -46,6 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$d || $d->format('Y-m-d') !== $ebook['OfferEnds']) $errors[] = 'Enter a valid offer end date.';
     }
 
+    // No end date = no offer
+    if ($ebook['OfferEnds'] === '') $ebook['DiscountPercent'] = '0';
+
     $coverUpload = null;
     $fileUpload  = null;
 
