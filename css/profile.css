@@ -4,6 +4,7 @@
     padding:24px 20px 30px;
 }
 
+/*  Cards  */
 .profile-card{
     background:#fdf9f2;
     border:1px solid #c29b87;
@@ -62,6 +63,7 @@
     color:#e6dccb;
 }
 
+/* Details grid */
 .details-grid{
     display:grid;
     grid-template-columns:repeat(2, 1fr);
@@ -84,6 +86,7 @@
     overflow-wrap:anywhere;
 }
 
+/* Events */
 .event-list{
     list-style:none;
     margin:0;
@@ -119,6 +122,7 @@
     color:#532c2e;
 }
 
+/* Status pills */
 .profile-btn{
     margin:6px 0 0;
     text-decoration:none;
@@ -144,7 +148,7 @@
 .status-processing{ background:#5e7da9; }
 .status-shipped{ background:#35359b; }
 
-
+/* Orders table */
 .table-wrap{
     overflow-x:auto;
 }
@@ -188,6 +192,7 @@
     white-space:nowrap;
 }
 
+/* Small screens */
 @media(max-width: 600px){
     .profile-hero{
         flex-direction:column;

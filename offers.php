@@ -1,5 +1,5 @@
 <?php
-// All books with a running offer (same layout as the category pages).
+// All books with a running offer
 $pageTitle = 'Special Offers - Coastal Bookshop';
 require __DIR__.'/includes/header.php';
 $likedIds = getLikedIds($pdo);

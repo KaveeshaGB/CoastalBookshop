@@ -1,3 +1,4 @@
+/* Shared colors */
 :root {
     --adm-teal       : #2f6b64;
     --adm-teal-dark  : #1f4d47;
@@ -13,13 +14,8 @@
 }
 
 
-/* ================================================================
-   1. MANAGE BOOKS  (admin_books.php)
-   The table has no class, so it is found through the
-   "+ Add New Book" link that sits just above it.
-   ================================================================ */
+/* 1. MANAGE BOOKS  (admin_books.php)*/
 
-/* "+ Add New Book" link */
 a.order-link[href="admin_book_form.php"],
 a.order-link[href="admin_ebook_form.php"],
 a.order-link[href="home.php"] {
@@ -72,7 +68,7 @@ table.admin-table td {
     border-bottom: 1px solid rgba(31, 77, 71, 0.35);
 }
 
-/* Zebra rows + hover highlight */
+/* Zebra rows and hover highlight */
 table.admin-table tr:nth-child(even) td {
     background-color: var(--adm-cell-alt);
 }
@@ -101,7 +97,7 @@ table.admin-table td img {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Actions column: Edit and Delete side by side, same size */
+/* Actions column: Edit and Delete side by side */
 table.admin-table td:last-child {
     white-space: nowrap;
 }
@@ -131,7 +127,7 @@ table.admin-table td .btn:hover {
     background-color: var(--adm-brown-hover);
 }
 
-/* Delete is a darker red so it stands apart from Edit */
+
 table.admin-table td .btn {
     background-color: var(--adm-red);
 }

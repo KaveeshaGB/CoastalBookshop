@@ -1,5 +1,5 @@
 <?php
-// Shared helpers for the Book Club (sessions, messages, likes).
+// Shared helpers for the Book Club (sessions, messages, likes)
 require_once __DIR__.'/config.php';
 
 // A member is a customer who has a row in the Member table.
@@ -22,7 +22,6 @@ function getSession(PDO $pdo, string $eventId) {
     return $stmt->fetch();
 }
 
-// 'upcoming', 'live' or 'ended'.
 // A session ends when the host ends it OR its end time passes.
 function sessionState(array $ev): string {
     if ($ev['Status'] === 'Ended') return 'ended';
@@ -32,7 +31,7 @@ function sessionState(array $ev): string {
     return 'live';
 }
 
-// Is this member currently in the session? (joined and has not left)
+//check for the participant
 function isParticipant(PDO $pdo, string $eventId, $customerId): bool {
     if (!$customerId) return false;
     $stmt = $pdo->prepare('SELECT 1 FROM Member_Event WHERE EventID = ? AND CustomerID = ? AND LeftAt IS NULL');
@@ -51,7 +50,6 @@ function niceTime($dateTime): string {
     return date('d M Y, h:i A', strtotime($dateTime));
 }
 
-// "06 Nov 2026, 07:00 PM to 08:30 PM"
 function sessionWhen(array $ev): string {
     if (empty($ev['StartTime']) || empty($ev['EndTime'])) {
         return date('d M Y', strtotime($ev['EventDate']));
@@ -69,9 +67,9 @@ function sessionBadge(string $state): string {
     return '<span class="club-badge ' . e($state) . '">' . e($labels[$state]) . '</span>';
 }
 
-// Prints every message of a session (used by session.php and session_messages.php).
+// Prints every message of a session
 function renderMessages(PDO $pdo, array $ev, string $me): void {
-    // Only people in the session can like or edit, and only while it is live.
+    // Only people in the session can like or edit while the session is live.
     $canAct = sessionState($ev) === 'live' && isParticipant($pdo, $ev['EventID'], $me);
 
     $stmt = $pdo->prepare(

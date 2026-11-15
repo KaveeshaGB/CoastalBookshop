@@ -11,7 +11,7 @@ if (profileBtn && profileDropdown) {
         profileDropdown.classList.remove('open');
     });
 }
-// ---------- Log-in pop-up ----------
+// Log-in pop-up
 document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('login-modal');
     if (modal) {
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ---------- Register form ----------
+    //Register form
     const reg = document.getElementById('register-form');
     if (reg) {
         reg.addEventListener('submit', function (e) {
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ---------- Order form ----------
+    // Order form
     const orderForm = document.getElementById('order-form');
     if (orderForm) {
         const typeSel   = document.getElementById('book-type');
@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const opt = document.createElement('option');
                 opt.value = b.BookID;
                 if (Number(b.Stock) <= 0) {
-                    // Sold out: still listed, but cannot be chosen
                     opt.textContent = b.Title + ' - OUT OF STOCK';
                     opt.disabled = true;
                 } else {
@@ -134,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
             [cardName, cardNum, cardExp, cardCvv].forEach(function (f) { f.required = isCard; });
         }
 
-        // Card number: digits only, grouped in 4s
+        // Card number: digits only and grouped in 4s
         cardNum.addEventListener('input', function () {
             const digits = cardNum.value.replace(/\D/g, '').slice(0, 16);
             cardNum.value = digits.replace(/(.{4})/g, '$1 ').trim();
@@ -162,7 +161,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const m = /^(0[1-9]|1[0-2])\/(\d{2})$/.exec(cardExp.value);
             let expMsg = 'Enter the expiry date as MM/YY.';
             if (m) {
-                // Valid until the end of the expiry month
                 const endOfMonth = new Date(2000 + Number(m[2]), Number(m[1]), 1);
                 expMsg = endOfMonth > new Date() ? '' : 'That card has expired.';
             }

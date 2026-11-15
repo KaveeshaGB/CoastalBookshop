@@ -7,11 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SESSION['customer_id'])) {
 }
 
 $me     = $_SESSION['customer_id'];
-$action = $_POST['action'] ?? 'join';   // the old buttons send nothing, so they still mean "join"
+$action = $_POST['action'] ?? 'join';  
 
-// ---------------------------------------------------------------
 // RESIGN
-// ---------------------------------------------------------------
+
 if ($action === 'resign') {
     if (!isMember($pdo, $me)) {
         $_SESSION['club_error'] = 'You are not a member.';
@@ -47,12 +46,9 @@ if ($action === 'resign') {
     exit;
 }
 
-// ---------------------------------------------------------------
-// JOIN / REJOIN (the "Become a member" button)
-// ---------------------------------------------------------------
 
-// The button on the My Bookshelf tab sends return=bookshelf, so the answer shows on that tab.
-// The button on the Sessions tab sends nothing, so the answer shows on the Sessions tab as before.
+// JOIN / REJOIN ("Become a member" button)
+
 $fromShelf = ($_POST['return'] ?? '') === 'bookshelf';
 $okKey     = $fromShelf ? 'shelf_msg'   : 'club_msg';
 $errKey    = $fromShelf ? 'shelf_error' : 'club_error';
@@ -61,7 +57,6 @@ if (isMember($pdo, $me)) {
     $_SESSION[$okKey] = 'You are already a member.';
 } else {
     try {
-        // New member: adds the row. Returning member: clears ResignedAt and restarts JoinDate.
         $pdo->prepare('INSERT INTO Member (CustomerID) VALUES (?)
                        ON DUPLICATE KEY UPDATE ResignedAt = NULL, JoinDate = CURDATE()')
             ->execute([$me]);

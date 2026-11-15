@@ -1,6 +1,6 @@
 console.log('book-actions.js loaded');
 
-// Small confirmation box that slides in at the top right (styles are in css/cart.css)
+// Small confirmation box that slides in at the top right
 function showCartMessage(html) {
     let box = document.getElementById('cart-toast');
     if (!box) {
@@ -33,7 +33,7 @@ document.addEventListener('click', async function (event) {
         return;
     }
  
-    // ---- Add to cart ----
+    //Add to cart
         let data;
     try {
         const response = await fetch('cart.php', {

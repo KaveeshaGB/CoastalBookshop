@@ -1,5 +1,5 @@
 <?php
-// Called by the log-in pop-up with fetch(); replies with JSON.
+// Called by the log-in pop-up with fetch();
 require __DIR__ . '/includes/config.php';
 header('Content-Type: application/json');
 

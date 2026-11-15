@@ -41,7 +41,7 @@ require __DIR__.'/includes/header.php';
                     <?php if (!$joined && $state !== 'ended'): ?>
                         <button type="button" class="btn" data-action="join">Join session</button>
                     <?php endif; ?>
-                    <?php if ($joined): ?>
+                    <?php if ($joined && !$isHost): ?>
                         <button type="button" class="btn" data-action="leave">Leave session</button>
                     <?php endif; ?>
                     <?php if ($isHost && $state !== 'ended'): ?>
@@ -53,7 +53,6 @@ require __DIR__.'/includes/header.php';
                 <div class="chat-box">
                     <div id="message-list">
                         <?php
-                        header('X-Session-State: ' . sessionState($ev));
                         renderMessages($pdo, $ev, $me); 
                         ?>
                     </div>

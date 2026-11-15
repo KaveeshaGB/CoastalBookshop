@@ -46,7 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$d || $d->format('Y-m-d') !== $ebook['OfferEnds']) $errors[] = 'Enter a valid offer end date.';
     }
 
-    $coverUpload = null;   // [temporary path, extension]
+    // No end date = no offer
+    if ($ebook['OfferEnds'] === '') $ebook['DiscountPercent'] = '0';
+
+    $coverUpload = null;
     $fileUpload  = null;
 
     if (!$errors) {
@@ -117,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $_SESSION['admin_msg'] = 'Ebook updated.';
         } else {
-            // CREATE: keep the same ID letters the existing ebooks use (EB001, E001 ...), "EB" if there are none yet
+            // CREATE: Ebook ID are started from EB001,EB002,...
             $first  = $pdo->query('SELECT EbookID FROM Ebook ORDER BY EbookID LIMIT 1')->fetchColumn();
             $prefix = ($first && preg_match('/^[A-Za-z]+/', $first, $m)) ? $m[0] : 'EB';
             $newId  = nextId($pdo, 'Ebook', 'EbookID', $prefix);
