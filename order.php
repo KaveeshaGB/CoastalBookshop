@@ -11,7 +11,7 @@ foreach ($books as &$bk) {
 unset($bk);
 $selected = $_GET['book'] ?? '';
  
-// Cart mode: opened from the cart's "Place Order" button (order.php?from=cart)
+// Cart mode
 $fromCart     = ($_GET['from'] ?? '') === 'cart';
 $cartItems    = [];
 $cartSubtotal = 0;
@@ -135,7 +135,7 @@ unset($_SESSION['order_receipt'], $_SESSION['order_success'], $_SESSION['order_e
                     <?php endif; ?>
                     <p><a class="order-link" href="cart.php">Change cart</a></p>
  
-                    <!-- The single-book fields stay in the page (hidden and switched off) so script.js keeps working -->
+                    <!-- The single-book fields stay in the page -->
                     <div hidden>
                         <select id="book-type" disabled>
                             <option value="Fiction">Fiction</option>
@@ -247,7 +247,6 @@ unset($_SESSION['order_receipt'], $_SESSION['order_success'], $_SESSION['order_e
                 </div>
  
                 <?php if ($cartMode): ?>
-                    <!-- script.js writes its own total into #order-total, so the cart total has its own box -->
                     <p id="order-total" hidden></p>
                     <p id="cart-order-total" class="message"></p>
                 <?php else: ?>

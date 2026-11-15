@@ -11,7 +11,8 @@ $shelfErr = $_SESSION['shelf_error'] ?? null;
 $shelfMsg = $_SESSION['shelf_msg'] ?? null;
 unset($_SESSION['club_msg'], $_SESSION['club_error'], $_SESSION['shelf_error'], $_SESSION['shelf_msg']);
 
-// ---------- Sessions ----------
+
+//Sessions
 // Everyone sees public sessions. Members also see the sessions that are not public.
 $sql = 'SELECT e.*, b.Title AS BookTitle, b.Author AS BookAuthor, c.Name AS HostName,
                (SELECT COUNT(*) FROM Member_Event x
@@ -30,7 +31,7 @@ foreach ($sessions as $s) {
 $titles    = ['live' => 'Happening now', 'upcoming' => 'Coming up', 'ended' => 'Past sessions'];
 $liveCount = count($groups['live']);
 
-// ---------- Bookshelf ----------
+//Bookshelf
 // Members see two groups: ebooks they have bought (on top) and ebooks they can still buy (under).
 $owned     = [];   // bought
 $available = [];   // not bought yet
@@ -85,7 +86,7 @@ function shelfBook(array $b, bool $bought): void { ?>
     </div>
 <?php }
 
-// Which tab opens by itself (after a message or an error)
+
 $start = ($shelfErr || $shelfMsg) ? 'bookshelf' : (($msg || $err) ? 'sessions' : '');
 
 require __DIR__.'/includes/header.php';
@@ -162,7 +163,7 @@ require __DIR__.'/includes/header.php';
                     <?php endforeach; ?>
                 </section>
 
-                <!-- MY BOOKSHELF -->
+                <!-- My Bookshelf -->
                 <section id="panel-bookshelf" role="tabpanel" aria-labelledby="tab-bookshelf" class="shelf-page" hidden>
                     <?php if ($shelfMsg): ?><p class="message"><?= e($shelfMsg) ?></p><?php endif; ?>
                     <?php if ($shelfErr): ?><p class="error"><?= e($shelfErr) ?></p><?php endif; ?>
@@ -180,7 +181,7 @@ require __DIR__.'/includes/header.php';
                         </form>
 
                     <?php else: ?>
-                        <h3>On My shelf</h3>
+                        <h3>On my shelf</h3>
                         <?php if (!$owned): ?>
                             <p class="message">You don't own any ebooks yet. Once you buy one, it will show up here.</p>
                         <?php else: ?>
@@ -211,7 +212,6 @@ require __DIR__.'/includes/header.php';
                         bookshelf: document.getElementById('panel-bookshelf')
                     };
 
-                    // name = 'sessions', 'bookshelf', or '' (nothing selected: show the picture)
                     function show(name) {
                         if (!panels[name]) name = '';
                         hero.classList.toggle('has-panel', name !== '');
@@ -234,7 +234,7 @@ require __DIR__.'/includes/header.php';
                         });
                     });
 
-                        // On load: use the #sessions / #bookshelf in the address, else whatever the server asked for
+                
                     show(location.hash.replace('#', '') || content.dataset.start);
 
                     // The Ebooks link in the top nav only changes the #hash when you are already on this page

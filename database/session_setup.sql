@@ -26,7 +26,7 @@ ALTER TABLE Member_Event
 CREATE TABLE Message (
   EventID    VARCHAR(10),
   MessageID  VARCHAR(10),
-  CustomerID VARCHAR(10) NOT NULL, --Them member who started the session
+  CustomerID VARCHAR(10) NOT NULL, -- The member who sent the message
   Body       VARCHAR(1000) NOT NULL,
   SentAt     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   EditedAt   DATETIME NULL,

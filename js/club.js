@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // ---------- Join / Leave / End buttons ----------
+    // Join / Leave / End buttons
     document.querySelectorAll('.session-actions button').forEach(function (btn) {
         btn.addEventListener('click', async function () {
             const action = btn.dataset.action;
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ---------- Send a message ----------
+    //Send a message
     const compose = document.getElementById('compose-form');
     if (compose) {
         compose.addEventListener('submit', async function (e) {
@@ -78,8 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ---------- Like and edit (buttons inside the message list) ----------
-        // ---------- Like and edit (buttons inside the message list) ----------
+    //Like and edit buttons inside the message list
     list.addEventListener('click', async function (e) {
         const msg = e.target.closest('.msg');
         if (!msg) return;

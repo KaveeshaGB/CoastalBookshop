@@ -1,6 +1,6 @@
 <?php
 // Member profile page: details, joined book-club sessions, order history.
-require_once __DIR__.'/includes/config.php';   // starts session + gives $pdo and e()
+require_once __DIR__.'/includes/config.php';  
 
 if (empty($_SESSION['customer_id'])) { header('Location: login.php'); exit; }
 $customerId = $_SESSION['customer_id'];
@@ -8,16 +8,16 @@ $customerId = $_SESSION['customer_id'];
 // LEFT JOIN so a customer who is not a club member yet still sees their details
 $stmt = $pdo->prepare(
   'SELECT c.Name, c.Email, c.Phone, c.Address, m.JoinDate, m.ResignedAt
-   FROM customer c
-   LEFT JOIN member m ON m.CustomerID = c.CustomerID
+   FROM Customer c
+   LEFT JOIN Member m ON m.CustomerID = c.CustomerID
    WHERE c.CustomerID = ?');
 $stmt->execute([$customerId]);
 $member = $stmt->fetch();
 
 $stmt = $pdo->prepare(
   'SELECT e.EventID, e.EventName, e.EventDate, e.EndTime, e.Status, me.LeftAt
-   FROM member_event me
-   JOIN event e ON e.EventID = me.EventID
+   FROM Member_Event me
+   JOIN Event e ON e.EventID = me.EventID
    WHERE me.CustomerID = ?
    ORDER BY COALESCE(e.StartTime, e.EventDate) DESC');
 $stmt->execute([$customerId]);
@@ -25,9 +25,9 @@ $events = $stmt->fetchAll();
 
 $stmt = $pdo->prepare(
   'SELECT b.Title, b.Author, ob.Quantity, ob.UnitPrice, o.OrderDate, o.Status
-   FROM orders o
-   JOIN order_books ob ON ob.OrderID = o.OrderID
-   JOIN books b ON b.BookID = ob.BookID
+   FROM Orders o
+   JOIN Order_Books ob ON ob.OrderID = o.OrderID
+   JOIN Books b ON b.BookID = ob.BookID
    WHERE o.CustomerID = ?
    ORDER BY o.OrderDate DESC');
 $stmt->execute([$customerId]);
@@ -43,7 +43,7 @@ $isActive = !empty($member['JoinDate']) && empty($member['ResignedAt']);
 
             <div class="profile-page">
 
-                <!-- ---------- My details ---------- -->
+                <!--  My details -->
                 <section class="profile-card profile-hero">
                     <div class="profile-avatar" aria-hidden="true"><?= e($initial) ?></div>
                     <div class="profile-hero-text">
@@ -87,7 +87,7 @@ $isActive = !empty($member['JoinDate']) && empty($member['ResignedAt']);
                     <?php endif; ?>
                 </section>
 
-                <!-- ---------- Events ---------- -->
+                <!-- Events  -->
                 <section class="profile-card">
                     <h3 class="profile-heading">Events I Joined</h3>
                     <?php if (!$events): ?>
@@ -112,7 +112,7 @@ $isActive = !empty($member['JoinDate']) && empty($member['ResignedAt']);
                     <?php endif; ?>
                 </section>
 
-                <!-- ---------- Orders ---------- -->
+                <!-- Orders -->
                 <section class="profile-card">
                     <h3 class="profile-heading">Books I Ordered</h3>
                     <?php if (!$books): ?>
