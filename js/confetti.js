@@ -1,5 +1,4 @@
-// Small confetti burst (no library needed).
-// Usage: launchConfetti();
+// Small confetti burst
 function launchConfetti(duration) {
     duration = duration || 3500;
 
@@ -57,8 +56,8 @@ function launchConfetti(duration) {
         ctx.globalAlpha = fade;
 
         pieces.forEach(function (p) {
-            p.vy += 0.28;          // gravity
-            p.vx *= 0.99;          // air drag
+            p.vy += 0.28;    
+            p.vx *= 0.99;  
             p.vy *= 0.99;
             p.x += p.vx;
             p.y += p.vy;

@@ -1,5 +1,4 @@
 <?php
-// Usage: set $pageTitle before including this file.
 require_once __DIR__.'/config.php';
 $loggedIn = !empty($_SESSION['customer_id']);
 ?>
@@ -39,7 +38,6 @@ $loggedIn = !empty($_SESSION['customer_id']);
                 <?php if ($loggedIn): ?>
                     <a class="icon-link" href="cart.php" title="Cart"><img src="images/cart.jpg" alt="Cart"></a>
                 <?php else: ?>
-                    <!-- not logged in: open the log-in pop-up instead of the cart -->
                     <a class="icon-link" href="#" title="Cart"
                        onclick="document.getElementById('open-login').click(); return false;"><img src="images/cart.jpg" alt="Cart"></a>
                 <?php endif; ?>
@@ -62,7 +60,7 @@ $loggedIn = !empty($_SESSION['customer_id']);
         </header>
  
         <?php if (!$loggedIn): ?>
-        <!-- Log-in pop-up box (submitted with JS to login.php) -->
+        <!-- Log-in pop-up box -->
         <div id="login-modal" class="modal" hidden>
             <div class="modal-box">
                 <button type="button" class="modal-close" id="close-login" aria-label="Close">&times;</button>

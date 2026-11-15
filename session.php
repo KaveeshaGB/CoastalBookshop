@@ -53,7 +53,6 @@ require __DIR__.'/includes/header.php';
                 <div class="chat-box">
                     <div id="message-list">
                         <?php
-                        header('X-Session-State: ' . sessionState($ev));
                         renderMessages($pdo, $ev, $me); 
                         ?>
                     </div>

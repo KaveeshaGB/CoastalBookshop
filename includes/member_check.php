@@ -1,6 +1,4 @@
 <?php
-// Put "require 'member_check.php';" at the very top of every members-only page.
-// After it runs, $me holds the logged-in member's CustomerID.
 require_once __DIR__ . '/club_functions.php';
 
 $me = $_SESSION['customer_id'] ?? null;

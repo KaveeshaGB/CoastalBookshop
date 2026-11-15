@@ -1,12 +1,12 @@
 <?php
-// Shared setup: session + database connection + small helpers.
+// Shared setup: session + database connection + small helpers
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 date_default_timezone_set('Asia/Colombo');
 
 $pdo = new PDO(
     'mysql:host=localhost;dbname=coastal_bookshop;charset=utf8mb4',
-    'root',          // change to your MySQL user
-    '',              // change to your MySQL password
+    'root',          // change to user's MySQL user
+    '',              // change to user's MySQL password
     [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -36,8 +36,9 @@ const DELIVERY_COSTS = [
 const PROTECTIVE_BOX_FEE = 200;   // when "Protective box" packaging is chosen
 const GIFT_FEE           = 500;   // when the order type is "Gift"
 const EBOOK_DIR = __DIR__ . '/../ebooks/copy';
+
+
 // ---------- Offers and stock ----------
-// Is a discount running for this book right now? (DiscountPercent is set and OfferEnds has not passed)
 function hasOffer(array $b): bool {
     if ((int)($b['DiscountPercent'] ?? 0) <= 0) return false;
     return empty($b['OfferEnds']) || $b['OfferEnds'] >= date('Y-m-d');
@@ -55,7 +56,7 @@ function isOutOfStock(array $b): bool {
     return (int)($b['Stock'] ?? 0) <= 0;
 }
 
-// Shows one book card (used by home + category pages)
+// Shows one book card
 function renderBook(array $b) {
     global $likedIds;
     $liked = in_array($b['BookID'], $likedIds ?? [], true);
@@ -88,7 +89,6 @@ function renderBook(array $b) {
     echo '<div class="book-actions">';
     echo '<button type="button" class="heart-btn' . ($liked ? ' liked' : '') . '" data-book="' . e($b['BookID']) . '" aria-label="Like this book">&#9829;</button>';
     if ($out) {
-        // No "cart-btn" class on purpose, so book-actions.js ignores it
         echo '<button type="button" class="cart-off" disabled title="Out of stock" aria-label="Out of stock"><img src="images/cart.jpg" alt=""></button>';
     } else {
         echo '<button type="button" class="cart-btn" data-book="' . e($b['BookID']) . '" aria-label="Add to cart"><img src="images/cart.jpg" alt=""></button>';
@@ -103,7 +103,7 @@ function renderBook(array $b) {
     echo '</div>';
 }
 
-// IDs of the books this person liked (customer: BookLike table, visitor: session)
+// IDs of the books the user liked 
 function getLikedIds(PDO $pdo): array {
     if (empty($_SESSION['customer_id'])) {
         return $_SESSION['guest_likes'] ?? [];
@@ -127,7 +127,7 @@ function getSuggestedBooks(PDO $pdo, array $likedIds, int $limit = 4): array {
     return $st->fetchAll();
 }
 
-// Optional: call right after login so a visitor's likes are kept
+//call right after login so a visitor's likes are kept
 function mergeGuestLikes(PDO $pdo): void {
     if (empty($_SESSION['customer_id']) || empty($_SESSION['guest_likes'])) return;
     $st = $pdo->prepare('INSERT IGNORE INTO BookLike (CustomerID, BookID) VALUES (?, ?)');

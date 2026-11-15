@@ -2,21 +2,13 @@
 require __DIR__ . '/includes/admin_check.php';
 
 $categories = ['Fiction', 'Novel', 'Short Story', 'Kids Story'];
-$book['Discount']     = (int)($_POST['discount'] ?? 0);
-$book['OfferEndDate'] = trim($_POST['offer_end'] ?? '');
-
-// No end date = no offer
-if ($book['OfferEndDate'] === '') {
-    $book['Discount']     = 0;
-    $book['OfferEndDate'] = null;
-}
 
 $id = $_GET['id'] ?? $_POST['id'] ?? '';
 $errors = [];
 $book   = ['Title' => '', 'Author' => '', 'Price' => '', 'Category' => $categories[0], 'ImageFile' => '',
            'Stock' => 10, 'DiscountPercent' => 0, 'OfferEnds' => ''];
 
-// Editing: load the existing row
+// Editing-load the existing row
 if ($id) {
     $stmt = $pdo->prepare('SELECT * FROM Books WHERE BookID = ?');
     $stmt->execute([$id]);
@@ -49,6 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$d || $d->format('Y-m-d') !== $book['OfferEnds']) $errors[] = 'Enter a valid offer end date.';
     }
 
+    // No end date = no offer
+    if ($book['OfferEnds'] === '') $book['DiscountPercent'] = '0';
+    if ($ebook['OfferEnds'] === '') $ebook['DiscountPercent'] = '0';
+    
     // Optional image upload
     if (!$errors && !empty($_FILES['image']['name'])) {
         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
