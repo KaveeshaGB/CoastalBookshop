@@ -25,6 +25,7 @@ a.plain{
     text-decoration:none;
 }
 
+/* Header and main navigation */
 header{
     display:flex;
     flex-wrap:wrap;
@@ -68,6 +69,7 @@ header{
     background-color:rgb(207 173 114);
 }
 
+/* Sign-in area and icon links  */
 .sign-in{
     display:flex;
     align-items:center;
@@ -108,6 +110,7 @@ header{
     box-shadow:0 3px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Profile dropdown */
 .profile-menu{
     position:relative;
 }
@@ -157,6 +160,7 @@ header{
     box-shadow:none;
 }
 
+/*  Buttons and link effects */
 .btn{
     font-family:'Times New Roman', Times, serif;
     margin:10px 20px;
@@ -198,6 +202,7 @@ header{
     box-shadow:0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Forms */
 .form-label{
     font-size:18px;
     display:inline-block;
@@ -228,6 +233,7 @@ select{
     margin-left:20px;
 }
 
+/* Tables */
 table{
     border-collapse:collapse;
     margin:5px 10px 5px;
@@ -241,6 +247,7 @@ td{
     background-color:rgb(156, 196, 183);
 }
 
+/* Success or error messages and pop-up window */
 .message{
     margin:10px 20px;
     padding:8px;
@@ -292,21 +299,6 @@ td{
     cursor:pointer;
 }
 
-footer{
-    background-color:rgb(53, 53, 155);
-    font-size:18px;
-    padding:6px;
-    margin-bottom:0;
-    text-align:center;
-    color:aliceblue;
-}
-
-.contact{
-    font-weight:bold;
-    padding:5px;
-    margin-left:10px;
-}
-
 @media(max-width: 600px){
     #heading{
         font-size:1.5rem;
@@ -334,10 +326,12 @@ footer{
     }
 }
 
+/* Order form styles */
 #order-form {
     max-width: 760px;
 }
 
+/* Labels */
 #order-form .form-label {
     display: inline-block;
     width: 150px;
@@ -345,6 +339,7 @@ footer{
     vertical-align: middle;
 }
 
+/* Text boxes, number box, phone box and dropdowns */
 #order-form input[type="text"],
 #order-form input[type="tel"],
 #order-form input[type="number"],
@@ -363,6 +358,7 @@ footer{
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+/* Quantity box and dropdown cursor */
 #order-form #quantity {
     width: 100px;
 }
@@ -371,6 +367,7 @@ footer{
     cursor: pointer;
 }
 
+/* Highlight the box being typed in */
 #order-form input:focus,
 #order-form select:focus {
     outline: none;
@@ -388,7 +385,7 @@ footer{
     color: #7b9299;
 }
 
-
+/* Place Order button */
 #order-form .btn {
     margin-top: 14px;
     padding: 11px 28px;
@@ -429,6 +426,7 @@ footer{
     }
 }
 
+/* Order page styles*/
 .order-layout {
     display: flex;
     flex-wrap: wrap;
@@ -464,6 +462,7 @@ footer{
     min-width: 100%;
 }
 
+/* Card details */
 #order-form #card-expiry,
 #order-form #card-cvv {
     width: 120px;
@@ -498,6 +497,7 @@ footer{
     }
 }
 
+/* Gift decorations */
 .deco-label {
     display: block;
     width: auto;
@@ -600,11 +600,13 @@ footer{
     outline: 3px solid #1d3a44;
 }
 
+/* Contact details under the delivery table*/
 .delivery-info .contact {
     margin: 20px 0 0;
     padding: 0;
 }
 
+/* Order confirmation pop-up window */
 .order-receipt h3 {
     margin: 0 0 4px;
     font-size: 1.4rem;
@@ -648,6 +650,7 @@ footer{
     .deco-card { animation: none; }
 }
 
+/*Pop-up extras */
 .order-receipt {
     animation: receipt-pop 0.5s cubic-bezier(0.22, 1.4, 0.36, 1) both;
 }
