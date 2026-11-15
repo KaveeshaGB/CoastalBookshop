@@ -1,3 +1,4 @@
+/*Hero banner*/
 .background-section{
     background-image:
         linear-gradient(rgba(48, 48, 48, 0.8), rgba(32, 32, 32, 0.7)),
@@ -31,6 +32,7 @@
     }
 }
 
+/*Category links*/
 .type-list{
     padding-left:20px;
     margin:10px 0;
@@ -54,6 +56,8 @@
     background-color:rgb(207 173 114);
 }
 
+
+/* Book cards*/
 .books{
     position:relative;
     margin:10px;
@@ -63,7 +67,7 @@
     align-items:center;
     width:calc(20% - 30px);
     height:auto;
-    min-height:450px;          /* every card is the same height, with or without an offer */
+    min-height:450px;          
     vertical-align:top;
     text-align:center;
 }
@@ -86,14 +90,14 @@
 .books h4{
     font-family:'Playfair Display', Georgia, serif;
     margin:0.5rem 0 0.2rem;
-    min-height:3.6rem;         /* room for up to 3 title lines */
+    min-height:3.6rem;        
 }
 
 .books p{
     margin:0 0 0.75rem;
 }
 
-/* Heart + cart icons: pushed to the bottom of the card */
+/* Heart and cart icons are pushed to the bottom of the card */
 .book-actions{
     display:flex;
     justify-content:center;
@@ -179,6 +183,7 @@
     background-color:rgba(106, 44, 29, 0.876);
 }
 
+/*Offers and stock */
 .book-badge{
     position:absolute;
     top:14px;
@@ -259,6 +264,6 @@
 @media(max-width: 600px){
     .books{
         width:100%;
-        min-height:0;          /* no tall empty cards on phones */
+        min-height:0;         
     }
 }

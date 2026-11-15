@@ -1,3 +1,5 @@
+/* Book club pages uses the same colors as home_style.css. */
+/*COLOR VARIABLES*/
 :root {
   --parchment : #f6f2ea;
   --leather   : #c29b87;
@@ -27,6 +29,7 @@
     padding-left:0;
 }
 
+/*Session cards*/
 .club-card{
     background: rgb(254 233 144 / 25%);
     border: 2px solid rgb(16 51 16 / 67%);
@@ -83,6 +86,7 @@
     margin:10px 10px 10px 0;
 }
 
+/* Messages */
 .msg{
     background-color:rgb(156, 196, 183);
     border:2px solid rgb(0, 0, 44);
@@ -199,6 +203,8 @@
     }
 }
 
+/*Main picture in Bookclub and the Welcome */
+
 .club-hero {
   display: flex;
   align-items: center;
@@ -260,6 +266,7 @@
   animation: welcome-in-two 1.5s ease-out 2.6s both;
 }
 
+/*The two buttons under Welcome*/
 .club-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -297,6 +304,7 @@
   .club-hero .hero-pic { width: 100%; flex-basis: auto; min-height: 320px; }
 }
 
+/*Bookshelf */
 .shelf-row {
   display: flex;
   flex-wrap: wrap;
@@ -306,7 +314,7 @@
   padding: 22px 24px 0;
   background: linear-gradient(to bottom, rgb(2 79 41 / 30%), rgb(35 96 27 / 7%));
   border-radius: 10px 10px 0 0;
-  border-bottom: 12px solid #2e4d39;      /* the wooden board */
+  border-bottom: 12px solid #2e4d39;
   box-shadow: 0 8px 14px -5px rgb(0 0 0 / 54%);
 
 }
@@ -357,7 +365,7 @@
 }
 /* Align the ebook cards on the shelf */
 .shelf-row{
-    align-items:stretch;      /* every card gets the same height, so the covers start at the same top */
+    align-items:stretch;
 }
 .shelf-book{
     display:flex;
@@ -366,17 +374,18 @@
 }
 .shelf-title{
     line-height:1.2;
-    min-height:3.6em;         /* room for 3 lines, so author and price line up */
+    min-height:3.6em;       
 }
 .shelf-book form,
 .shelf-book > .order-link{
-    margin-top:auto;          /* pushes Buy and Read to the bottom of the card */
-}
+    margin-top:auto;
+}      
 .shelf-book .shelf-author{
     font-size: 1.0rem;
 }
-/* ===== Tab open: banner replaces the Welcome text ===== */
-.panel-banner { display: none; }                               /* hidden on the landing view */
+
+/*When the Tab opens banner replaces the Welcome text*/
+.panel-banner { display: none; }  /* hidden on the landing view */
 
 .panel-banner { display: none; }                               
 
@@ -440,6 +449,7 @@
     border-bottom: 2px solid #2d0d0f;
 }
 
+/*Chat room*/
 .chat-box {
     position: relative;
     isolation: isolate;              
@@ -472,7 +482,7 @@
 
 #message-list > :first-child { margin-top: auto; }   
 
-
+/* The bar at the bottom */
 .chat-compose {
     display: flex;
     align-items: flex-end;
@@ -511,7 +521,7 @@
 .send-btn:hover { filter: brightness(1.2); }
 .send-btn svg { margin-left: 2px; } 
 
-.chat-notice { margin: 0; text-align: center; }
+.chat-notice { margin: 0 0 10px 8px; text-align: center; }
 
 @media (prefers-reduced-motion: reduce) {
   .club-hero .hero-pic,
@@ -529,6 +539,9 @@
   }
 }
 
+/* Start a session page - create_session.php*/
+
+/* Page heading */
 h2:has(~ form[action="create_session.php"]) {
     font-size: 2rem;
     letter-spacing: 0.5px;
@@ -538,6 +551,7 @@ h2:has(~ form[action="create_session.php"]) {
     display: inline-block;
 }
 
+/* The form becomes a card with a label*/
 form[action="create_session.php"] {
     display: grid;
     grid-template-columns: 190px 30px 1fr;
@@ -558,6 +572,7 @@ form[action="create_session.php"] br {
     display: none;
 }
 
+/* Labels */
 form[action="create_session.php"] .form-label {
     grid-column: 1;
     width: auto;
@@ -567,6 +582,7 @@ form[action="create_session.php"] .form-label {
     color: #1f3a38;
 }
 
+/* Text, select and date fields */
 form[action="create_session.php"] input[type="text"],
 form[action="create_session.php"] input[type="datetime-local"],
 form[action="create_session.php"] select {
@@ -603,6 +619,7 @@ form[action="create_session.php"] input[type="datetime-local"] {
     cursor: pointer;
 }
 
+/* Checkbox and its explanation */
 form[action="create_session.php"] input[type="checkbox"] {
     grid-column: 2;
     width: 22px;
@@ -623,10 +640,12 @@ form[action="create_session.php"] .btn{
     box-shadow: 0 5px 8px rgba(5, 2, 1, 0.45);
 }
 
+/* Start Session*/
 form[action="create_session.php"] button.btn{
     grid-column: 1;
 }
 
+/* Cancel*/
 form[action="create_session.php"] a.btn{
     grid-column: 2 / -1;
 }
@@ -645,6 +664,7 @@ form[action="create_session.php"] .btn:focus-visible{
     outline-offset: 3px;
 }
 
+/* Error messages above the form */
 h2 ~ p.error:has(~ form[action="create_session.php"]) {
     max-width: 860px;
     margin: 10px 0 0 25px;
@@ -702,7 +722,7 @@ h2 ~ p.error:has(~ form[action="create_session.php"]) {
     margin-top:auto;
 }
 
-/* ---------- Buy ebook pop-up ---------- */
+/*Buy ebook pop-up window */
 #buy-modal{
     background-color:rgba(34, 21, 14, 0.65);
 }
