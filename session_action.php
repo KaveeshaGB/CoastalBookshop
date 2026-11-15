@@ -1,5 +1,5 @@
 <?php
-// Called by club.js with fetch(); replies with JSON.
+// Called by club.js with fetch();
 // Actions: join, leave, end, post, edit, like
 require_once __DIR__ .'/includes/club_functions.php';
 header('Content-Type: application/json');
@@ -27,7 +27,6 @@ try {
     $pdo->beginTransaction();
 
     // Lock the session row so two requests cannot clash
-    // (for example ending the session while someone is posting).
     $stmt = $pdo->prepare('SELECT * FROM Event WHERE EventID = ? FOR UPDATE');
     $stmt->execute([$eventId]);
     $ev = $stmt->fetch();
@@ -54,7 +53,7 @@ try {
 
         case 'leave':
             if (!$joined) stop($pdo, 'You are not in this session.');
-            // The person who started it must end it before leaving.
+            
             if ($isHost && $state !== 'ended') {
                 stop($pdo, 'You started this session, so end it before you leave.');
             }

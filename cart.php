@@ -1,6 +1,5 @@
 <?php
-// Cart page: add (JSON, called by js/book-actions.js), update, remove, and the list of books.
-// "Place Order" sends the visitor to order.php?from=cart (the Order tab).
+// Cart page
 require __DIR__.'/includes/config.php';
  
 $loggedInNow = !empty($_SESSION['customer_id']);
@@ -12,7 +11,7 @@ function fail(string $msg): void {
     exit;
 }
  
-// ---------- "Add to Cart" icon under a book (replies with JSON) ----------
+//"Add to Cart" icon under a book
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add') {
     header('Content-Type: application/json');
  
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add')
         exit;
     }
  
-    // Stock check (the server always has the final say, not the button on the page)
+    // Stock check 
     $stock = (int)$book['Stock'];
     $have  = (int)($cart[$bookId] ?? 0);
     if ($stock <= 0) {
@@ -52,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add')
     exit;
 }
  
-// ---------- Update / remove ----------
+//Update / remove
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
  
@@ -76,10 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
  
-// ---------- Show the cart page ----------
+//Show the cart page
 $items = [];
 $subtotal = 0;
-$stockProblem = false;   // true if something in the cart is sold out (or not enough copies)
+$stockProblem = false;   
 if ($loggedInNow && $cart) {
     $ids  = array_map('strval', array_keys($cart));
     $in   = implode(',', array_fill(0, count($ids), '?'));

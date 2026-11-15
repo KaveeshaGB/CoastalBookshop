@@ -171,7 +171,7 @@ ALTER TABLE Gift
   NOT NULL DEFAULT 'None';
 
 
---Ebooks
+-- Ebooks
 -- books have no ebook version.Only members can buy books.
 
 CREATE TABLE Ebook (
@@ -184,7 +184,7 @@ CREATE TABLE Ebook (
     PRIMARY KEY (EbookID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---Member buys Ebook 
+-- Member buys Ebook 
 CREATE TABLE Member_Ebook (
     CustomerID  VARCHAR(10)   NOT NULL,
     EbookID     VARCHAR(10)   NOT NULL,

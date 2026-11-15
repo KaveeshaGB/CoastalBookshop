@@ -17,7 +17,7 @@ function fail($msg) {
     exit;
 }
  
-// Two modes: one book from the form (Order Now), or every book in the cart (from_cart=1)
+// Two modes: one book from the form (Order Now), or every book in the cart
 $fromCart = !empty($_POST['from_cart']);
  
 $bookId   = trim($_POST['book_id'] ?? '');
@@ -36,7 +36,7 @@ if (!in_array($payment, ['Card', 'Cash on Delivery'], true)) fail('Choose a vali
 if (!in_array($type, ['Parcel', 'Gift'], true))         fail('Choose a valid order type.');
 if ($address === '')                                    fail('Delivery address is required.');
  
-// Card details: checked here, but never saved (only the payment method is stored).
+// Card details: checked here, but never saved
 if ($payment === 'Card') {
     $cardName   = trim($_POST['card_name'] ?? '');
     $cardNumber = preg_replace('/[\s-]+/', '', $_POST['card_number'] ?? '');
@@ -46,21 +46,19 @@ if ($payment === 'Card') {
     if ($cardName === '')                                fail('Enter the name on the card.');
     if (!preg_match('/^\d{16}$/', $cardNumber))        fail('Enter a 16-digit card number.');
     if (!preg_match('/^(0[1-9]|1[0-2])\/(\d{2})$/', $cardExpiry, $m)) fail('Enter the expiry date as MM/YY.');
-    // A card is valid until the end of its expiry month
     if (strtotime('20' . $m[2] . '-' . $m[1] . '-01 +1 month') <= time())  fail('That card has expired.');
     if (!preg_match('/^\d{3,4}$/', $cardCvv))            fail('Enter a valid 3 or 4 digit CVV.');
 }
  
 $recipient = trim($_POST['recipient_name'] ?? '');
-if ($type === 'Gift' && $recipient === '')              fail('Recipient name is required for a gift.');
+if ($type === 'Gift' && $recipient === '')    fail('Recipient name is required for a gift.');
  
 // Decoration: Option 1-7 (photos in images/Decorations) or None
 $decorations = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6', 'Option 7', 'None'];
 $decoration  = $_POST['decoration_type'] ?? 'None';
 if ($type === 'Gift' && !in_array($decoration, $decorations, true)) fail('Choose a valid decoration.');
  
-// The session can outlive the database row (e.g. after re-importing the database).
-// Make sure this customer really exists, otherwise the Orders foreign key fails.
+
 $chk = $pdo->prepare('SELECT 1 FROM Customer WHERE CustomerID = ?');
 $chk->execute([$_SESSION['customer_id']]);
 if (!$chk->fetch()) {
@@ -74,7 +72,7 @@ if ($fromCart) {
     $cart = $_SESSION['cart'] ?? [];
     if (!$cart) fail('Your cart is empty.');
  
-    // Prices come from the database, never from the browser
+    // Prices come from the database 
     $ids  = array_map('strval', array_keys($cart));
     $in   = implode(',', array_fill(0, count($ids), '?'));
     $stmt = $pdo->prepare("SELECT BookID, Title, Price, DiscountPercent, OfferEnds FROM Books WHERE BookID IN ($in)");
@@ -101,8 +99,9 @@ try {
         ->execute([$orderId, $delivery, $pack, $address, $instr ?: null, $_SESSION['customer_id']]);
  
     $ins = $pdo->prepare('INSERT INTO Order_Books (OrderID, BookID, Quantity, UnitPrice) VALUES (?,?,?,?)');
-    // Takes the copies off the stock. The "AND Stock >= ?" part means it only works if enough are left,
-    // so two customers cannot both buy the last copy.
+    
+    // Takes the copies off the stock. 
+    // two customers cannot both buy the last copy.
     $take = $pdo->prepare('UPDATE Books SET Stock = Stock - ? WHERE BookID = ? AND Stock >= ?');
     $subtotal = 0;
     foreach ($lines as [$lineId, $lineTitle, $linePrice, $lineQty]) {

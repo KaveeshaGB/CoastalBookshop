@@ -1,5 +1,5 @@
 <?php
-// Called by the Buy pop-up on the My Bookshelf tab. Members only.
+// Called by the Buy pop-up on the My Bookshelf tab but Members only.
 require_once __DIR__.'/includes/club_functions.php';
 
 // Send the person back to the My Bookshelf tab with a message
@@ -18,11 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$me) {
 if (!isMember($pdo, $me)) {
     backToShelf('shelf_error', 'You are not a member, so you can\'t buy ebooks.');
 }
-// Card details: checked here, never saved (same rules as the order form)
-$cardName   = trim($_POST['card_name'] ?? '');
-$cardNumber = preg_replace('/[\s-]+/', '', $_POST['card_number'] ?? '');
-$cardExpiry = trim($_POST['card_expiry'] ?? '');
-$cardCvv    = trim($_POST['card_cvv'] ?? '');
 
 // Card details: checked here, never saved (same rules as the order form)
 $cardName   = trim($_POST['card_name'] ?? '');
@@ -50,7 +45,6 @@ try {
         ->execute([$me, $ebook['EbookID'], finalPrice($ebook)]);
     backToShelf('shelf_msg', '"' . $ebook['Title'] . '" is now on your shelf.');
 } catch (PDOException $ex) {
-    // 23000 = this member already has this ebook
     if ($ex->getCode() === '23000') {
         backToShelf('shelf_error', 'You already own this ebook.');
     }

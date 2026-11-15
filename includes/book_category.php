@@ -1,6 +1,5 @@
 <?php
-// Shared template for the three book type pages.
-// The page sets $category (e.g. 'Fiction') then includes this file.
+// Shared template for the three book type pages
 $pageTitle = $category . ' Books - Coastal Bookshop';
 require __DIR__.'/header.php';
 $likedIds = getLikedIds($pdo);
